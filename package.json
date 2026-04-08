@@ -10,6 +10,7 @@
     "typegen": "next typegen",
     "typecheck": "npm run typegen && tsc --noEmit",
     "check": "npm run typecheck && npm run build",
+    "ship:prod": "powershell -ExecutionPolicy Bypass -File scripts/ship-prod.ps1",
     "prod:db:check": "node scripts/check-db-connection.mjs",
     "prod:baseline:extract": "node scripts/extract-current-schema-baseline.mjs",
     "prod:seed:extract": "node scripts/extract-current-seed-data.mjs",
