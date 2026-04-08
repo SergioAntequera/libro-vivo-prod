@@ -603,8 +603,9 @@ function LoginPageContent() {
         }
 
         setNotice({
-          message: "Cuenta creada. Te hemos enviado un email de confirmacion.",
-          tone: "success",
+          message:
+            "Si el email es nuevo, te hemos enviado un email de confirmacion. Si ya existia, prueba a entrar o recupera la contrasena.",
+          tone: "info",
         });
         setMode("login");
         setFieldErrors({});
