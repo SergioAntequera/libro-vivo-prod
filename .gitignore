@@ -18,3 +18,6 @@ logs/
 .eslintcache
 *.tsbuildinfo
 coverage/
+public/sw.js
+public/precache*.js
+public/workbox-*.js
