@@ -606,7 +606,17 @@ function LoginPageContent() {
           message: "Cuenta creada. Te hemos enviado un email de confirmacion.",
           tone: "success",
         });
+        setMode("login");
+        setFieldErrors({});
+        setRecoverSentTo(null);
+        setMagicLinkSentTo(null);
         setPassword("");
+        {
+          const params = new URLSearchParams();
+          if (safeNextHref) params.set("next", safeNextHref);
+          const nextHref = params.toString() ? `/login?${params.toString()}` : "/login";
+          router.replace(nextHref, { scroll: false });
+        }
         return;
       }
 
