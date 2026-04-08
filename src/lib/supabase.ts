@@ -100,7 +100,7 @@ if (!supabaseUrl) {
     [
       "Falta NEXT_PUBLIC_SUPABASE_URL.",
       "Revisa .env.local o .env.",
-      "Si acabas de mover el proyecto a otro PC, seguramente falta copiar ese archivo local de configuraci\u00f3n.",
+      "Si acabas de mover el proyecto a otro PC, seguramente falta copiar ese archivo local de configuración.",
     ].join(" "),
   );
 }
@@ -110,7 +110,7 @@ if (!supabaseAnonKey) {
     [
       "Falta NEXT_PUBLIC_SUPABASE_ANON_KEY.",
       "Revisa .env.local o .env.",
-      "Si acabas de mover el proyecto a otro PC, seguramente falta copiar ese archivo local de configuraci\u00f3n.",
+      "Si acabas de mover el proyecto a otro PC, seguramente falta copiar ese archivo local de configuración.",
     ].join(" "),
   );
 }

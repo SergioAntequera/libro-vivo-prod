@@ -71,16 +71,16 @@ const MODE_COPY: Record<
   },
   recover: {
     eyebrow: "Recuperar acceso",
-    title: "Recuperar contrase\u00f1a",
+    title: "Recuperar contraseña",
     subtitle: "Te enviaremos un enlace seguro para volver a entrar.",
     primaryCta: "Enviar enlace",
     loadingCta: "Enviando enlace...",
   },
   reset: {
-    eyebrow: "Nueva contrase\u00f1a",
-    title: "Define una contrase\u00f1a nueva",
+    eyebrow: "Nueva contraseña",
+    title: "Define una contraseña nueva",
     subtitle: "Usa una clave nueva para volver a entrar al jardin.",
-    primaryCta: "Guardar nueva contrase\u00f1a",
+    primaryCta: "Guardar nueva contraseña",
     loadingCta: "Guardando...",
   },
 };
@@ -96,16 +96,16 @@ function normalizeAuthError(input: unknown) {
   const lower = msg.toLowerCase();
 
   if (lower.includes("invalid login credentials")) {
-    return "No hemos podido entrar con esos datos. Revisa email y contrase\u00f1a.";
+    return "No hemos podido entrar con esos datos. Revisa email y contraseña.";
   }
   if (lower.includes("email not confirmed")) {
     return "Tu cuenta existe, pero falta confirmar el email.";
   }
   if (lower.includes("user already registered")) {
-    return "Ese email ya esta registrado. Prueba a entrar o recuperar la contrase\u00f1a.";
+    return "Ese email ya esta registrado. Prueba a entrar o recuperar la contraseña.";
   }
   if (lower.includes("password should be")) {
-    return `La contrase\u00f1a debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres.`;
+    return `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres.`;
   }
   if (
     lower.includes("auth session missing") ||
@@ -168,8 +168,8 @@ function passwordStrengthLabel(value: string) {
     Number(/[A-Z]/.test(value)) +
     Number(/[0-9]/.test(value)) +
     Number(/[^a-zA-Z0-9]/.test(value));
-  if (value.length >= 12 && variety >= 3) return "Contrase\u00f1a fuerte.";
-  if (variety >= 2) return "Contrase\u00f1a correcta; puedes reforzarla con mas variedad.";
+  if (value.length >= 12 && variety >= 3) return "Contraseña fuerte.";
+  if (variety >= 2) return "Contraseña correcta; puedes reforzarla con mas variedad.";
   return "Mejor si combinas letras, numeros o simbolos.";
 }
 
@@ -402,7 +402,7 @@ function LoginPageContent() {
       if (event === "PASSWORD_RECOVERY") {
         setMode("reset");
         setNotice({
-          message: "Enlace de recuperacion detectado. Define tu nueva contrase\u00f1a.",
+          message: "Enlace de recuperacion detectado. Define tu nueva contraseña.",
           tone: "success",
         });
       }
@@ -452,7 +452,7 @@ function LoginPageContent() {
       if (!newPasswordConfirm) {
         nextErrors.newPasswordConfirm = "Este campo es obligatorio.";
       } else if (newPassword !== newPasswordConfirm) {
-        nextErrors.newPasswordConfirm = "Las contrase\u00f1as no coinciden.";
+        nextErrors.newPasswordConfirm = "Las contraseñas no coinciden.";
       }
     }
 
@@ -642,7 +642,7 @@ function LoginPageContent() {
           router.replace(nextHref, { scroll: false });
         }
         setNotice({
-          message: "Contrase\u00f1a actualizada. Ya puedes entrar.",
+          message: "Contraseña actualizada. Ya puedes entrar.",
           tone: "success",
         });
         return;
@@ -662,7 +662,7 @@ function LoginPageContent() {
       if (isInvalidLoginCredentialsError(error)) {
         setFieldErrors({
           email: "Revisa este email.",
-          password: "El email o la contrase\u00f1a no coinciden.",
+          password: "El email o la contraseña no coinciden.",
         });
       } else if (isEmailNotConfirmedError(error)) {
         setFieldErrors({ email: "Confirma este email antes de entrar." });
@@ -823,7 +823,7 @@ function LoginPageContent() {
                 </div>
                 <p className="mt-2 text-sm leading-6 text-[var(--lv-text-muted)]">
                   Hemos enviado un enlace seguro a <strong>{magicLinkSentTo}</strong>. Si ese email
-                  tiene cuenta, podras entrar sin escribir contrase\u00f1a.
+                  tiene cuenta, podras entrar sin escribir contraseña.
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <a className="lv-btn lv-btn-secondary text-sm" href="mailto:">
@@ -845,7 +845,7 @@ function LoginPageContent() {
                       setNotice(null);
                     }}
                   >
-                    Entrar con contrase\u00f1a
+                    Entrar con contraseña
                   </button>
                 </div>
               </div>
@@ -854,7 +854,7 @@ function LoginPageContent() {
             {mode === "reset" ? (
               <div className="mb-5 rounded-[24px] border border-[var(--lv-border)] bg-[var(--lv-info-soft)] p-4 text-sm leading-6 text-[var(--lv-info)]">
                 Si el enlace ha expirado, vuelve a pedir uno desde recuperar acceso. Por seguridad,
-                no reutilices una contrase\u00f1a antigua.
+                no reutilices una contraseña antigua.
               </div>
             ) : null}
 
@@ -925,7 +925,7 @@ function LoginPageContent() {
                 {mode === "login" || mode === "signup" ? (
                   <PasswordField
                     id="auth-password"
-                    label="Contrase\u00f1a"
+                    label="Contraseña"
                     name="password"
                     value={password}
                     onChange={(value) => {
@@ -939,7 +939,7 @@ function LoginPageContent() {
                     hint={
                       mode === "signup"
                         ? passwordStrengthLabel(password)
-                        : "Usa la contrase\u00f1a de tu cuenta."
+                        : "Usa la contraseña de tu cuenta."
                     }
                     error={fieldErrors.password}
                     invalid={passwordTooShort}
@@ -967,7 +967,7 @@ function LoginPageContent() {
                         onClick={() => switchMode("recover")}
                         disabled={isSubmitting}
                       >
-                        Olvidaste tu contrase\u00f1a?
+                        Olvidaste tu contraseña?
                       </button>
                       <button
                         type="button"
@@ -985,7 +985,7 @@ function LoginPageContent() {
                   <>
                     <PasswordField
                       id="auth-new-password"
-                      label="Nueva contrase\u00f1a"
+                      label="Nueva contraseña"
                       name="new-password"
                       value={newPassword}
                       onChange={(value) => {
@@ -1012,7 +1012,7 @@ function LoginPageContent() {
                     />
                     <PasswordField
                       id="auth-new-password-confirm"
-                      label="Repite la nueva contrase\u00f1a"
+                      label="Repite la nueva contraseña"
                       name="new-password-confirm"
                       value={newPasswordConfirm}
                       onChange={(value) => {
@@ -1022,7 +1022,7 @@ function LoginPageContent() {
                           value.length === 0
                             ? "Este campo es obligatorio."
                             : newPassword !== value
-                              ? "Las contrase\u00f1as no coinciden."
+                              ? "Las contraseñas no coinciden."
                               : undefined,
                         );
                       }}
@@ -1030,7 +1030,7 @@ function LoginPageContent() {
                       onToggleReveal={() => setShowNewPasswordConfirm((current) => !current)}
                       autoComplete="new-password"
                       required
-                      hint={resetMismatch ? "Las contrase\u00f1as no coinciden todavia." : undefined}
+                      hint={resetMismatch ? "Las contraseñas no coinciden todavia." : undefined}
                       error={fieldErrors.newPasswordConfirm}
                       invalid={resetMismatch}
                       disabled={isSubmitting}
