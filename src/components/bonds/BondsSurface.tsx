@@ -38,6 +38,11 @@ type PendingGardenAction = {
   action: GardenActionKind;
 } | null;
 
+function withOnboardingQuery(href: string, isOnboarding: boolean) {
+  if (!isOnboarding) return href;
+  return href.includes("?") ? `${href}&onboarding=1` : `${href}?onboarding=1`;
+}
+
 export function BondsSurface(props: BondsSurfaceProps & { view?: BondsView }) {
   const inviteSectionRef = useRef<HTMLElement | null>(null);
   const personalGardenSectionRef = useRef<HTMLDivElement | null>(null);
@@ -69,7 +74,11 @@ export function BondsSurface(props: BondsSurfaceProps & { view?: BondsView }) {
 
         {view === "overview" && props.isFirstUse && !props.isOnboarding ? <FirstUsePanel /> : null}
 
-        <BondsViewNav activeView={view} pendingCount={pendingCount} />
+        <BondsViewNav
+          activeView={view}
+          pendingCount={pendingCount}
+          isOnboarding={props.isOnboarding}
+        />
 
         {view === "overview" ? (
           <BondsOverviewSection
@@ -400,9 +409,11 @@ function FirstUsePanel() {
 function BondsViewNav({
   activeView,
   pendingCount,
+  isOnboarding,
 }: {
   activeView: BondsView;
   pendingCount: number;
+  isOnboarding: boolean;
 }) {
   const items: Array<{ href: string; label: string; view: BondsView; badge?: string }> = [
     { href: "/bonds", label: "Resumen", view: "overview" },
@@ -427,7 +438,7 @@ function BondsViewNav({
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={withOnboardingQuery(item.href, isOnboarding)}
             aria-current={isActive ? "page" : undefined}
             className={`min-h-11 shrink-0 rounded-[16px] px-4 py-2 text-sm font-semibold transition ${
               isActive
@@ -508,7 +519,10 @@ function BondsOverviewSection({
               <Link href="/home" className="lv-btn lv-btn-primary">
                 Ir al jardin
               </Link>
-              <Link href="/bonds/manage" className="lv-btn lv-btn-secondary">
+              <Link
+                href={withOnboardingQuery("/bonds/manage", isOnboarding)}
+                className="lv-btn lv-btn-secondary"
+              >
                 Cambiar jardin activo
               </Link>
             </div>
@@ -526,10 +540,16 @@ function BondsOverviewSection({
                 : "Crea un jardin personal o acepta una invitacion para empezar a usar Libro Vivo."}
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
-              <Link href="/bonds/create" className="lv-btn lv-btn-primary">
+              <Link
+                href={withOnboardingQuery("/bonds/create", isOnboarding)}
+                className="lv-btn lv-btn-primary"
+              >
                 Crear jardin
               </Link>
-              <Link href="/bonds/pending" className="lv-btn lv-btn-secondary">
+              <Link
+                href={withOnboardingQuery("/bonds/pending", isOnboarding)}
+                className="lv-btn lv-btn-secondary"
+              >
                 Ver invitaciones
               </Link>
             </div>
@@ -543,13 +563,22 @@ function BondsOverviewSection({
             Que hacer ahora
           </div>
           <div className="mt-4 grid gap-3">
-            <Link href={primaryHref} className="lv-btn lv-btn-primary w-full justify-center">
+            <Link
+              href={withOnboardingQuery(primaryHref, isOnboarding)}
+              className="lv-btn lv-btn-primary w-full justify-center"
+            >
               {primaryLabel}
             </Link>
-            <Link href="/bonds/invite" className="lv-btn lv-btn-secondary w-full justify-center">
+            <Link
+              href={withOnboardingQuery("/bonds/invite", isOnboarding)}
+              className="lv-btn lv-btn-secondary w-full justify-center"
+            >
               Invitar a alguien
             </Link>
-            <Link href="/bonds/manage" className="lv-btn lv-btn-secondary w-full justify-center">
+            <Link
+              href={withOnboardingQuery("/bonds/manage", isOnboarding)}
+              className="lv-btn lv-btn-secondary w-full justify-center"
+            >
               Gestionar jardines ({gardenCount})
             </Link>
           </div>
