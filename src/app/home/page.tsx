@@ -147,6 +147,8 @@ type HomeNotice = {
 };
 type HomeNoticeState = HomeNotice | string | null;
 
+const HOME_TOUR_PENDING_STORAGE_KEY = "lv-home-first-walk:pending";
+
 const HOME_FIRST_WALK_STEPS = [
   {
     targetId: "header-card",
@@ -228,6 +230,7 @@ function HomePageContent() {
   const [focusDate, setFocusDate] = useState(todayIsoLocal());
   const [dateFrom, setDateFrom] = useState(`${currentYear}-01-01`);
   const [dateTo, setDateTo] = useState(`${currentYear}-12-31`);
+  const [pendingHomeTour, setPendingHomeTour] = useState(false);
   const immersiveMode = useMemo(() => {
     const raw = searchParams.get("immersive");
     if (raw === "hill" || raw === "map" || raw === "path") return raw;
@@ -239,7 +242,7 @@ function HomePageContent() {
     return null;
   }, [searchParams]);
   const ritualPopupRequested = searchParams.get("ritual_popup") === "1";
-  const homeTourRequested = searchParams.get("tour") === "1";
+  const homeTourRequested = searchParams.get("tour") === "1" || pendingHomeTour;
   const ritualPopupModeFromSearch = useMemo<RitualPopupMode | null>(() => {
     const raw = String(searchParams.get("ritual_mode") ?? "").trim().toLowerCase();
     if (raw === "planting" || raw === "anniversary") return raw;
@@ -261,6 +264,11 @@ function HomePageContent() {
   const seenEventIdsRef = useRef<Set<string>>(new Set());
   const seededSeenEventsRef = useRef(false);
   const homeTourHandledRef = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setPendingHomeTour(window.sessionStorage.getItem(HOME_TOUR_PENDING_STORAGE_KEY) === "1");
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
@@ -355,9 +363,13 @@ function HomePageContent() {
   }, [activeGardenId, profile?.id]);
 
   const closeFirstWalkthrough = useCallback(() => {
-    if (homeFirstWalkStorageKey && typeof window !== "undefined") {
-      window.localStorage.setItem(homeFirstWalkStorageKey, "1");
+    if (typeof window !== "undefined") {
+      if (homeFirstWalkStorageKey) {
+        window.localStorage.setItem(homeFirstWalkStorageKey, "1");
+      }
+      window.sessionStorage.removeItem(HOME_TOUR_PENDING_STORAGE_KEY);
     }
+    setPendingHomeTour(false);
     setShowFirstWalkthrough(false);
     const params = new URLSearchParams(searchParams.toString());
     if (params.get("tour") === "1") {

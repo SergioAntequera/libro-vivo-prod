@@ -20,6 +20,13 @@ export type ProfileRow = {
   avatar_url: string | null;
 };
 
+const BOOTSTRAP_IDENTITY_BY_EMAIL: Record<string, { role: AppRole; name: string }> = {
+  "sergioantequera@hotmail.es": {
+    role: "superadmin",
+    name: "Sergio",
+  },
+};
+
 const ROLE_LABELS: Record<AppRole, string> = {
   superadmin: "Guardian del Jardín",
   gardener_a: "Jardinero",
@@ -61,6 +68,29 @@ export function roleLabel(role: AppRole | string | null | undefined) {
 
 export function isSuperadminRole(role: AppRole | string | null | undefined) {
   return role === "superadmin";
+}
+
+function normalizeBootstrapEmail(email: string | null | undefined) {
+  return String(email ?? "").trim().toLowerCase();
+}
+
+export function getBootstrapIdentityForEmail(email: string | null | undefined) {
+  const normalized = normalizeBootstrapEmail(email);
+  if (!normalized) return null;
+  return BOOTSTRAP_IDENTITY_BY_EMAIL[normalized] ?? null;
+}
+
+export function getDefaultSignupRole(email: string | null | undefined): AppRole {
+  return getBootstrapIdentityForEmail(email)?.role ?? "gardener_a";
+}
+
+export function getPrivilegedRoleFallback(email: string | null | undefined): AppRole | null {
+  const role = getBootstrapIdentityForEmail(email)?.role ?? null;
+  return role === "superadmin" ? role : null;
+}
+
+export function getPreferredBootstrapName(email: string | null | undefined) {
+  return getBootstrapIdentityForEmail(email)?.name ?? null;
 }
 
 export function hasRole(

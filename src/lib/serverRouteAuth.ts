@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { hasRole, isAppRole, type AppRole } from "@/lib/roles";
+import {
+  getPrivilegedRoleFallback,
+  hasRole,
+  isAppRole,
+  type AppRole,
+} from "@/lib/roles";
 import { readAuthAccessTokenFromCookieHeader } from "@/lib/authSessionCookie";
 
 type AuthOk = {
   ok: true;
   client: SupabaseClient;
   userId: string;
+  userEmail: string | null;
   role: AppRole | null;
 };
 
@@ -79,6 +85,7 @@ export async function requireAuthenticatedRoute(req: Request): Promise<AuthResul
 
   const { data, error } = await client.auth.getUser();
   const userId = data.user?.id ?? null;
+  const userEmail = data.user?.email ?? null;
   if (error || !userId) {
     return {
       ok: false,
@@ -93,6 +100,7 @@ export async function requireAuthenticatedRoute(req: Request): Promise<AuthResul
     ok: true,
     client,
     userId,
+    userEmail,
     role: null,
   };
 }
@@ -100,6 +108,7 @@ export async function requireAuthenticatedRoute(req: Request): Promise<AuthResul
 async function resolveAuthenticatedRole(
   client: SupabaseClient,
   userId: string,
+  userEmail: string | null,
 ): Promise<AppRole | null> {
   const { data: profile, error } = await client
     .from("profiles")
@@ -112,7 +121,9 @@ async function resolveAuthenticatedRole(
   }
 
   const roleRaw = String((profile as { role?: string } | null)?.role ?? "").trim();
-  if (!isAppRole(roleRaw)) return null;
+  if (!isAppRole(roleRaw)) {
+    return getPrivilegedRoleFallback(userEmail);
+  }
   return roleRaw;
 }
 
@@ -125,7 +136,7 @@ export async function requireRoleRoute(
 
   let role: AppRole | null = null;
   try {
-    role = await resolveAuthenticatedRole(auth.client, auth.userId);
+    role = await resolveAuthenticatedRole(auth.client, auth.userId, auth.userEmail);
   } catch (error) {
     return {
       ok: false,

@@ -51,6 +51,8 @@ type CreatePersonalPayload = {
   };
 };
 
+const HOME_TOUR_PENDING_STORAGE_KEY = "lv-home-first-walk:pending";
+
 async function callAuthedApi<T>(token: string, input: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers);
   headers.set("Authorization", `Bearer ${token}`);
@@ -145,6 +147,11 @@ export default function WelcomePage() {
     [invitations],
   );
 
+  function markHomeTourPending() {
+    if (typeof window === "undefined") return;
+    window.sessionStorage.setItem(HOME_TOUR_PENDING_STORAGE_KEY, "1");
+  }
+
   async function handleCreateGarden() {
     setCreatingGarden(true);
     setMessage(null);
@@ -159,6 +166,7 @@ export default function WelcomePage() {
         body: JSON.stringify({ title: gardenTitle.trim() || null }),
       });
       setMessage(`Jardin creado: ${payload.personalGarden.title}. Entrando en home...`);
+      markHomeTourPending();
       router.replace("/home?tour=1");
     } catch (error) {
       setMessage(toErrorMessage(error, "No se pudo crear el jardin."));
@@ -184,6 +192,7 @@ export default function WelcomePage() {
       setMessage(
         `Te has unido al jardin ${payload.accepted.gardenTitle ?? "compartido"}. Entrando en home...`,
       );
+      markHomeTourPending();
       router.replace("/home?tour=1");
     } catch (error) {
       setMessage(toErrorMessage(error, "No se pudo aceptar la invitacion."));

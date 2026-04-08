@@ -1,5 +1,10 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
-import { isAppRole, type ProfileRow } from "@/lib/roles";
+import {
+  getDefaultSignupRole,
+  getPreferredBootstrapName,
+  isAppRole,
+  type ProfileRow,
+} from "@/lib/roles";
 import { toErrorMessage } from "@/lib/errorMessage";
 
 type SupabaseErrorLike = {
@@ -25,6 +30,9 @@ function isMissingProfileRowError(error: unknown) {
 }
 
 function buildDefaultProfileName(user: User) {
+  const preferredName = getPreferredBootstrapName(user.email ?? null);
+  if (preferredName) return preferredName;
+
   const metadata =
     user.user_metadata && typeof user.user_metadata === "object"
       ? (user.user_metadata as Record<string, unknown>)
@@ -102,7 +110,7 @@ export async function ensureProfileForUserWithClient(
     name: buildDefaultProfileName(user),
     last_name: null,
     pronoun: null,
-    role: "gardener_a",
+    role: getDefaultSignupRole(user.email ?? null),
     avatar_url: null,
   });
 
