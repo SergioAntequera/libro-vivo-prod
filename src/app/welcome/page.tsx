@@ -235,8 +235,8 @@ export default function WelcomePage() {
                   : "Primero necesitamos preparar tu jardin."}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--lv-text-muted)]">
-                Aqui solo tomamos la primera decision: crear vuestro espacio o uniros a uno ya
-                abierto. En cuanto entreis, os acompanaremos con un primer paseo guiado por home.
+                Aqui solo tomamos la primera decision: crear tu espacio o unirte a uno ya abierto.
+                En cuanto entres, te acompañaremos con un primer paseo guiado por home.
               </p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -244,9 +244,9 @@ export default function WelcomePage() {
                   <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--lv-text-muted)]">
                     Paso 1
                   </div>
-                  <div className="mt-2 text-base font-semibold">Crear o unirse</div>
+                  <div className="mt-2 text-base font-semibold">Crear o unirte</div>
                   <p className="mt-2 text-sm text-[var(--lv-text-muted)]">
-                    Sin jardin no hay contexto compartido donde guardar planes, recuerdos y ciclos.
+                    Sin jardin no hay contexto donde guardar planes, recuerdos y ciclos.
                   </p>
                 </div>
                 <div className="lv-card-soft p-4">
@@ -255,7 +255,7 @@ export default function WelcomePage() {
                   </div>
                   <div className="mt-2 text-base font-semibold">Primer paseo por home</div>
                   <p className="mt-2 text-sm text-[var(--lv-text-muted)]">
-                    Os senalaremos la portada, la actividad, el mapa y el punto donde nace una
+                    Te señalaremos la portada, la actividad, el mapa y el punto donde nace una
                     semilla.
                   </p>
                 </div>
