@@ -111,17 +111,33 @@ export type AppSettings = {
   [key: string]: unknown;
 };
 
+export const DEFAULT_APP_SETTINGS: AppSettings = {
+  id: 1,
+  garden_name: null,
+  primary_color: null,
+  ui_theme: null,
+  welcome_text: "Bienvenido a {{garden}}, {{user}}",
+  narrator_tone: "cuento",
+  season_mode: "auto",
+};
+
 export async function getSettings(): Promise<AppSettings> {
   const { data, error } = await supabase
     .from("settings")
     .select("*")
     .eq("id", 1)
-    .single();
+    .maybeSingle();
 
   if (error) {
     throw new Error(
       toErrorMessage(error, "No se pudo cargar la configuracion."),
     );
   }
-  return data as AppSettings;
+  if (!data) {
+    return DEFAULT_APP_SETTINGS;
+  }
+  return {
+    ...DEFAULT_APP_SETTINGS,
+    ...(data as AppSettings),
+  };
 }

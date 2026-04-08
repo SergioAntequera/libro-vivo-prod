@@ -529,6 +529,7 @@ function LoginPageContent() {
         provider,
         options: {
           redirectTo: getLoginRedirectUrl(),
+          queryParams: provider === "google" ? { prompt: "select_account" } : undefined,
         },
       });
       if (error) throw error;
