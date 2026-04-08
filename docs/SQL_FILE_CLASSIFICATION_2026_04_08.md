@@ -1,0 +1,382 @@
+# SQL File Classification
+
+Fecha: 2026-04-08
+
+Inventario heuristico inicial para separar SQL productivo del SQL de test, operacion o archivo.
+
+## Resumen
+
+- `DROP`: 95
+- `KEEP_CANDIDATE`: 74
+- `META`: 6
+- `REVIEW`: 2
+
+## Reglas aplicadas
+
+- `DROP`: archivos en `archive/dev`, `test`, `fixture` o `cleanup`.
+- `META`: `WIPE_*`, `*_gate*`, `*_audit*`.
+- `REVIEW`: `*hotfix*`.
+- `KEEP_CANDIDATE`: resto de SQL raiz activos.
+
+## Detalle
+
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_canvas_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_canvas_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_care_catalog_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_care_catalog_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_config_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_config_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_forest_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_forest_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_mood_thresholds_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_mood_thresholds_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_pages_care_fields.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_pages_care_fields.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_pdf_theme_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_pdf_theme_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_seed_calendar_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_seed_calendar_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_storage_stickers_assets.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_storage_stickers_assets.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-05_timeline_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-05_timeline_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_achievements_profiles_rls_hardening.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_achievements_profiles_rls_hardening.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `META` [supabase/sql/2026-03-06_core_rls_audit.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_core_rls_audit.sql)
+  Motivo: gate/audit operativo, no forma parte del schema productivo
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_core_tables_rls_hardening.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_core_tables_rls_hardening.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_home_art_packs.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_home_art_packs.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_home_scene_theme_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_home_scene_theme_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_home_visual_species_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_home_visual_species_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_page_audio_support.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_page_audio_support.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_page_video_support.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_page_video_support.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_pages_location_fields.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_pages_location_fields.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-06_storage_page_assets_hardening.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-06_storage_page_assets_hardening.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-07_annual_tree_engine_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-07_annual_tree_engine_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-10_profiles_superadmin_management.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-10_profiles_superadmin_management.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_core_garden_not_null_enforcement.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_core_garden_not_null_enforcement.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `META` [supabase/sql/2026-03-11_core_garden_release_gate.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_core_garden_release_gate.sql)
+  Motivo: gate/audit operativo, no forma parte del schema productivo
+- `META` [supabase/sql/2026-03-11_core_garden_rls_audit.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_core_garden_rls_audit.sql)
+  Motivo: gate/audit operativo, no forma parte del schema productivo
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_core_garden_rls_lockdown.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_core_garden_rls_lockdown.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_core_garden_rls_transition.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_core_garden_rls_transition.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_notes_per_garden_uniqueness.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_notes_per_garden_uniqueness.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `REVIEW` [supabase/sql/2026-03-11_private_bond_invitation_functions_hotfix_ambiguous_refs.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_private_bond_invitation_functions_hotfix_ambiguous_refs.sql)
+  Motivo: hotfix historico, revisar si quedo absorbido por migraciones posteriores
+- `REVIEW` [supabase/sql/2026-03-11_private_bond_invitation_functions_hotfix_pgcrypto_search_path.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_private_bond_invitation_functions_hotfix_pgcrypto_search_path.sql)
+  Motivo: hotfix historico, revisar si quedo absorbido por migraciones posteriores
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_private_bond_invitation_functions.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_private_bond_invitation_functions.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-11_private_multigarden_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-11_private_multigarden_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `META` [supabase/sql/2026-03-12_core_security_release_gate_extended.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-12_core_security_release_gate_extended.sql)
+  Motivo: gate/audit operativo, no forma parte del schema productivo
+- `META` [supabase/sql/2026-03-12_core_security_rls_audit_extended.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-12_core_security_rls_audit_extended.sql)
+  Motivo: gate/audit operativo, no forma parte del schema productivo
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-12_ui_theme_tokens_catalog.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-12_ui_theme_tokens_catalog.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-15_map_domain_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-15_map_domain_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-16_garden_plan_types.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-16_garden_plan_types.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-16_map_place_kind_refine.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-16_map_place_kind_refine.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-16_page_plan_summary.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-16_page_plan_summary.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-16_page_plan_type_link.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-16_page_plan_type_link.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-16_seed_map_links.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-16_seed_map_links.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-19_garden_plan_type_flower_family.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-19_garden_plan_type_flower_family.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-19_seed_joint_watering.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-19_seed_joint_watering.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-20_map_semantic_catalogs.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-20_map_semantic_catalogs.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-20_year_notes_highlight_page_ids.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-20_year_notes_highlight_page_ids.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-22_progression_graph_state.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-22_progression_graph_state.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_garden_plan_types_flower_builder_config.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_garden_plan_types_flower_builder_config.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_garden_plan_types_visual_builder_templates.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_garden_plan_types_visual_builder_templates.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_plan_type_flower_assets_catalog.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_plan_type_flower_assets_catalog.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_progression_domain_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_progression_domain_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_progression_tree_visual_semantics.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_progression_tree_visual_semantics.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_progression_unlocks_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_progression_unlocks_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-23_storage_plan_type_assets.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-23_storage_plan_type_assets.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-24_annual_tree_rituals.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-24_annual_tree_rituals.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-24_custom_flower_families.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-24_custom_flower_families.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-24_time_capsules.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-24_time_capsules.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_annual_tree_check_ins.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_annual_tree_check_ins.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_flower_birth_ritual_ratings.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_flower_birth_ritual_ratings.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_flower_birth_rituals.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_flower_birth_rituals.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_flower_page_revisions.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_flower_page_revisions.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_page_delete_member_rpc.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_page_delete_member_rpc.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_time_capsule_draft_revisions.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_time_capsule_draft_revisions.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_time_capsule_drafts.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_time_capsule_drafts.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-25_year_cycle_states.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-25_year_cycle_states.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_garden_chat_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_garden_chat_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_garden_chat_reactions.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_garden_chat_reactions.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_profiles_identity_fields.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_profiles_identity_fields.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_seed_preparation_foundation.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_seed_preparation_foundation.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_storage_garden_chat_media.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_storage_garden_chat_media.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-26_year_cycle_states_realtime.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-26_year_cycle_states_realtime.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-27_seed_event_reminder_deliveries.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-27_seed_event_reminder_deliveries.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-27_seed_planning_draft_status_check.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-27_seed_planning_draft_status_check.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-27_seed_preparation_collaboration_mode.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-27_seed_preparation_collaboration_mode.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-03-27_seed_preparation_trip_sections.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-03-27_seed_preparation_trip_sections.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-06_garden_invitations_garden_title.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-06_garden_invitations_garden_title.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-07_core_garden_delete_fk_alignment.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-07_core_garden_delete_fk_alignment.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `DROP` [supabase/sql/2026-04-07_progression_test_seed_100.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-07_progression_test_seed_100.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-07_user_notices.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-07_user_notices.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-08_garden_year_tree_states.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-08_garden_year_tree_states.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-08_page_plan_type_canonical_sync.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-08_page_plan_type_canonical_sync.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-08_page_visual_states.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-08_page_visual_states.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `KEEP_CANDIDATE` [supabase/sql/2026-04-08_settings_garden_name.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\2026-04-08_settings_garden_name.sql)
+  Motivo: sql raiz activo; candidato a baseline si el schema vivo y el runtime lo confirman
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_clamp_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_clamp_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_clamp_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_clamp_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_click_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_click_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_click_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_click_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_crown_balance_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_crown_balance_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_crown_balance_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_crown_balance_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_fine_tune_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_fine_tune_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_fine_tune_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_fine_tune_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_labels_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_labels_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_labels_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_labels_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_layout_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_layout_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_layout_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_layout_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_long_trunk_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_long_trunk_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_long_trunk_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_long_trunk_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_navigation_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_navigation_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_navigation_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_navigation_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_overlap_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_overlap_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_overlap_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_overlap_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_phase_progression_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_phase_progression_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_phase_progression_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_phase_progression_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_polish_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_polish_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_polish_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_polish_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_trunk_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_trunk_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_trunk_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_trunk_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_ux_polish_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_ux_polish_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_ux_polish_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_ux_polish_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_visual_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_visual_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-07_forest_visual_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-07_forest_visual_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_focus_mode_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_focus_mode_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_focus_mode_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_focus_mode_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_header_filters_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_header_filters_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_header_filters_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_header_filters_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_secondary_panels_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_secondary_panels_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_forest_secondary_panels_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_forest_secondary_panels_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_bloom_system_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_bloom_system_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_bloom_system_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_bloom_system_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_daily_points_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_daily_points_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_daily_points_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_daily_points_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_inline_icons_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_inline_icons_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_inline_icons_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_inline_icons_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_more_turns_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_more_turns_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_more_turns_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_more_turns_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_overlap_fix_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_overlap_fix_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_overlap_fix_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_overlap_fix_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_polish_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_polish_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_polish_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_polish_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_trail_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_trail_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_trail_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_trail_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_visual_polish_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_visual_polish_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_hill_visual_polish_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_hill_visual_polish_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_trail_semantics_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_trail_semantics_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_trail_semantics_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_trail_semantics_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_trail_visual_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_trail_visual_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_home_trail_visual_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_home_trail_visual_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_chapters_polish_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_chapters_polish_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_chapters_polish_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_chapters_polish_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_chapters_simplify_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_chapters_simplify_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_chapters_simplify_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_chapters_simplify_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_page_visual_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_page_visual_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_page_visual_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_page_visual_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_tree_alignment_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_tree_alignment_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-08_year_tree_alignment_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-08_year_tree_alignment_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_depth_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_depth_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_depth_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_depth_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_design_reset_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_design_reset_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_design_reset_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_design_reset_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_in_canvas_card_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_in_canvas_card_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_in_canvas_card_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_in_canvas_card_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_mountain_perspective_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_mountain_perspective_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_mountain_perspective_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_mountain_perspective_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_path_rework_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_path_rework_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_path_rework_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_path_rework_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_scene_rebase_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_scene_rebase_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_scene_rebase_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_scene_rebase_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step1_card_avatar_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step1_card_avatar_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step1_card_avatar_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step1_card_avatar_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step10_less_turns_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step10_less_turns_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step10_less_turns_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step10_less_turns_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step2_hill_path_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step2_hill_path_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step2_hill_path_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step2_hill_path_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step3_curve_alignment_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step3_curve_alignment_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step3_curve_alignment_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step3_curve_alignment_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step4_hill_perspective_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step4_hill_perspective_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step4_hill_perspective_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step4_hill_perspective_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step5_wide_hill_long_path_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step5_wide_hill_long_path_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step5_wide_hill_long_path_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step5_wide_hill_long_path_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step6_wider_hill_longer_path_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step6_wider_hill_longer_path_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step6_wider_hill_longer_path_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step6_wider_hill_longer_path_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step7_natural_switchbacks_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step7_natural_switchbacks_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step7_natural_switchbacks_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step7_natural_switchbacks_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step8_computed_switchbacks_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step8_computed_switchbacks_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step8_computed_switchbacks_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step8_computed_switchbacks_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step9_geometry_engine_cleanup.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step9_geometry_engine_cleanup.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `DROP` [supabase/sql/archive/dev/2026-03-09_home_hill_step9_geometry_engine_fixture.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\archive\dev\2026-03-09_home_hill_step9_geometry_engine_fixture.sql)
+  Motivo: test/fixture/cleanup, no apto para baseline de produccion
+- `META` [supabase/sql/WIPE_PUBLIC_PROJECT_DATA_2026_03_17.sql](C:\Users\santequera\Documents\Proyecto\libro-vivo\supabase\sql\WIPE_PUBLIC_PROJECT_DATA_2026_03_17.sql)
+  Motivo: script destructivo/utilitario, no migracion de producto
+
+## Siguiente uso
+
+- Cruzar `KEEP_CANDIDATE` con el schema vivo del proyecto actual.
+- Mover los confirmados a una allowlist o baseline de produccion.
+- Mantener `META` fuera del bootstrap, pero disponibles para validacion.

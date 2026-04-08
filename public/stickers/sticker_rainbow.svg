@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <path d="M36 94c0-34 24-58 58-58h68c34 0 58 24 58 58v68c0 34-24 58-58 58H94c-34 0-58-24-58-58z"
+        fill="#FFFDF5" stroke="#2B2B2B" stroke-width="8"/>
+  
+        <path d="M70 168a58 58 0 0 1 116 0" fill="none" stroke="#FF6B6B" stroke-width="14" stroke-linecap="round"/>
+        <path d="M86 168a42 42 0 0 1 84 0" fill="none" stroke="#FFD84D" stroke-width="14" stroke-linecap="round"/>
+        <path d="M102 168a26 26 0 0 1 52 0" fill="none" stroke="#4DA3FF" stroke-width="14" stroke-linecap="round"/>
+  <text x="128" y="242" text-anchor="middle" font-family="ui-rounded, system-ui, -apple-system, Segoe UI, Arial"
+        font-size="18" fill="#2B2B2B" opacity="0.75">Arcoíris</text>
+</svg>

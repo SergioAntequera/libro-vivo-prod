@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <path d="M36 94c0-34 24-58 58-58h68c34 0 58 24 58 58v68c0 34-24 58-58 58H94c-34 0-58-24-58-58z"
+        fill="#FFFDF5" stroke="#2B2B2B" stroke-width="8"/>
+  <path d="M128 70c40 56 66 86 66 122a66 66 0 1 1-132 0c0-36 26-66 66-122z" fill="#4DA3FF" stroke="#2B2B2B" stroke-width="8" />
+  <text x="128" y="242" text-anchor="middle" font-family="ui-rounded, system-ui, -apple-system, Segoe UI, Arial"
+        font-size="18" fill="#2B2B2B" opacity="0.75">Agua</text>
+</svg>

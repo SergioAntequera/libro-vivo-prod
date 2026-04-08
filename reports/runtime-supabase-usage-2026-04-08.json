@@ -1,0 +1,872 @@
+{
+  "generatedAt": "2026-04-08T19:25:43.031Z",
+  "sourceRoot": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo",
+  "tables": [
+    {
+      "name": "annual_tree_check_ins",
+      "count": 2,
+      "files": [
+        "src/app/api/rituals/check-ins/route.ts"
+      ]
+    },
+    {
+      "name": "annual_tree_rituals",
+      "count": 4,
+      "files": [
+        "src/app/api/rituals/route.ts"
+      ]
+    },
+    {
+      "name": "bond_members",
+      "count": 1,
+      "files": [
+        "src/lib/bondsServerRules.ts"
+      ]
+    },
+    {
+      "name": "bonds",
+      "count": 5,
+      "files": [
+        "src/app/api/gardens/[id]/route.ts",
+        "src/app/api/gardens/route.ts",
+        "src/lib/bondsServerRules.ts"
+      ]
+    },
+    {
+      "name": "calendar_rules",
+      "count": 1,
+      "files": [
+        "src/lib/seedCalendarConfig.ts"
+      ]
+    },
+    {
+      "name": "canvas_templates",
+      "count": 6,
+      "files": [
+        "src/app/admin/canvas/page.tsx",
+        "src/lib/canvasCatalog.ts"
+      ]
+    },
+    {
+      "name": "catalog_items",
+      "count": 29,
+      "files": [
+        "src/app/admin/catalogs/page.tsx",
+        "src/app/admin/flowers/page.tsx",
+        "src/app/admin/future-moments/page.tsx",
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/plan-types/page.tsx",
+        "src/app/admin/seeds/page.tsx",
+        "src/app/admin/system/page.tsx",
+        "src/components/home/TrailPathEditor.tsx",
+        "src/lib/adminValidationRules.ts",
+        "src/lib/appConfig.ts",
+        "src/lib/flowerPageLayoutConfig.ts",
+        "src/lib/flowerRuntimeConfig.ts",
+        "src/lib/futureMomentsConfig.ts",
+        "src/lib/mapCatalogServer.ts",
+        "src/lib/seedComposerLayoutConfig.ts"
+      ]
+    },
+    {
+      "name": "catalogs",
+      "count": 9,
+      "files": [
+        "src/app/admin/catalogs/page.tsx",
+        "src/app/admin/flowers/page.tsx",
+        "src/app/admin/future-moments/page.tsx",
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/plan-types/page.tsx",
+        "src/app/admin/seeds/page.tsx",
+        "src/app/admin/system/page.tsx",
+        "src/lib/adminValidationRules.ts"
+      ]
+    },
+    {
+      "name": "flower_birth_ritual_ratings",
+      "count": 5,
+      "files": [
+        "src/app/page/[id]/page.tsx",
+        "src/components/pageDetail/savePageDetail.ts",
+        "src/components/pageDetail/usePageFlowerBirthData.ts"
+      ]
+    },
+    {
+      "name": "flower_birth_rituals",
+      "count": 6,
+      "files": [
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/pageDetail/savePageDetail.ts",
+        "src/components/pageDetail/usePageFlowerBirthData.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansSeedActions.ts"
+      ]
+    },
+    {
+      "name": "flower_page_revisions",
+      "count": 4,
+      "files": [
+        "src/app/page/[id]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/pageDetail/usePageFlowerBirthData.ts"
+      ]
+    },
+    {
+      "name": "forest_assets",
+      "count": 6,
+      "files": [
+        "src/app/admin/forest/page.tsx",
+        "src/lib/forestConfig.ts"
+      ]
+    },
+    {
+      "name": "forest_narrative_templates",
+      "count": 6,
+      "files": [
+        "src/app/admin/forest/page.tsx",
+        "src/lib/forestConfig.ts"
+      ]
+    },
+    {
+      "name": "forest_theme",
+      "count": 7,
+      "files": [
+        "src/app/admin/forest/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/lib/forestConfig.ts"
+      ]
+    },
+    {
+      "name": "garden_chat_message_attachments",
+      "count": 2,
+      "files": [
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/lib/gardenChatMutations.ts"
+      ]
+    },
+    {
+      "name": "garden_chat_message_reactions",
+      "count": 3,
+      "files": [
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/lib/gardenChatMutations.ts"
+      ]
+    },
+    {
+      "name": "garden_chat_messages",
+      "count": 5,
+      "files": [
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/components/chat/useGardenChatUnreadCount.ts",
+        "src/lib/gardenChatMutations.ts"
+      ]
+    },
+    {
+      "name": "garden_chat_read_states",
+      "count": 3,
+      "files": [
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/components/chat/useGardenChatUnreadCount.ts"
+      ]
+    },
+    {
+      "name": "garden_chat_rooms",
+      "count": 5,
+      "files": [
+        "src/app/api/chat/media/upload/route.ts",
+        "src/components/chat/useGardenChatUnreadCount.ts",
+        "src/lib/gardenChatMutations.ts"
+      ]
+    },
+    {
+      "name": "garden_invitations",
+      "count": 10,
+      "files": [
+        "src/app/api/bonds/invitations/[id]/accept/route.ts",
+        "src/app/api/bonds/invitations/[id]/route.ts",
+        "src/app/api/bonds/invitations/route.ts",
+        "src/lib/bondsServerRules.ts"
+      ]
+    },
+    {
+      "name": "garden_members",
+      "count": 13,
+      "files": [
+        "scripts/e2e-multigarden.mjs",
+        "src/app/api/export/year/[year]/route.ts",
+        "src/app/api/gardens/[id]/route.ts",
+        "src/app/api/gardens/active/route.ts",
+        "src/app/api/gardens/route.ts",
+        "src/app/home/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/components/chat/useGardenCompanionLabel.ts",
+        "src/components/pageDetail/usePageGardenMembers.ts",
+        "src/lib/gardens.ts",
+        "src/lib/seedEventReminderData.ts"
+      ]
+    },
+    {
+      "name": "garden_plan_types",
+      "count": 21,
+      "files": [
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/admin/plan-types/page.tsx",
+        "src/app/page/[id]/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/TrailPathEditor.tsx",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/components/pageDetail/usePageSeedContext.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansSeedActions.ts",
+        "src/lib/gardenPlanTypes.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/seedEventReminderData.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "garden_year_tree_states",
+      "count": 1,
+      "files": [
+        "src/lib/annualTreeState.ts"
+      ]
+    },
+    {
+      "name": "gardens",
+      "count": 10,
+      "files": [
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/admin/plan-types/page.tsx",
+        "src/app/api/gardens/[id]/route.ts",
+        "src/app/api/gardens/active/route.ts",
+        "src/app/api/gardens/route.ts",
+        "src/lib/gardens.ts"
+      ]
+    },
+    {
+      "name": "map_places",
+      "count": 16,
+      "files": [
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/api/map/places/[placeId]/route.ts",
+        "src/app/api/map/places/route.ts",
+        "src/app/api/rituals/route.ts",
+        "src/app/page/new/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/components/pageDetail/usePageSeedContext.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansSeedActions.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/seedEventReminderData.ts"
+      ]
+    },
+    {
+      "name": "map_routes",
+      "count": 10,
+      "files": [
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/api/map/routes/[routeId]/route.ts",
+        "src/app/api/map/routes/route.ts",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/components/pageDetail/usePageSeedContext.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/lib/seedEventReminderData.ts"
+      ]
+    },
+    {
+      "name": "map_zones",
+      "count": 6,
+      "files": [
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/api/map/zones/[zoneId]/route.ts",
+        "src/app/api/map/zones/route.ts",
+        "src/components/home/useHomeBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "memory_reflections",
+      "count": 5,
+      "files": [
+        "src/app/admin/page.tsx",
+        "src/app/page/[id]/page.tsx",
+        "src/components/pageDetail/savePageDetail.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "objects",
+      "count": 1,
+      "files": [
+        "scripts/storage-governance-audit.mjs"
+      ]
+    },
+    {
+      "name": "page_visual_states",
+      "count": 1,
+      "files": [
+        "src/lib/pageVisualState.ts"
+      ]
+    },
+    {
+      "name": "page-audio",
+      "count": 1,
+      "files": [
+        "src/lib/uploadAudio.ts"
+      ]
+    },
+    {
+      "name": "page-photos",
+      "count": 2,
+      "files": [
+        "src/lib/uploadPhoto.ts",
+        "src/lib/uploadProfileAvatar.ts"
+      ]
+    },
+    {
+      "name": "page-thumbs",
+      "count": 2,
+      "files": [
+        "src/lib/uploadThumb.ts"
+      ]
+    },
+    {
+      "name": "page-videos",
+      "count": 1,
+      "files": [
+        "src/lib/uploadVideo.ts"
+      ]
+    },
+    {
+      "name": "pages",
+      "count": 32,
+      "files": [
+        "scripts/e2e-multigarden.mjs",
+        "scripts/storage-governance-audit.mjs",
+        "src/app/admin/map/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/admin/pdf/page.tsx",
+        "src/app/api/export/year/[year]/route.ts",
+        "src/app/api/life/events/route.ts",
+        "src/app/page/[id]/page.tsx",
+        "src/app/page/new/page.tsx",
+        "src/app/plans/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/components/pageDetail/savePageDetail.ts",
+        "src/components/pageDetail/usePageDetailMutations.ts",
+        "src/components/pageDetail/usePageYearHighlights.ts",
+        "src/components/plans/usePlansSeedActions.ts",
+        "src/components/timeline/useTimelineBootstrapData.ts",
+        "src/lib/googleDriveServer.ts",
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "pdf_layout_presets",
+      "count": 5,
+      "files": [
+        "src/app/admin/pdf/page.tsx",
+        "src/lib/pdfThemeConfig.ts"
+      ]
+    },
+    {
+      "name": "pdf_text_templates",
+      "count": 6,
+      "files": [
+        "src/app/admin/pdf/page.tsx",
+        "src/lib/pdfThemeConfig.ts"
+      ]
+    },
+    {
+      "name": "pdf_theme_assets",
+      "count": 6,
+      "files": [
+        "src/app/admin/pdf/page.tsx",
+        "src/lib/pdfThemeConfig.ts"
+      ]
+    },
+    {
+      "name": "pdf_themes",
+      "count": 7,
+      "files": [
+        "src/app/admin/page.tsx",
+        "src/app/admin/pdf/page.tsx",
+        "src/lib/pdfThemeConfig.ts"
+      ]
+    },
+    {
+      "name": "plan-type-assets",
+      "count": 1,
+      "files": [
+        "src/app/admin/plan-types/page.tsx"
+      ]
+    },
+    {
+      "name": "profiles",
+      "count": 41,
+      "files": [
+        "scripts/e2e-chat-smoke.mjs",
+        "scripts/e2e-seed-preparation.mjs",
+        "scripts/e2e-welcome-first-walk.mjs",
+        "scripts/e2e-year-cycle.mjs",
+        "src/app/api/admin/roles/route.ts",
+        "src/app/api/bonds/invitations/route.ts",
+        "src/app/api/bonds/me/route.ts",
+        "src/app/api/capsules/draft/route.ts",
+        "src/app/api/gardens/[id]/route.ts",
+        "src/app/api/gardens/route.ts",
+        "src/app/home/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/chat/useGardenChatRoom.ts",
+        "src/components/chat/useGardenCompanionLabel.ts",
+        "src/components/home/HomeTopHeaderCard.tsx",
+        "src/components/pageDetail/usePageGardenMembers.ts",
+        "src/lib/canvasCatalog.ts",
+        "src/lib/gardens.ts",
+        "src/lib/profileBootstrap.ts",
+        "src/lib/seedEventReminderData.ts",
+        "src/lib/serverRouteAuth.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "progression_condition_unlocks",
+      "count": 2,
+      "files": [
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "progression_conditions",
+      "count": 9,
+      "files": [
+        "scripts/rewrite-progression-production-via-api.mjs",
+        "src/app/achievements/page.tsx",
+        "src/app/admin/progression/page.tsx",
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "progression_graph_state",
+      "count": 15,
+      "files": [
+        "scripts/apply-progression-test-seed-via-api.mjs",
+        "scripts/rewrite-progression-production-via-api.mjs",
+        "src/app/achievements/page.tsx",
+        "src/app/admin/progression/page.tsx",
+        "src/app/api/life/events/route.ts",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/TrailPathEditor.tsx",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/lib/canvasCatalog.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "progression_reward_unlocks",
+      "count": 5,
+      "files": [
+        "src/app/achievements/page.tsx",
+        "src/lib/progressionRewardsRuntime.ts",
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "progression_rewards",
+      "count": 9,
+      "files": [
+        "scripts/rewrite-progression-production-via-api.mjs",
+        "src/app/achievements/page.tsx",
+        "src/app/admin/progression/page.tsx",
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "progression_tree_nodes",
+      "count": 18,
+      "files": [
+        "scripts/rewrite-progression-production-via-api.mjs",
+        "src/app/achievements/page.tsx",
+        "src/app/admin/canvas/page.tsx",
+        "src/app/admin/progression/page.tsx",
+        "src/app/api/life/events/route.ts",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/TrailPathEditor.tsx",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/lib/canvasCatalog.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "progression_tree_unlocks",
+      "count": 14,
+      "files": [
+        "src/app/achievements/page.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/api/life/events/route.ts",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/lib/canvasCatalog.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "season_notes",
+      "count": 5,
+      "files": [
+        "src/app/admin/page.tsx",
+        "src/components/timeline/useTimelineBootstrapData.ts",
+        "src/components/timeline/useTimelineSeasonChapterNotes.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    },
+    {
+      "name": "seed_defaults",
+      "count": 1,
+      "files": [
+        "src/lib/seedCalendarConfig.ts"
+      ]
+    },
+    {
+      "name": "seed_event_reminder_deliveries",
+      "count": 3,
+      "files": [
+        "src/lib/seedEventReminderJob.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_attachments",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_checklist_items",
+      "count": 6,
+      "files": [
+        "scripts/e2e-seed-preparation.mjs",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansPreparationActions.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_itinerary_items",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_place_links",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_profiles",
+      "count": 8,
+      "files": [
+        "scripts/e2e-seed-preparation.mjs",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansPreparationActions.ts",
+        "src/lib/seedEventReminderData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_reservations",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_stays",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_stops",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_preparation_transport_legs",
+      "count": 1,
+      "files": [
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    },
+    {
+      "name": "seed_status_flow",
+      "count": 2,
+      "files": [
+        "src/app/admin/page.tsx",
+        "src/lib/seedCalendarConfig.ts"
+      ]
+    },
+    {
+      "name": "seed_watering_confirmations",
+      "count": 7,
+      "files": [
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansSeedActions.ts",
+        "src/lib/progressionUnlocks.ts"
+      ]
+    },
+    {
+      "name": "seeds",
+      "count": 32,
+      "files": [
+        "scripts/e2e-seed-preparation.mjs",
+        "src/app/admin/page.tsx",
+        "src/app/api/life/events/route.ts",
+        "src/app/page/[id]/page.tsx",
+        "src/app/page/new/page.tsx",
+        "src/app/plans/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/forest/useForestBootstrapData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/home/useHomeBootstrapData.ts",
+        "src/components/pageDetail/usePageDetailMutations.ts",
+        "src/components/pageDetail/usePageSeedContext.ts",
+        "src/components/plans/usePlansBootstrapData.ts",
+        "src/components/plans/usePlansPreparationActions.ts",
+        "src/components/plans/usePlansSeedActions.ts",
+        "src/lib/googleDriveServer.ts",
+        "src/lib/progressionUnlocks.ts",
+        "src/lib/seedEventReminderData.ts",
+        "src/lib/seedEventReminderJob.ts"
+      ]
+    },
+    {
+      "name": "settings",
+      "count": 3,
+      "files": [
+        "src/app/admin/system/page.tsx",
+        "src/lib/auth.ts"
+      ]
+    },
+    {
+      "name": "sticker_pack_items",
+      "count": 6,
+      "files": [
+        "src/app/admin/canvas/page.tsx",
+        "src/lib/canvasCatalog.ts"
+      ]
+    },
+    {
+      "name": "sticker_packs",
+      "count": 5,
+      "files": [
+        "src/app/admin/canvas/page.tsx",
+        "src/lib/canvasCatalog.ts"
+      ]
+    },
+    {
+      "name": "sticker_unlock_rules",
+      "count": 5,
+      "files": [
+        "src/app/admin/canvas/page.tsx",
+        "src/lib/canvasCatalog.ts"
+      ]
+    },
+    {
+      "name": "stickers",
+      "count": 4,
+      "files": [
+        "src/app/admin/canvas/page.tsx"
+      ]
+    },
+    {
+      "name": "template_objects",
+      "count": 4,
+      "files": [
+        "src/app/admin/canvas/page.tsx",
+        "src/lib/canvasCatalog.ts"
+      ]
+    },
+    {
+      "name": "time_capsule_draft_revisions",
+      "count": 2,
+      "files": [
+        "src/app/api/capsules/draft/route.ts"
+      ]
+    },
+    {
+      "name": "time_capsule_drafts",
+      "count": 6,
+      "files": [
+        "src/app/api/capsules/draft/route.ts",
+        "src/app/api/capsules/route.ts"
+      ]
+    },
+    {
+      "name": "time_capsules",
+      "count": 7,
+      "files": [
+        "src/app/api/capsules/[id]/open/route.ts",
+        "src/app/api/capsules/draft/route.ts",
+        "src/app/api/capsules/route.ts"
+      ]
+    },
+    {
+      "name": "timeline_milestone_rules",
+      "count": 1,
+      "files": [
+        "src/lib/timelineConfig.ts"
+      ]
+    },
+    {
+      "name": "timeline_view_config",
+      "count": 1,
+      "files": [
+        "src/lib/timelineConfig.ts"
+      ]
+    },
+    {
+      "name": "user_notices",
+      "count": 3,
+      "files": [
+        "src/app/api/gardens/[id]/route.ts",
+        "src/app/api/notices/route.ts"
+      ]
+    },
+    {
+      "name": "year_cycle_states",
+      "count": 5,
+      "files": [
+        "src/app/year/[year]/page.tsx"
+      ]
+    },
+    {
+      "name": "year_notes",
+      "count": 18,
+      "files": [
+        "src/app/admin/page.tsx",
+        "src/app/admin/pdf/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/pageDetail/usePageYearHighlights.ts",
+        "src/lib/yearPdfDocumentBuilder.ts"
+      ]
+    }
+  ],
+  "rpcs": [
+    {
+      "name": "accept_private_garden_invitation",
+      "count": 4,
+      "files": [
+        "scripts/e2e-chat-smoke.mjs",
+        "scripts/e2e-seed-preparation.mjs",
+        "scripts/e2e-year-cycle.mjs",
+        "src/app/api/bonds/invitations/[id]/accept/route.ts"
+      ]
+    },
+    {
+      "name": "create_private_garden_invitation",
+      "count": 4,
+      "files": [
+        "scripts/e2e-chat-smoke.mjs",
+        "scripts/e2e-seed-preparation.mjs",
+        "scripts/e2e-year-cycle.mjs",
+        "src/app/api/bonds/invitations/route.ts"
+      ]
+    },
+    {
+      "name": "create_private_personal_garden",
+      "count": 2,
+      "files": [
+        "scripts/e2e-multigarden.mjs",
+        "src/app/api/bonds/personal/route.ts"
+      ]
+    },
+    {
+      "name": "delete_garden_page",
+      "count": 2,
+      "files": [
+        "src/app/page/[id]/page.tsx",
+        "src/components/pageDetail/usePageDetailMutations.ts"
+      ]
+    },
+    {
+      "name": "find_profile_by_invite_code",
+      "count": 1,
+      "files": [
+        "src/app/api/bonds/search/route.ts"
+      ]
+    },
+    {
+      "name": "get_active_garden_member_count",
+      "count": 5,
+      "files": [
+        "src/app/capsules/page.tsx",
+        "src/app/year/[year]/page.tsx",
+        "src/components/activity/useActivityFeedData.ts",
+        "src/components/home/useHomeActivityUnseenCount.ts",
+        "src/components/plans/usePlansBootstrapData.ts"
+      ]
+    }
+  ],
+  "buckets": [
+    {
+      "name": "page-audio",
+      "count": 1,
+      "files": [
+        "src/lib/uploadAudio.ts"
+      ]
+    },
+    {
+      "name": "page-photos",
+      "count": 2,
+      "files": [
+        "src/lib/uploadPhoto.ts",
+        "src/lib/uploadProfileAvatar.ts"
+      ]
+    },
+    {
+      "name": "page-thumbs",
+      "count": 1,
+      "files": [
+        "src/lib/uploadThumb.ts"
+      ]
+    },
+    {
+      "name": "page-videos",
+      "count": 1,
+      "files": [
+        "src/lib/uploadVideo.ts"
+      ]
+    }
+  ]
+}

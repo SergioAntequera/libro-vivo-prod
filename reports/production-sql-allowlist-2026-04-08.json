@@ -1,0 +1,2339 @@
+{
+  "generatedAt": "2026-04-08T19:37:42.929Z",
+  "totalSqlFiles": 177,
+  "existingCurrentProjectTables": [
+    "annual_tree_check_ins",
+    "annual_tree_rituals",
+    "bond_members",
+    "bonds",
+    "calendar_rules",
+    "canvas_templates",
+    "catalog_items",
+    "catalogs",
+    "flower_birth_ritual_ratings",
+    "flower_birth_rituals",
+    "flower_page_revisions",
+    "forest_assets",
+    "forest_narrative_templates",
+    "forest_theme",
+    "garden_chat_message_attachments",
+    "garden_chat_message_reactions",
+    "garden_chat_messages",
+    "garden_chat_read_states",
+    "garden_chat_rooms",
+    "garden_invitations",
+    "garden_members",
+    "garden_plan_types",
+    "garden_year_tree_states",
+    "gardens",
+    "map_places",
+    "map_routes",
+    "map_zones",
+    "memory_reflections",
+    "objects",
+    "page-audio",
+    "page-photos",
+    "page-thumbs",
+    "page-videos",
+    "page_visual_states",
+    "pages",
+    "pdf_layout_presets",
+    "pdf_text_templates",
+    "pdf_theme_assets",
+    "pdf_themes",
+    "plan-type-assets",
+    "profiles",
+    "progression_condition_unlocks",
+    "progression_conditions",
+    "progression_graph_state",
+    "progression_reward_unlocks",
+    "progression_rewards",
+    "progression_tree_nodes",
+    "progression_tree_unlocks",
+    "season_notes",
+    "seed_defaults",
+    "seed_event_reminder_deliveries",
+    "seed_preparation_attachments",
+    "seed_preparation_checklist_items",
+    "seed_preparation_itinerary_items",
+    "seed_preparation_place_links",
+    "seed_preparation_profiles",
+    "seed_preparation_reservations",
+    "seed_preparation_stays",
+    "seed_preparation_stops",
+    "seed_preparation_transport_legs",
+    "seed_status_flow",
+    "seed_watering_confirmations",
+    "seeds",
+    "settings",
+    "sticker_pack_items",
+    "sticker_packs",
+    "sticker_unlock_rules",
+    "stickers",
+    "template_objects",
+    "time_capsule_draft_revisions",
+    "time_capsule_drafts",
+    "time_capsules",
+    "timeline_milestone_rules",
+    "timeline_view_config",
+    "user_notices",
+    "year_cycle_states",
+    "year_notes"
+  ],
+  "existingCurrentProjectBuckets": [
+    "page-audio",
+    "page-photos",
+    "page-thumbs",
+    "page-videos"
+  ],
+  "include": [
+    {
+      "path": "supabase/sql/2026-03-05_canvas_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_canvas_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "canvas_templates",
+        "sticker_pack_items",
+        "sticker_packs",
+        "sticker_unlock_rules",
+        "stickers",
+        "template_objects"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_care_catalog_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_care_catalog_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_config_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_config_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs",
+        "ui_module_items",
+        "ui_modules",
+        "ui_strings"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_forest_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_forest_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "forest_assets",
+        "forest_narrative_templates",
+        "forest_theme"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_mood_thresholds_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_mood_thresholds_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_pages_care_fields.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_pages_care_fields.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_pdf_theme_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_pdf_theme_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pdf_layout_presets",
+        "pdf_text_templates",
+        "pdf_theme_assets",
+        "pdf_themes"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_seed_calendar_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_seed_calendar_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "calendar_rules",
+        "seed_defaults",
+        "seed_status_flow"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-05_storage_stickers_assets.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_storage_stickers_assets.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "support_bucket",
+      "reason": "bucket de stickers usado por admin/uploadStickerAsset; existe en el proyecto actual aunque el parser de runtime no lo detecte por usar constante",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "stickers-assets"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-05_timeline_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-05_timeline_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "timeline_milestone_rules",
+        "timeline_view_config"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_achievements_profiles_rls_hardening.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_achievements_profiles_rls_hardening.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "achievement_rules",
+        "achievements_unlocked",
+        "profiles",
+        "rewards"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_core_tables_rls_hardening.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_core_tables_rls_hardening.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages",
+        "season_notes",
+        "seeds",
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_home_art_packs.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_home_art_packs.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_home_scene_theme_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_home_scene_theme_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_home_visual_species_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_home_visual_species_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_page_audio_support.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_page_audio_support.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "page-audio"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-06_page_video_support.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_page_video_support.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "page-videos"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-06_pages_location_fields.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_pages_location_fields.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-06_storage_page_assets_hardening.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_storage_page_assets_hardening.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "page-photos",
+        "page-thumbs"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-07_annual_tree_engine_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-07_annual_tree_engine_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "schema_parity",
+      "reason": "crea tablas que siguen existiendo en el proyecto actual (annual_tree_growth_profiles, annual_tree_snapshots); mantener paridad aunque la ruta viva principal hoy sea garden_year_tree_states",
+      "runtimeLinked": false,
+      "sqlTables": [
+        "annual_tree_growth_profiles",
+        "annual_tree_snapshots"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-10_profiles_superadmin_management.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-10_profiles_superadmin_management.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "profiles"
+      ],
+      "sqlFunctions": [
+        "is_superadmin_auth"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_core_garden_not_null_enforcement.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_core_garden_not_null_enforcement.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "structural",
+      "reason": "cierra la compatibilidad y fija garden_id NOT NULL en contenido core; requisito de integridad del modelo multi-jardin",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_core_garden_rls_lockdown.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_core_garden_rls_lockdown.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "achievements_unlocked",
+        "pages",
+        "season_notes",
+        "seeds",
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_core_garden_rls_transition.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_core_garden_rls_transition.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "achievements_unlocked",
+        "pages",
+        "season_notes",
+        "seeds",
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_notes_per_garden_uniqueness.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_notes_per_garden_uniqueness.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "season_notes",
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_private_bond_invitation_functions_hotfix_ambiguous_refs.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_private_bond_invitation_functions_hotfix_ambiguous_refs.sql",
+      "classification": "REVIEW",
+      "group": "patch",
+      "reason": "hotfix vivo para RPCs accept_private_garden_invitation y create_private_personal_garden que el runtime usa hoy",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "bond_members",
+        "bonds",
+        "garden_invitations",
+        "garden_members",
+        "gardens",
+        "profiles"
+      ],
+      "sqlFunctions": [
+        "accept_private_garden_invitation",
+        "create_private_personal_garden"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_private_bond_invitation_functions_hotfix_pgcrypto_search_path.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_private_bond_invitation_functions_hotfix_pgcrypto_search_path.sql",
+      "classification": "REVIEW",
+      "group": "patch",
+      "reason": "hotfix vivo para create_private_garden_invitation, RPC usada por runtime y e2e",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_invitations"
+      ],
+      "sqlFunctions": [
+        "create_private_garden_invitation"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_private_bond_invitation_functions.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_private_bond_invitation_functions.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "bond_members",
+        "bonds",
+        "garden_invitations",
+        "garden_members",
+        "gardens",
+        "profiles"
+      ],
+      "sqlFunctions": [
+        "accept_private_garden_invitation",
+        "create_private_garden_invitation",
+        "create_private_personal_garden",
+        "find_profile_by_invite_code",
+        "generate_profile_invite_code"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_private_multigarden_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_private_multigarden_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "achievements_unlocked",
+        "bond_members",
+        "bonds",
+        "garden_invitations",
+        "garden_members",
+        "gardens",
+        "memory_reflections",
+        "pages",
+        "profiles",
+        "season_notes",
+        "seeds",
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-12_ui_theme_tokens_catalog.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-12_ui_theme_tokens_catalog.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-15_map_domain_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-15_map_domain_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "map_places",
+        "map_routes",
+        "map_zones"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-16_garden_plan_types.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-16_garden_plan_types.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_plan_types",
+        "seeds"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-16_map_place_kind_refine.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-16_map_place_kind_refine.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "map_places"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-16_page_plan_summary.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-16_page_plan_summary.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-16_page_plan_type_link.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-16_page_plan_type_link.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-16_seed_map_links.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-16_seed_map_links.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seeds"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-19_garden_plan_type_flower_family.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-19_garden_plan_type_flower_family.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_plan_types"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-19_seed_joint_watering.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-19_seed_joint_watering.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seed_watering_confirmations"
+      ],
+      "sqlFunctions": [
+        "get_active_garden_member_count",
+        "seed_watering_confirmations_sync_garden_id"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-20_map_semantic_catalogs.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-20_map_semantic_catalogs.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "catalogs",
+        "map_places"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-20_year_notes_highlight_page_ids.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-20_year_notes_highlight_page_ids.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "year_notes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-22_progression_graph_state.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-22_progression_graph_state.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "progression_graph_state"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_garden_plan_types_flower_builder_config.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_garden_plan_types_flower_builder_config.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_plan_types"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_garden_plan_types_visual_builder_templates.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_garden_plan_types_visual_builder_templates.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_plan_types"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_plan_type_flower_assets_catalog.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_plan_type_flower_assets_catalog.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalogs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_progression_domain_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_progression_domain_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "progression_conditions",
+        "progression_rewards",
+        "progression_tree_nodes"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_progression_tree_visual_semantics.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_progression_tree_visual_semantics.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "progression_tree_nodes"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_progression_unlocks_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_progression_unlocks_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "progression_condition_unlocks",
+        "progression_reward_unlocks",
+        "progression_tree_unlocks"
+      ],
+      "sqlFunctions": [
+        "touch_updated_at"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-23_storage_plan_type_assets.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-23_storage_plan_type_assets.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "support_bucket",
+      "reason": "bucket de assets de plan types usado por admin/uploadPlanTypeAsset; existe en el proyecto actual",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "plan-type-assets"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-24_annual_tree_rituals.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-24_annual_tree_rituals.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "annual_tree_rituals"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-24_time_capsules.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-24_time_capsules.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "time_capsules"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_annual_tree_check_ins.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_annual_tree_check_ins.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "annual_tree_check_ins"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_flower_birth_ritual_ratings.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_flower_birth_ritual_ratings.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "flower_birth_ritual_ratings"
+      ],
+      "sqlFunctions": [
+        "flower_birth_ritual_ratings_sync_garden_id"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_flower_birth_rituals.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_flower_birth_rituals.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "flower_birth_rituals"
+      ],
+      "sqlFunctions": [
+        "flower_birth_rituals_sync_garden_id"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_flower_page_revisions.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_flower_page_revisions.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "flower_page_revisions"
+      ],
+      "sqlFunctions": [
+        "flower_page_revisions_sync_garden_id"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_page_delete_member_rpc.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_page_delete_member_rpc.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages",
+        "seeds"
+      ],
+      "sqlFunctions": [
+        "delete_garden_page"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_time_capsule_draft_revisions.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_time_capsule_draft_revisions.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "time_capsule_draft_revisions"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_time_capsule_drafts.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_time_capsule_drafts.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "time_capsule_drafts"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-25_year_cycle_states.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-25_year_cycle_states.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "year_cycle_states"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-26_garden_chat_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_garden_chat_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_audio_session_participants",
+        "garden_audio_sessions",
+        "garden_chat_message_attachments",
+        "garden_chat_messages",
+        "garden_chat_read_states",
+        "garden_chat_rooms"
+      ],
+      "sqlFunctions": [
+        "garden_audio_session_participants_sync_garden_id",
+        "garden_audio_sessions_sync_garden_id",
+        "garden_chat_attachments_sync_garden_id",
+        "garden_chat_messages_sync_garden_id",
+        "garden_chat_read_states_sync_garden_id",
+        "seed_main_chat_room_for_garden"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-26_garden_chat_reactions.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_garden_chat_reactions.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_chat_message_reactions"
+      ],
+      "sqlFunctions": [
+        "garden_chat_reactions_sync_room_garden"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-26_profiles_identity_fields.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_profiles_identity_fields.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "structural",
+      "reason": "last_name y pronoun se usan hoy en home/chat/profileBootstrap; columna necesaria aunque no salga como tabla nueva",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-26_seed_preparation_foundation.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_seed_preparation_foundation.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "catalog_items",
+        "seed_preparation_checklist_items",
+        "seed_preparation_itinerary_items",
+        "seed_preparation_place_links",
+        "seed_preparation_profiles",
+        "seed_preparation_reservations",
+        "seed_preparation_stays",
+        "seed_preparation_transport_legs",
+        "seed_status_flow"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-26_storage_garden_chat_media.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_storage_garden_chat_media.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "support_bucket",
+      "reason": "bucket privado de chat media usado por upload de adjuntos/voz; existe en el proyecto actual",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": [
+        "garden-chat-media"
+      ]
+    },
+    {
+      "path": "supabase/sql/2026-03-26_year_cycle_states_realtime.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-26_year_cycle_states_realtime.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "realtime_support",
+      "reason": "publica year_cycle_states en supabase_realtime; soporte necesario para suscripciones en la vista anual",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-27_seed_event_reminder_deliveries.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-27_seed_event_reminder_deliveries.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seed_event_reminder_deliveries"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-27_seed_planning_draft_status_check.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-27_seed_planning_draft_status_check.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seeds"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-27_seed_preparation_collaboration_mode.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-27_seed_preparation_collaboration_mode.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seed_preparation_profiles"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-27_seed_preparation_trip_sections.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-27_seed_preparation_trip_sections.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "seed_preparation_attachments",
+        "seed_preparation_itinerary_items",
+        "seed_preparation_place_links",
+        "seed_preparation_profiles",
+        "seed_preparation_reservations",
+        "seed_preparation_stays",
+        "seed_preparation_stops",
+        "seed_preparation_transport_legs"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-06_garden_invitations_garden_title.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-06_garden_invitations_garden_title.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "structural",
+      "reason": "garden_title se usa hoy en APIs de invitaciones y creacion de jardin personal",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-07_core_garden_delete_fk_alignment.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-07_core_garden_delete_fk_alignment.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "structural",
+      "reason": "alinea FKs a on delete cascade con garden_id NOT NULL; evita inconsistencias al borrar jardines",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-07_user_notices.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-07_user_notices.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "user_notices"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-08_garden_year_tree_states.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-08_garden_year_tree_states.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "garden_year_tree_states"
+      ],
+      "sqlFunctions": [
+        "annual_tree_phase_from_stage",
+        "rebuild_all_garden_year_tree_states",
+        "recompute_garden_year_tree_state",
+        "tg_recompute_garden_year_tree_state_from_pages",
+        "tg_recompute_garden_year_tree_state_from_unlocks"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-08_page_plan_type_canonical_sync.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-08_page_plan_type_canonical_sync.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "pages"
+      ],
+      "sqlFunctions": [
+        "pages_fill_plan_type_from_linked_seed",
+        "sync_bloomed_page_plan_type_from_seed"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-08_page_visual_states.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-08_page_visual_states.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "page_visual_states"
+      ],
+      "sqlFunctions": [
+        "rebuild_all_page_visual_states",
+        "recompute_page_visual_state",
+        "recompute_page_visual_states_for_plan_type",
+        "tg_recompute_page_visual_state_from_pages",
+        "tg_recompute_page_visual_state_from_plan_types"
+      ],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-08_settings_garden_name.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-08_settings_garden_name.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "linked_runtime",
+      "reason": "enlaza con tablas/RPC/buckets usados por el runtime actual",
+      "runtimeLinked": true,
+      "sqlTables": [
+        "settings"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    }
+  ],
+  "exclude": [
+    {
+      "path": "supabase/sql/2026-03-06_core_rls_audit.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-06_core_rls_audit.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_core_garden_release_gate.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_core_garden_release_gate.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-11_core_garden_rls_audit.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-11_core_garden_rls_audit.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-12_core_security_release_gate_extended.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-12_core_security_release_gate_extended.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-12_core_security_rls_audit_extended.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-12_core_security_rls_audit_extended.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-03-24_custom_flower_families.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-03-24_custom_flower_families.sql",
+      "classification": "KEEP_CANDIDATE",
+      "group": "noop_doc",
+      "reason": "archivo documental/no-op; no crea ni modifica schema y solo deja comentarios sobre un catalogo ya soportado por catalog_items",
+      "runtimeLinked": false,
+      "sqlTables": [
+        "catalog_config"
+      ],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/2026-04-07_progression_test_seed_100.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\2026-04-07_progression_test_seed_100.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_clamp_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_clamp_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_clamp_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_clamp_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_click_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_click_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_click_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_click_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_crown_balance_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_crown_balance_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_crown_balance_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_crown_balance_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_fine_tune_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_fine_tune_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_fine_tune_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_fine_tune_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_labels_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_labels_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_labels_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_labels_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_layout_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_layout_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_layout_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_layout_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_long_trunk_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_long_trunk_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_long_trunk_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_long_trunk_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_navigation_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_navigation_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_navigation_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_navigation_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_overlap_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_overlap_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_overlap_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_overlap_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_phase_progression_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_phase_progression_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_phase_progression_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_phase_progression_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_polish_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_polish_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_polish_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_polish_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_trunk_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_trunk_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_trunk_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_trunk_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_ux_polish_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_ux_polish_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_ux_polish_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_ux_polish_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_visual_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_visual_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-07_forest_visual_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-07_forest_visual_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_focus_mode_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_focus_mode_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_focus_mode_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_focus_mode_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_header_filters_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_header_filters_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_header_filters_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_header_filters_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_secondary_panels_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_secondary_panels_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_forest_secondary_panels_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_forest_secondary_panels_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_bloom_system_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_bloom_system_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_bloom_system_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_bloom_system_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_daily_points_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_daily_points_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_daily_points_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_daily_points_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_inline_icons_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_inline_icons_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_inline_icons_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_inline_icons_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_more_turns_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_more_turns_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_more_turns_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_more_turns_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_overlap_fix_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_overlap_fix_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_overlap_fix_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_overlap_fix_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_polish_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_polish_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_polish_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_polish_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_trail_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_trail_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_trail_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_trail_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_visual_polish_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_visual_polish_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_hill_visual_polish_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_hill_visual_polish_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_trail_semantics_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_trail_semantics_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_trail_semantics_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_trail_semantics_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_trail_visual_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_trail_visual_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_home_trail_visual_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_home_trail_visual_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_chapters_polish_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_chapters_polish_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_chapters_polish_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_chapters_polish_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_chapters_simplify_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_chapters_simplify_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_chapters_simplify_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_chapters_simplify_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_page_visual_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_page_visual_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_page_visual_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_page_visual_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_tree_alignment_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_tree_alignment_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-08_year_tree_alignment_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-08_year_tree_alignment_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_depth_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_depth_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_depth_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_depth_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_design_reset_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_design_reset_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_design_reset_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_design_reset_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_in_canvas_card_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_in_canvas_card_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_in_canvas_card_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_in_canvas_card_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_mountain_perspective_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_mountain_perspective_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_mountain_perspective_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_mountain_perspective_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_path_rework_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_path_rework_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_path_rework_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_path_rework_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_scene_rebase_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_scene_rebase_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_scene_rebase_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_scene_rebase_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step1_card_avatar_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step1_card_avatar_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step1_card_avatar_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step1_card_avatar_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step10_less_turns_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step10_less_turns_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step10_less_turns_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step10_less_turns_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step2_hill_path_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step2_hill_path_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step2_hill_path_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step2_hill_path_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step3_curve_alignment_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step3_curve_alignment_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step3_curve_alignment_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step3_curve_alignment_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step4_hill_perspective_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step4_hill_perspective_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step4_hill_perspective_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step4_hill_perspective_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step5_wide_hill_long_path_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step5_wide_hill_long_path_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step5_wide_hill_long_path_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step5_wide_hill_long_path_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step6_wider_hill_longer_path_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step6_wider_hill_longer_path_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step6_wider_hill_longer_path_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step6_wider_hill_longer_path_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step7_natural_switchbacks_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step7_natural_switchbacks_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step7_natural_switchbacks_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step7_natural_switchbacks_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step8_computed_switchbacks_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step8_computed_switchbacks_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step8_computed_switchbacks_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step8_computed_switchbacks_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step9_geometry_engine_cleanup.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step9_geometry_engine_cleanup.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/archive/dev/2026-03-09_home_hill_step9_geometry_engine_fixture.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\archive\\dev\\2026-03-09_home_hill_step9_geometry_engine_fixture.sql",
+      "classification": "DROP",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    },
+    {
+      "path": "supabase/sql/WIPE_PUBLIC_PROJECT_DATA_2026_03_17.sql",
+      "absolutePath": "C:\\Users\\santequera\\Documents\\Proyecto\\libro-vivo\\supabase\\sql\\WIPE_PUBLIC_PROJECT_DATA_2026_03_17.sql",
+      "classification": "META",
+      "group": "non_candidate",
+      "reason": "fuera de candidatos productivos",
+      "runtimeLinked": false,
+      "sqlTables": [],
+      "sqlFunctions": [],
+      "sqlBuckets": []
+    }
+  ]
+}

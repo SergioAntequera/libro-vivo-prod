@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d8f2ff"/>
+      <stop offset="56%" stop-color="#d6f5c7"/>
+      <stop offset="100%" stop-color="#bfe59a"/>
+    </linearGradient>
+    <linearGradient id="hillA" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#98d673"/>
+      <stop offset="100%" stop-color="#82c95e"/>
+    </linearGradient>
+    <linearGradient id="hillB" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#86ca64"/>
+      <stop offset="100%" stop-color="#70b64f"/>
+    </linearGradient>
+    <linearGradient id="meadow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#74b95a"/>
+      <stop offset="100%" stop-color="#5ca23f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="360" fill="url(#sky)"/>
+
+  <path
+    d="M-40 205 C80 170 210 158 340 180 C450 198 560 218 680 206 C810 192 940 162 1060 176 C1140 186 1210 212 1240 232 L1240 360 L-40 360 Z"
+    fill="url(#hillA)"
+    opacity="0.92"
+  />
+  <path
+    d="M-40 228 C100 214 230 220 360 236 C490 252 610 258 748 242 C868 228 980 206 1098 214 C1180 220 1230 236 1240 244 L1240 360 L-40 360 Z"
+    fill="url(#hillB)"
+    opacity="0.92"
+  />
+
+  <path
+    d="M-40 264 C120 242 264 238 398 246 C536 256 674 260 812 254 C944 248 1070 238 1240 254 L1240 360 L-40 360 Z"
+    fill="url(#meadow)"
+  />
+
+  <path
+    d="M56 300 C66 300 70 292 70 284 C70 274 62 268 52 268 C42 268 34 274 34 284 C34 294 44 300 56 300 Z"
+    fill="#f9f4e6"
+    opacity="0.66"
+  />
+  <path
+    d="M1098 304 C1109 304 1113 296 1113 288 C1113 278 1105 272 1096 272 C1086 272 1078 278 1078 288 C1078 298 1088 304 1098 304 Z"
+    fill="#f9f4e6"
+    opacity="0.62"
+  />
+</svg>

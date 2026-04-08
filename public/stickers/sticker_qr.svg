@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <path d="M36 94c0-34 24-58 58-58h68c34 0 58 24 58 58v68c0 34-24 58-58 58H94c-34 0-58-24-58-58z"
+        fill="#FFFDF5" stroke="#2B2B2B" stroke-width="8"/>
+  
+        <rect x="72" y="72" width="44" height="44" fill="#2B2B2B"/>
+        <rect x="84" y="84" width="20" height="20" fill="#FFFDF5"/>
+        <rect x="168" y="72" width="44" height="44" fill="#2B2B2B"/>
+        <rect x="180" y="84" width="20" height="20" fill="#FFFDF5"/>
+        <rect x="72" y="168" width="44" height="44" fill="#2B2B2B"/>
+        <rect x="84" y="180" width="20" height="20" fill="#FFFDF5"/>
+        <rect x="140" y="140" width="16" height="16" fill="#2B2B2B"/>
+        <rect x="160" y="160" width="16" height="16" fill="#2B2B2B"/>
+        <rect x="180" y="140" width="16" height="16" fill="#2B2B2B"/>
+  <text x="128" y="242" text-anchor="middle" font-family="ui-rounded, system-ui, -apple-system, Segoe UI, Arial"
+        font-size="18" fill="#2B2B2B" opacity="0.75">QR</text>
+</svg>
