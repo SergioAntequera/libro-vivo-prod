@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   getAuthSessionPersistencePreference,
@@ -160,6 +160,20 @@ function modeFromSearch(value: string | null): AuthMode | null {
   return null;
 }
 
+function readAuthCallbackType(searchType: string | null) {
+  const normalizedSearchType = String(searchType ?? "").trim().toLowerCase();
+  if (normalizedSearchType) return normalizedSearchType;
+  if (typeof window === "undefined") return null;
+
+  const hash = window.location.hash.replace(/^#/, "");
+  if (!hash) return null;
+
+  const hashType = String(new URLSearchParams(hash).get("type") ?? "")
+    .trim()
+    .toLowerCase();
+  return hashType || null;
+}
+
 function passwordStrengthLabel(value: string) {
   if (!value) return "Minimo 8 caracteres.";
   if (value.length < MIN_PASSWORD_LENGTH) return "Todavia es demasiado corta.";
@@ -309,6 +323,7 @@ function PasswordField({
 function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const handledSignupConfirmationRef = useRef(false);
 
   const initialMode = useMemo(
     () => modeFromSearch(searchParams.get("mode")) ?? "login",
@@ -340,6 +355,7 @@ function LoginPageContent() {
     () => normalizeAuthNextHref(searchParams.get("next")) ?? null,
     [searchParams],
   );
+  const authCallbackType = searchParams.get("type");
   const copy = MODE_COPY[mode];
   const isResetRequested = mode === "reset";
   const passwordTooShort =
@@ -365,6 +381,17 @@ function LoginPageContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (searchParams.get("confirmed") !== "1") return;
+
+    setMode("login");
+    setCanResendConfirmation(false);
+    setNotice({
+      message: "Email confirmado. Ya puedes entrar con tu contraseña o con Google.",
+      tone: "success",
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
     setAuthSessionPersistence(rememberSession);
   }, [rememberSession]);
 
@@ -372,13 +399,18 @@ function LoginPageContent() {
     let cancelled = false;
     void (async () => {
       if (isResetRequested) return;
-      const hash =
-        typeof window !== "undefined" ? window.location.hash.toLowerCase() : "";
-      if (hash.includes("type=recovery")) return;
+      const callbackType = readAuthCallbackType(authCallbackType);
+      if (callbackType === "recovery") return;
 
       const { data, error } = await supabase.auth.getUser();
       if (cancelled) return;
       if (error || !data.user) return;
+
+      if (callbackType === "signup") {
+        await completeSignupConfirmation();
+        return;
+      }
+
       try {
         await finishAuth();
       } catch (profileError) {
@@ -388,14 +420,11 @@ function LoginPageContent() {
     return () => {
       cancelled = true;
     };
-  }, [isResetRequested, router]);
+  }, [authCallbackType, isResetRequested, router]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const hash = window.location.hash.toLowerCase();
-      if (hash.includes("type=recovery")) {
-        setMode("reset");
-      }
+    if (readAuthCallbackType(authCallbackType) === "recovery") {
+      setMode("reset");
     }
 
     const { data } = supabase.auth.onAuthStateChange((event) => {
@@ -405,13 +434,27 @@ function LoginPageContent() {
           message: "Enlace de recuperacion detectado. Define tu nueva contraseña.",
           tone: "success",
         });
+        return;
+      }
+
+      if (event === "SIGNED_IN" && readAuthCallbackType(authCallbackType) === "signup") {
+        void completeSignupConfirmation();
       }
     });
 
     return () => {
       data.subscription.unsubscribe();
     };
-  }, []);
+  }, [authCallbackType]);
+
+  function buildLoginHref(options?: { mode?: AuthMode; confirmed?: boolean }) {
+    const params = new URLSearchParams();
+    if (options?.mode && options.mode !== "login") params.set("mode", options.mode);
+    if (options?.confirmed) params.set("confirmed", "1");
+    if (safeNextHref) params.set("next", safeNextHref);
+    const query = params.toString();
+    return query ? `/login?${query}` : "/login";
+  }
 
   function getLoginRedirectUrl(queryMode?: "reset" | "recover") {
     return getAuthRedirectUrl(queryMode, safeNextHref);
@@ -468,12 +511,7 @@ function LoginPageContent() {
     setMagicLinkSentTo(null);
     setCanResendConfirmation(false);
     setCapsLockActive(false);
-    const params = new URLSearchParams();
-    if (nextMode !== "login") params.set("mode", nextMode);
-    if (safeNextHref) params.set("next", safeNextHref);
-    const query = params.toString();
-    const nextHref = query ? `/login?${query}` : "/login";
-    router.replace(nextHref, { scroll: false });
+    router.replace(buildLoginHref({ mode: nextMode }), { scroll: false });
   }
 
   async function prepareProfileForCurrentSession() {
@@ -505,6 +543,21 @@ function LoginPageContent() {
   async function finishAuth() {
     await prepareProfileForCurrentSession();
     router.replace(safeNextHref ?? getProductSurfaceHref("home"));
+  }
+
+  async function completeSignupConfirmation() {
+    if (handledSignupConfirmationRef.current) return;
+    handledSignupConfirmationRef.current = true;
+
+    setCanResendConfirmation(false);
+    setLoading(false);
+    setSocialLoadingProvider(null);
+    setMagicLinkLoading(false);
+    setRecoverSentTo(null);
+    setMagicLinkSentTo(null);
+
+    await supabase.auth.signOut();
+    router.replace(buildLoginHref({ confirmed: true }), { scroll: false });
   }
 
   async function handleSocialSignIn(provider: OAuthProvider) {
