@@ -67,7 +67,7 @@ export function BondsSurface(props: BondsSurfaceProps & { view?: BondsView }) {
           onBackHome={!props.isOnboarding ? props.goHome : null}
         />
 
-        {view === "overview" && props.isFirstUse ? <FirstUsePanel /> : null}
+        {view === "overview" && props.isFirstUse && !props.isOnboarding ? <FirstUsePanel /> : null}
 
         <BondsViewNav activeView={view} pendingCount={pendingCount} />
 
@@ -78,6 +78,8 @@ export function BondsSurface(props: BondsSurfaceProps & { view?: BondsView }) {
             hasActiveCoupleGarden={props.hasActiveCoupleGarden}
             coupleLockReason={props.coupleLockReason}
             gardenCount={props.gardens.length}
+            isOnboarding={props.isOnboarding}
+            isFirstUse={props.isFirstUse}
           />
         ) : null}
 
@@ -458,21 +460,32 @@ function BondsOverviewSection({
   hasActiveCoupleGarden,
   coupleLockReason,
   gardenCount,
+  isOnboarding,
+  isFirstUse,
 }: {
   activeGarden: BondGardenSummary | null;
   pendingCount: number;
   hasActiveCoupleGarden: boolean;
   coupleLockReason: string | null;
   gardenCount: number;
+  isOnboarding: boolean;
+  isFirstUse: boolean;
 }) {
   const primaryHref = pendingCount > 0 ? "/bonds/pending" : "/bonds/create";
   const primaryLabel = pendingCount > 0 ? "Revisar invitaciones" : "Crear jardin";
+  const shouldSimplifyEmptyState = !activeGarden && isOnboarding && isFirstUse;
 
   return (
-    <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+    <section
+      className={
+        shouldSimplifyEmptyState
+          ? "grid gap-5"
+          : "grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]"
+      }
+    >
       <div className="lv-card p-6 sm:p-7">
         <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
-          Jardin activo
+          {shouldSimplifyEmptyState ? "Primer paso" : "Jardin activo"}
         </div>
         {activeGarden ? (
           <>
@@ -502,9 +515,15 @@ function BondsOverviewSection({
           </>
         ) : (
           <>
-            <h2 className="mt-3 text-3xl font-semibold">Todavia no tienes jardin activo</h2>
+            <h2 className="mt-3 text-3xl font-semibold">
+              {shouldSimplifyEmptyState
+                ? "Crea tu primer jardin o acepta una invitacion"
+                : "Todavia no tienes jardin activo"}
+            </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--lv-text-muted)]">
-              Crea un jardin personal o acepta una invitacion para empezar a usar Libro Vivo.
+              {shouldSimplifyEmptyState
+                ? "Desde aqui ya puedes empezar sin ruido extra: crea un jardin personal o entra con una invitacion que ya tengas."
+                : "Crea un jardin personal o acepta una invitacion para empezar a usar Libro Vivo."}
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <Link href="/bonds/create" className="lv-btn lv-btn-primary">
@@ -518,26 +537,28 @@ function BondsOverviewSection({
         )}
       </div>
 
-      <div className="lv-card p-5">
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
-          Que hacer ahora
+      {shouldSimplifyEmptyState ? null : (
+        <div className="lv-card p-5">
+          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
+            Que hacer ahora
+          </div>
+          <div className="mt-4 grid gap-3">
+            <Link href={primaryHref} className="lv-btn lv-btn-primary w-full justify-center">
+              {primaryLabel}
+            </Link>
+            <Link href="/bonds/invite" className="lv-btn lv-btn-secondary w-full justify-center">
+              Invitar a alguien
+            </Link>
+            <Link href="/bonds/manage" className="lv-btn lv-btn-secondary w-full justify-center">
+              Gestionar jardines ({gardenCount})
+            </Link>
+          </div>
+          <p className="mt-4 text-xs leading-5 text-[var(--lv-text-muted)]">
+            {coupleLockReason ??
+              "El jardin de pareja se crea una sola vez. Si necesitas un espacio solo tuyo, usa Crear jardin."}
+          </p>
         </div>
-        <div className="mt-4 grid gap-3">
-          <Link href={primaryHref} className="lv-btn lv-btn-primary w-full justify-center">
-            {primaryLabel}
-          </Link>
-          <Link href="/bonds/invite" className="lv-btn lv-btn-secondary w-full justify-center">
-            Invitar a alguien
-          </Link>
-          <Link href="/bonds/manage" className="lv-btn lv-btn-secondary w-full justify-center">
-            Gestionar jardines ({gardenCount})
-          </Link>
-        </div>
-        <p className="mt-4 text-xs leading-5 text-[var(--lv-text-muted)]">
-          {coupleLockReason ??
-            "El jardin de pareja se crea una sola vez. Si necesitas un espacio solo tuyo, usa Crear jardin."}
-        </p>
-      </div>
+      )}
     </section>
   );
 }

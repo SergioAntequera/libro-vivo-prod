@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSessionAccessToken, getSessionUser } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
 import { PageLoadingState } from "@/components/ui/PageLoadingState";
 import { StatusNotice } from "@/components/ui/StatusNotice";
 import { toErrorMessage } from "@/lib/errorMessage";
@@ -98,6 +99,7 @@ export default function WelcomePage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [creatingGarden, setCreatingGarden] = useState(false);
   const [acceptingInvitationId, setAcceptingInvitationId] = useState<string | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
   const [gardenTitle, setGardenTitle] = useState("");
 
   const loadData = useCallback(async () => {
@@ -190,6 +192,18 @@ export default function WelcomePage() {
     }
   }
 
+  async function handleSignOut() {
+    setSigningOut(true);
+    setMessage(null);
+    try {
+      await supabase.auth.signOut();
+      router.replace("/login");
+    } catch (error) {
+      setMessage(toErrorMessage(error, "No se pudo cerrar la sesion."));
+      setSigningOut(false);
+    }
+  }
+
   if (loading) {
     return <PageLoadingState message="Preparando la bienvenida..." />;
   }
@@ -202,13 +216,23 @@ export default function WelcomePage() {
         <section className="lv-card overflow-hidden">
           <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="p-5 sm:p-7">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
-                Bienvenida
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
+                  Bienvenida
+                </div>
+                <button
+                  type="button"
+                  className="lv-btn lv-btn-secondary"
+                  onClick={() => void handleSignOut()}
+                  disabled={signingOut}
+                >
+                  {signingOut ? "Cerrando sesion..." : "Cerrar sesion"}
+                </button>
               </div>
               <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--lv-text)]">
                 {me?.name
-                  ? `${me.name}, primero necesitamos preparar vuestro jardin.`
-                  : "Primero necesitamos preparar vuestro jardin."}
+                  ? `${me.name}, primero necesitamos preparar tu jardin.`
+                  : "Primero necesitamos preparar tu jardin."}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--lv-text-muted)]">
                 Aqui solo tomamos la primera decision: crear vuestro espacio o uniros a uno ya
