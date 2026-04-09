@@ -1,10 +1,15 @@
 import { redirect } from "next/navigation";
+import type { ReactNode } from "react";
 import { getPublicReleaseGateState } from "@/lib/releaseGate";
-import { getProductSurfaceHref } from "@/lib/productSurfaces";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
+export default async function LoginLayout({ children }: { children: ReactNode }) {
   const gate = await getPublicReleaseGateState();
-  redirect(gate.unlocked ? getProductSurfaceHref("login") : "/release");
+
+  if (!gate.unlocked) {
+    redirect("/release");
+  }
+
+  return children;
 }

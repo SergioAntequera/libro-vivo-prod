@@ -392,6 +392,17 @@ function LoginPageContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (searchParams.get("released") !== "1") return;
+
+    setMode("login");
+    setCanResendConfirmation(false);
+    setNotice({
+      message: "Libro Vivo ya esta desbloqueado. Podeis entrar cuando querais.",
+      tone: "success",
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
     setAuthSessionPersistence(rememberSession);
   }, [rememberSession]);
 
