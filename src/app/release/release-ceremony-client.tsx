@@ -6,28 +6,23 @@ import { StatusNotice } from "@/components/ui/StatusNotice";
 type CeremonyRemoteState = {
   unlocked: boolean;
   unlockedAt: string | null;
-  leftName: string | null;
-  leftConfirmedAt: string | null;
-  leftReady: boolean;
-  rightName: string | null;
-  rightConfirmedAt: string | null;
-  rightReady: boolean;
-};
-
-const DEFAULT_NAMES = {
-  left: "Sergio",
-  right: "Carmen",
+  firstName: string | null;
+  firstConfirmedAt: string | null;
+  firstReady: boolean;
+  secondName: string | null;
+  secondConfirmedAt: string | null;
+  secondReady: boolean;
 };
 
 const DEFAULT_REMOTE_STATE: CeremonyRemoteState = {
   unlocked: false,
   unlockedAt: null,
-  leftName: null,
-  leftConfirmedAt: null,
-  leftReady: false,
-  rightName: null,
-  rightConfirmedAt: null,
-  rightReady: false,
+  firstName: null,
+  firstConfirmedAt: null,
+  firstReady: false,
+  secondName: null,
+  secondConfirmedAt: null,
+  secondReady: false,
 };
 
 async function fetchCeremonyState() {
@@ -99,13 +94,12 @@ function CeremonyCard({
 
 export function ReleaseCeremonyClient() {
   const [remoteState, setRemoteState] = useState<CeremonyRemoteState>(DEFAULT_REMOTE_STATE);
-  const [leftDraftName, setLeftDraftName] = useState(DEFAULT_NAMES.left);
-  const [rightDraftName, setRightDraftName] = useState(DEFAULT_NAMES.right);
+  const [draftName, setDraftName] = useState("");
   const [loadingState, setLoadingState] = useState(true);
-  const [submittingSide, setSubmittingSide] = useState<"left" | "right" | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const bothReady = remoteState.leftReady && remoteState.rightReady;
+  const bothReady = remoteState.firstReady && remoteState.secondReady;
 
   const headline = useMemo(() => {
     if (remoteState.unlocked) return "Libro Vivo ya esta abierto";
@@ -121,8 +115,6 @@ export function ReleaseCeremonyClient() {
         const nextState = await fetchCeremonyState();
         if (!active) return;
         setRemoteState(nextState);
-        if (nextState.leftName) setLeftDraftName(nextState.leftName);
-        if (nextState.rightName) setRightDraftName(nextState.rightName);
         if (nextState.unlocked) {
           window.location.replace("/login?released=1");
           return;
@@ -150,12 +142,6 @@ export function ReleaseCeremonyClient() {
       try {
         const nextState = await fetchCeremonyState();
         setRemoteState(nextState);
-        if (nextState.leftName) {
-          setLeftDraftName((current) => (current.trim() ? current : nextState.leftName ?? ""));
-        }
-        if (nextState.rightName) {
-          setRightDraftName((current) => (current.trim() ? current : nextState.rightName ?? ""));
-        }
         if (nextState.unlocked) {
           window.location.replace("/login?released=1");
         }
@@ -167,14 +153,14 @@ export function ReleaseCeremonyClient() {
     return () => window.clearInterval(timer);
   }, [remoteState.unlocked]);
 
-  async function confirmSide(side: "left" | "right") {
-    const name = (side === "left" ? leftDraftName : rightDraftName).trim();
+  async function confirmName() {
+    const name = draftName.trim();
     if (!name) {
       setErrorMessage("Escribe un nombre antes de dar el si.");
       return;
     }
 
-    setSubmittingSide(side);
+    setSubmitting(true);
     setErrorMessage(null);
 
     try {
@@ -183,7 +169,7 @@ export function ReleaseCeremonyClient() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ side, name }),
+        body: JSON.stringify({ name }),
       });
 
       const payload = (await response.json().catch(() => null)) as
@@ -204,6 +190,7 @@ export function ReleaseCeremonyClient() {
       } as CeremonyRemoteState;
 
       setRemoteState(nextState);
+      setDraftName("");
       if (nextState.unlocked) {
         window.location.replace("/login?released=1");
       }
@@ -212,7 +199,7 @@ export function ReleaseCeremonyClient() {
         error instanceof Error ? error.message : "No se pudo guardar vuestra confirmacion.",
       );
     } finally {
-      setSubmittingSide(null);
+      setSubmitting(false);
     }
   }
 
@@ -236,57 +223,45 @@ export function ReleaseCeremonyClient() {
           </div>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-[28px] border border-[var(--lv-border)] bg-[var(--lv-surface)] p-5 shadow-[var(--lv-shadow-sm)]">
+        <section className="rounded-[28px] border border-[var(--lv-border)] bg-[var(--lv-surface)] p-5 shadow-[var(--lv-shadow-sm)]">
+          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
             <label className="block space-y-2">
               <span className="text-sm font-medium text-[var(--lv-text)]">Tu nombre</span>
               <input
-                value={leftDraftName}
-                onChange={(event) => setLeftDraftName(event.target.value)}
-                disabled={Boolean(submittingSide) || remoteState.leftReady || remoteState.unlocked}
+                value={draftName}
+                onChange={(event) => setDraftName(event.target.value)}
+                disabled={submitting || remoteState.unlocked}
+                placeholder="Escribe tu nombre"
                 className="w-full rounded-[18px] border border-[var(--lv-border)] bg-[var(--lv-surface)] px-4 py-3 text-sm outline-none transition focus:border-[var(--lv-primary)]"
               />
             </label>
-          </div>
 
-          <div className="rounded-[28px] border border-[var(--lv-border)] bg-[var(--lv-surface)] p-5 shadow-[var(--lv-shadow-sm)]">
-            <label className="block space-y-2">
-              <span className="text-sm font-medium text-[var(--lv-text)]">Su nombre</span>
-              <input
-                value={rightDraftName}
-                onChange={(event) => setRightDraftName(event.target.value)}
-                disabled={Boolean(submittingSide) || remoteState.rightReady || remoteState.unlocked}
-                className="w-full rounded-[18px] border border-[var(--lv-border)] bg-[var(--lv-surface)] px-4 py-3 text-sm outline-none transition focus:border-[var(--lv-primary)]"
-              />
-            </label>
+            <button
+              type="button"
+              onClick={() => void confirmName()}
+              disabled={loadingState || submitting || remoteState.unlocked}
+              className="rounded-[20px] bg-[var(--lv-primary)] px-5 py-3 text-sm font-medium text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? "Guardando..." : "Dar mi si"}
+            </button>
           </div>
         </section>
 
         <section className="grid gap-5 lg:grid-cols-2">
           <CeremonyCard
-            title={remoteState.leftName ?? (leftDraftName.trim() || DEFAULT_NAMES.left)}
-            subtitle="Tu gesto deja constancia de que este espacio ya puede abrirse."
-            confirmed={remoteState.leftReady}
-            onConfirm={() => void confirmSide("left")}
-            disabled={
-              loadingState ||
-              remoteState.unlocked ||
-              Boolean(submittingSide) ||
-              remoteState.leftReady
-            }
+            title={remoteState.firstName ?? "Primer si pendiente"}
+            subtitle="Aqui aparece el primer gesto guardado desde cualquiera de los dos dispositivos."
+            confirmed={remoteState.firstReady}
+            onConfirm={() => {}}
+            disabled
           />
 
           <CeremonyCard
-            title={remoteState.rightName ?? (rightDraftName.trim() || DEFAULT_NAMES.right)}
-            subtitle="El segundo gesto termina de encender la puerta y deja listo el acceso."
-            confirmed={remoteState.rightReady}
-            onConfirm={() => void confirmSide("right")}
-            disabled={
-              loadingState ||
-              remoteState.unlocked ||
-              Boolean(submittingSide) ||
-              remoteState.rightReady
-            }
+            title={remoteState.secondName ?? "Segundo si pendiente"}
+            subtitle="En cuanto entre un segundo nombre distinto, la puerta se abre sola."
+            confirmed={remoteState.secondReady}
+            onConfirm={() => {}}
+            disabled
           />
         </section>
 
@@ -300,8 +275,9 @@ export function ReleaseCeremonyClient() {
                 Esperar a que los dos termineis
               </h2>
               <p className="mt-2 text-sm leading-6 text-[var(--lv-text-muted)]">
-                Los dos botones se sincronizan entre dispositivos. En cuanto entre el segundo si, el
-                cerrojo global se levanta, esta pantalla desaparece y os mandamos al login.
+                El nombre que escriba cada uno se sincroniza entre dispositivos. En cuanto entren
+                dos si distintos, el cerrojo global se levanta, esta pantalla desaparece y os
+                mandamos al login.
               </p>
             </div>
 

@@ -17,15 +17,13 @@ export type PublicReleaseGateState = {
   unlockedAt: string | null;
 };
 
-export type ReleaseCeremonySide = "left" | "right";
-
 export type PublicReleaseCeremonyState = PublicReleaseGateState & {
-  leftName: string | null;
-  leftConfirmedAt: string | null;
-  leftReady: boolean;
-  rightName: string | null;
-  rightConfirmedAt: string | null;
-  rightReady: boolean;
+  firstName: string | null;
+  firstConfirmedAt: string | null;
+  firstReady: boolean;
+  secondName: string | null;
+  secondConfirmedAt: string | null;
+  secondReady: boolean;
 };
 
 function normalizeErrorMessage(error: unknown) {
@@ -57,20 +55,20 @@ function isMissingAdminEnvError(error: unknown) {
 
 function toCeremonyState(row: ReleaseGateRow | null | undefined): PublicReleaseCeremonyState {
   const unlockedAt = row?.release_unlocked_at ?? null;
-  const leftName = row?.release_left_name ?? null;
-  const leftConfirmedAt = row?.release_left_confirmed_at ?? null;
-  const rightName = row?.release_right_name ?? null;
-  const rightConfirmedAt = row?.release_right_confirmed_at ?? null;
+  const firstName = row?.release_left_name ?? null;
+  const firstConfirmedAt = row?.release_left_confirmed_at ?? null;
+  const secondName = row?.release_right_name ?? null;
+  const secondConfirmedAt = row?.release_right_confirmed_at ?? null;
 
   return {
     unlocked: Boolean(unlockedAt),
     unlockedAt,
-    leftName,
-    leftConfirmedAt,
-    leftReady: Boolean(leftConfirmedAt),
-    rightName,
-    rightConfirmedAt,
-    rightReady: Boolean(rightConfirmedAt),
+    firstName,
+    firstConfirmedAt,
+    firstReady: Boolean(firstConfirmedAt),
+    secondName,
+    secondConfirmedAt,
+    secondReady: Boolean(secondConfirmedAt),
   };
 }
 
@@ -138,42 +136,63 @@ export async function getPublicReleaseCeremonyState(): Promise<PublicReleaseCere
       return {
         unlocked: true,
         unlockedAt: null,
-        leftName: null,
-        leftConfirmedAt: null,
-        leftReady: false,
-        rightName: null,
-        rightConfirmedAt: null,
-        rightReady: false,
+        firstName: null,
+        firstConfirmedAt: null,
+        firstReady: false,
+        secondName: null,
+        secondConfirmedAt: null,
+        secondReady: false,
       };
     }
     throw error;
   }
 }
 
-export async function confirmPublicReleaseCeremonySide(params: {
-  side: ReleaseCeremonySide;
-  name: string;
-}) {
-  const name = params.name.trim();
+export async function confirmPublicReleaseCeremonyName(nameInput: string) {
+  const name = nameInput.trim();
   if (!name) {
     throw new Error("Escribe un nombre antes de dar el si.");
   }
 
   const admin = getSupabaseAdminClient();
+  const current = await readReleaseCeremonyRow();
+  const normalizedName = name.toLowerCase();
+
+  if (current?.release_unlocked_at) {
+    return getPublicReleaseCeremonyState();
+  }
+
+  const firstName = String(current?.release_left_name ?? "").trim();
+  const secondName = String(current?.release_right_name ?? "").trim();
+
+  if (firstName && firstName.toLowerCase() === normalizedName) {
+    return getPublicReleaseCeremonyState();
+  }
+
+  if (secondName && secondName.toLowerCase() === normalizedName) {
+    return getPublicReleaseCeremonyState();
+  }
+
   const now = new Date().toISOString();
 
   const update =
-    params.side === "left"
+    !current?.release_left_confirmed_at
       ? {
           id: RELEASE_SETTINGS_ROW_ID,
           release_left_name: name,
           release_left_confirmed_at: now,
         }
-      : {
-          id: RELEASE_SETTINGS_ROW_ID,
-          release_right_name: name,
-          release_right_confirmed_at: now,
-        };
+      : !current?.release_right_confirmed_at
+        ? {
+            id: RELEASE_SETTINGS_ROW_ID,
+            release_right_name: name,
+            release_right_confirmed_at: now,
+          }
+        : null;
+
+  if (!update) {
+    return getPublicReleaseCeremonyState();
+  }
 
   const { error } = await admin.from("settings").upsert(update, { onConflict: "id" });
   if (error) throw error;
