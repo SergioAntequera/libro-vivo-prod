@@ -25,7 +25,9 @@
     "prod:sql:materialize": "node scripts/materialize-allowlisted-sql.mjs",
     "prod:sql:apply": "node scripts/apply-production-sql-allowlist.mjs",
     "prod:bootstrap:apply": "node scripts/apply-production-bootstrap.mjs",
-    "prod:app:materialize": "node scripts/materialize-app-skeleton.mjs"
+    "prod:app:materialize": "node scripts/materialize-app-skeleton.mjs",
+    "qa:couple:reset": "node scripts/dev-reset-couple-qa.mjs",
+    "qa:couple:mobile": "node scripts/qa-couple-mobile-walkthrough.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

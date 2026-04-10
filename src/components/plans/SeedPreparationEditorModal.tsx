@@ -755,18 +755,18 @@ export function SeedPreparationEditorModal({
   return (
     <div
       data-testid="seed-preparation-editor-modal"
-      className="fixed inset-0 z-[130] flex items-start justify-center overflow-y-auto bg-[rgba(20,28,23,0.38)] px-4 py-6 backdrop-blur-[2px] sm:px-6 sm:py-10"
+      className="fixed inset-0 z-[130] flex items-start justify-center overflow-x-hidden overflow-y-auto bg-[rgba(20,28,23,0.38)] px-4 py-6 backdrop-blur-[2px] sm:px-6 sm:py-10"
       onClick={(event) => {
         if (event.target === event.currentTarget && !busy && !planting) onClose();
       }}
     >
-      <div className="w-full max-w-[1240px] rounded-[32px] border border-white/80 bg-[#f9fbf8] p-5 shadow-[0_28px_80px_rgba(15,23,42,0.18)]">
+      <div className="w-full min-w-0 max-w-[min(1240px,calc(100vw-2rem))] overflow-x-hidden rounded-[32px] border border-white/80 bg-[#f9fbf8] p-4 shadow-[0_28px_80px_rgba(15,23,42,0.18)] sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-2">
             <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
               Preparar antes de plantar
             </div>
-            <h2 className="text-2xl font-semibold text-[var(--lv-text)]">
+            <h2 className="break-words text-2xl font-semibold text-[var(--lv-text)]">
               {draftView.seed.title.trim() || "Plan por preparar"}
             </h2>
             <p className="max-w-3xl text-sm leading-6 text-[var(--lv-text-muted)]">
@@ -774,7 +774,7 @@ export function SeedPreparationEditorModal({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="lv-badge bg-white">{normalizedPayload.preparationProgress}%</span>
             {readyToPlant ? (
               <span className="lv-badge bg-[#eef6ea] text-[#2f5137]">Lista para plantar</span>
@@ -812,7 +812,7 @@ export function SeedPreparationEditorModal({
           </div>
         ) : null}
 
-        <div className="mt-5 space-y-5">
+        <div className="mt-5 min-w-0 space-y-5">
           {collaborationMode === "shared" ? (
             <SeedPreparationCollaborationPanel
               connected={sharedPreparationChannel.connected}
@@ -870,7 +870,7 @@ export function SeedPreparationEditorModal({
             onFocusSection={() => setFocusedSection("trip_brief", "Base del viaje")}
           />
 
-          <div className="grid gap-5 xl:grid-cols-2">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-2">
             <SeedPreparationStopsSection
               items={stopItems}
               placeOptions={placeOptions}
@@ -936,7 +936,7 @@ export function SeedPreparationEditorModal({
             />
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-2">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-2">
             <SeedPreparationStaysSection
               items={stayItems}
               attachmentItems={attachmentItems}
@@ -1001,7 +1001,7 @@ export function SeedPreparationEditorModal({
             />
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-2">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-2">
             <SeedPreparationItinerarySection
               items={itineraryEntryItems}
               placeOptions={placeOptions}
@@ -1077,7 +1077,7 @@ export function SeedPreparationEditorModal({
             />
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-2">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-2">
             <SeedPreparationAttachmentsSection
               items={attachmentItems}
               busy={busy}

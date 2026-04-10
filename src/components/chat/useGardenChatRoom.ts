@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { getSessionAccessToken } from "@/lib/auth";
 import { isSchemaNotReadyError } from "@/lib/gardens";
 import { toErrorMessage } from "@/lib/errorMessage";
 import {
@@ -78,6 +79,20 @@ type ProfileLookupRow = {
   avatar_url: string | null;
 };
 
+type GardenApiParticipantRow = {
+  id?: string | null;
+  name?: string | null;
+  avatarUrl?: string | null;
+  role?: string | null;
+};
+
+type GardensApiPayload = {
+  gardens?: Array<{
+    id?: string | null;
+    participants?: GardenApiParticipantRow[] | null;
+  }> | null;
+};
+
 function sortMessages(rows: GardenChatMessageRow[]) {
   return [...rows].sort((left, right) => {
     if (left.created_at === right.created_at) return left.id.localeCompare(right.id);
@@ -99,6 +114,25 @@ function mapChatMembers(rows: Array<{ user_id?: string; member_role?: string }>,
           ? profile.avatar_url.trim()
           : null,
         memberRole: String(row.member_role ?? "editor").trim() || "editor",
+      } satisfies GardenChatMember;
+    })
+    .filter((row): row is GardenChatMember => row !== null)
+    .sort((left, right) => left.name.localeCompare(right.name, "es") || left.userId.localeCompare(right.userId));
+}
+
+function mapGardenApiMembers(rows: GardenApiParticipantRow[]) {
+  return rows
+    .map((row) => {
+      const userId = String(row.id ?? "").trim();
+      if (!userId) return null;
+      return {
+        userId,
+        name: String(row.name ?? "").trim() || "Sin nombre",
+        avatarUrl:
+          typeof row.avatarUrl === "string" && row.avatarUrl.trim()
+            ? row.avatarUrl.trim()
+            : null,
+        memberRole: String(row.role ?? "editor").trim() || "editor",
       } satisfies GardenChatMember;
     })
     .filter((row): row is GardenChatMember => row !== null)
@@ -144,6 +178,30 @@ export function useGardenChatRoom({
   const lastReadMessageIdRef = useRef("");
 
   const loadMembers = useCallback(async (targetGardenId: string) => {
+    const accessToken = await getSessionAccessToken().catch(() => null);
+    if (accessToken) {
+      try {
+        const response = await fetch("/api/gardens", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: "same-origin",
+        });
+        if (response.ok) {
+          const payload = (await response.json().catch(() => null)) as GardensApiPayload | null;
+          const apiGarden = (payload?.gardens ?? []).find(
+            (garden) => String(garden?.id ?? "").trim() === targetGardenId,
+          );
+          const apiMembers = mapGardenApiMembers(apiGarden?.participants ?? []);
+          if (apiMembers.length) {
+            return apiMembers;
+          }
+        }
+      } catch {
+        // Fallback to the direct RLS-safe query below.
+      }
+    }
+
     const memberRes = await supabase
       .from("garden_members")
       .select("user_id,member_role")

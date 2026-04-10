@@ -150,12 +150,16 @@ textarea:disabled {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
+  max-width: 100%;
   border-radius: var(--lv-radius-sm);
   border: 1px solid transparent;
   padding: 0.55rem 0.95rem;
   font-size: 0.92rem;
   font-weight: 700;
   line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
   transition:
     transform 120ms ease,
     box-shadow 120ms ease,
@@ -295,6 +299,12 @@ textarea:disabled {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.55rem;
+  min-width: 0;
+}
+
+.lv-modal-actions > * {
+  max-width: 100%;
+  min-width: 0;
 }
 
 .lv-progress-track {
@@ -347,6 +357,14 @@ textarea:disabled {
 
   .lv-btn {
     min-height: 2.75rem;
+  }
+
+  .lv-modal-actions {
+    justify-content: stretch;
+  }
+
+  .lv-modal-actions > .lv-btn {
+    flex: 1 1 100%;
   }
 }
 

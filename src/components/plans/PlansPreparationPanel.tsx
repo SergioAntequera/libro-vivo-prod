@@ -42,7 +42,7 @@ export default function PlansPreparationPanel({
     <section
       data-testid="plans-preparation-panel"
       data-plans-tour="preparation-panel"
-      className="rounded-[28px] border border-[#d7e1d5] bg-[linear-gradient(135deg,#fbfdf9_0%,#f0f6ef_100%)] p-5 shadow-[0_14px_36px_rgba(36,56,42,0.08)]"
+      className="min-w-0 rounded-[28px] border border-[#d7e1d5] bg-[linear-gradient(135deg,#fbfdf9_0%,#f0f6ef_100%)] p-4 shadow-[0_14px_36px_rgba(36,56,42,0.08)] sm:p-5"
     >
       <div className="space-y-2">
         <div className="text-[11px] uppercase tracking-[0.18em] text-[#5c6f5f]">Preparando</div>
@@ -62,12 +62,12 @@ export default function PlansPreparationPanel({
             id={`preparation-seed-${view.seed.id}`}
             data-testid="plans-preparation-card"
             data-seed-id={view.seed.id}
-            className="rounded-[22px] border border-[#d8e2d6] bg-white/90 p-4 shadow-[0_10px_24px_rgba(23,37,28,0.06)]"
+            className="min-w-0 rounded-[22px] border border-[#d8e2d6] bg-white/90 p-4 shadow-[0_10px_24px_rgba(23,37,28,0.06)]"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-base font-semibold text-[#223128]">
+                  <h3 className="min-w-0 break-words text-base font-semibold text-[#223128]">
                     {view.seed.title.trim() || "Plan por preparar"}
                   </h3>
                   <span className="lv-badge bg-white">{view.progress}%</span>
@@ -114,11 +114,11 @@ export default function PlansPreparationPanel({
                 </p>
               </div>
 
-              <div className="flex shrink-0 flex-wrap gap-2">
+              <div className="flex w-full min-w-0 flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-end">
                 <button
                   type="button"
                   data-testid="plans-preparation-open"
-                  className="lv-btn lv-btn-secondary"
+                  className="lv-btn lv-btn-secondary w-full sm:w-auto"
                   disabled={openingSeedId === view.seed.id}
                   onClick={() => onOpen(view.seed.id)}
                 >
@@ -127,7 +127,7 @@ export default function PlansPreparationPanel({
                 <button
                   type="button"
                   data-testid="plans-preparation-plant"
-                  className="lv-btn lv-btn-primary"
+                  className="lv-btn lv-btn-primary w-full sm:w-auto"
                   disabled={!view.readyToPlant || plantingSeedId === view.seed.id}
                   onClick={() => onPlant(view.seed.id)}
                 >
@@ -136,7 +136,7 @@ export default function PlansPreparationPanel({
                 <button
                   type="button"
                   data-testid="plans-preparation-delete"
-                  className="lv-btn lv-btn-danger"
+                  className="lv-btn lv-btn-danger w-full sm:w-auto"
                   disabled={deletingSeedId === view.seed.id}
                   onClick={() => onDelete(view.seed.id)}
                 >

@@ -48,7 +48,15 @@ type SeedComposerSurfaceProps = {
   blockEditor?: SeedComposerBlockEditor;
 };
 
+const BROKEN_TEXT_MARKERS = /[\u00c7\u00c3\u00c2\ufffd]/u;
+
 const resizeHandles: SeedComposerResizeHandle[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
+
+function resolveMobileComposerLabel(value: string | null | undefined, fallback: string) {
+  const normalized = String(value ?? "").trim();
+  if (!normalized || BROKEN_TEXT_MARKERS.test(normalized)) return fallback;
+  return normalized;
+}
 
 function resizeHandleStyle(handle: SeedComposerResizeHandle) {
   const shared =
@@ -188,13 +196,154 @@ export function SeedComposerSurface(props: SeedComposerSurfaceProps) {
     planTypeOptions.find((option) => option.id === selectedPlanTypeId) ?? null;
   const interactive = !blockEditor;
   const helperText = scheduledDate
-    ? "Se guardara ya programada en agenda."
-    : "Si no pones fecha, quedara como idea para programar despues.";
+    ? "Se guardará ya programada en agenda."
+    : "Si no pones fecha, quedará como idea para programar después.";
+  const mobileHeaderTitle = resolveMobileComposerLabel(
+    blockMap.header_title?.label,
+    "Nueva semilla",
+  );
+  const mobileHeaderHint = resolveMobileComposerLabel(
+    blockMap.header_hint?.label,
+    "Crea el plan con su tipo, fecha cuando la tengas clara y un lugar si ya lo sabes.",
+  );
 
   return (
+    <>
+      {interactive ? (
+        <div className="space-y-4 rounded-[28px] border border-[rgba(255,255,255,0.84)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,250,244,0.98))] p-4 shadow-[0_18px_48px_rgba(20,35,24,0.12)] lg:hidden">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold tracking-[-0.035em] text-[var(--lv-text)]">
+              {mobileHeaderTitle}
+            </h2>
+            <p className="text-sm leading-6 text-[var(--lv-text-muted)]">
+              {mobileHeaderHint}
+            </p>
+          </div>
+
+          <label className="block space-y-2">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
+              Título del plan
+            </span>
+            <input
+              className="lv-input"
+              placeholder="Ej. Escapada de mayo"
+              value={title}
+              onChange={(event) => onTitleChange(event.target.value)}
+            />
+          </label>
+
+          <div className="space-y-2">
+            <SurfaceFieldLabel
+              label="Clasificación opcional"
+              description="Solo si quieres encajar este plan en la biblioteca."
+              compact
+            />
+            <PlanTypePicker
+              options={planTypeOptions}
+              value={selectedPlanTypeId}
+              onChange={onSelectedPlanTypeIdChange}
+              placeholder="Buscar tipo de plan"
+              searchPlaceholder="Escribe para buscar un tipo"
+              compact
+            />
+            {selectedPlanType ? (
+              <p className="text-xs text-[var(--lv-text-muted)]">
+                Seleccionado: {selectedPlanType.label}
+              </p>
+            ) : null}
+          </div>
+
+          <label className="block space-y-2">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
+              Fecha
+            </span>
+            <input
+              type="date"
+              className="lv-input"
+              value={scheduledDate}
+              onChange={(event) => onScheduledDateChange(event.target.value)}
+            />
+          </label>
+
+          <div className="rounded-[22px] border border-[var(--lv-border)] bg-white/94 p-4 shadow-[0_12px_28px_rgba(24,35,27,0.06)]">
+            <div className="text-sm font-semibold text-[var(--lv-text)]">Lugar del plan</div>
+            <p className="mt-1 text-xs leading-5 text-[var(--lv-text-muted)]">
+              Se puede dejar vacío o resolver luego desde el mapa.
+            </p>
+            {selectedPlaceId && selectedPlaceLabel ? (
+              <div className="mt-3 space-y-3 rounded-xl border border-[var(--lv-border)] bg-[var(--lv-bg-subtle,#f6f7f6)] px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="text-xs font-medium uppercase tracking-wide text-[var(--lv-text-muted)]">
+                    Lugar
+                  </p>
+                  <p className="mt-0.5 text-sm font-medium text-[var(--lv-text)]">
+                    {selectedPlaceLabel}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="lv-btn lv-btn-secondary flex-1 justify-center !px-3 !py-2 !text-xs"
+                    onClick={onOpenMap}
+                  >
+                    Cambiar
+                  </button>
+                  <button
+                    type="button"
+                    className="lv-btn lv-btn-secondary flex-1 justify-center !px-3 !py-2 !text-xs text-red-600 hover:text-red-700"
+                    onClick={onClearSelectedPlace}
+                  >
+                    Quitar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <p className="mt-3 text-sm text-[var(--lv-text-muted)]">
+                  {placeOptions.length
+                    ? `Todavía no hay lugar vinculado. Ya existen ${placeOptions.length} sitio(s) guardados.`
+                    : "Todavía no hay lugar vinculado."}
+                </p>
+                <button
+                  type="button"
+                  className="lv-btn lv-btn-secondary mt-4 w-full justify-center"
+                  onClick={onOpenMap}
+                >
+                  Elegir, marcar o buscar en mapa
+                </button>
+              </>
+            )}
+          </div>
+
+          <label className="block space-y-2">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--lv-text-muted)]">
+              Notas opcionales
+            </span>
+            <textarea
+              className="lv-textarea min-h-[120px]"
+              placeholder="Algo pequeño que queráis recordar"
+              value={notes}
+              onChange={(event) => onNotesChange(event.target.value)}
+            />
+          </label>
+
+          <p className="rounded-[18px] bg-white/80 px-3 py-2 text-sm leading-6 text-[var(--lv-text-muted)]">
+            {helperText}
+          </p>
+          <button
+            type="button"
+            className="lv-btn lv-btn-primary w-full justify-center py-3 disabled:opacity-50"
+            onClick={onCreateSeed}
+            disabled={creating}
+          >
+            {creating ? "Guardando..." : blockMap.submit_button?.label || "Guardar semilla"}
+          </button>
+        </div>
+      ) : null}
+
     <div
       ref={blockEditor?.stageRef}
-      className="relative aspect-[1280/860] w-full overflow-hidden rounded-[34px] border border-[rgba(255,255,255,0.84)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(246,250,244,0.98))] shadow-[0_28px_90px_rgba(20,35,24,0.14)]"
+      className={`${interactive ? "hidden lg:block " : ""}relative aspect-[1280/860] w-full overflow-hidden rounded-[34px] border border-[rgba(255,255,255,0.84)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(246,250,244,0.98))] shadow-[0_28px_90px_rgba(20,35,24,0.14)]`}
       onClick={() => blockEditor?.onSelectBlock(null)}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(223,239,228,0.76),transparent_42%)]" />
@@ -250,7 +399,7 @@ export function SeedComposerSurface(props: SeedComposerSurfaceProps) {
               <BlockFrame key={block.id} block={block} editor={blockEditor}>
                 <div className="h-full rounded-[24px] bg-transparent p-0.5 shadow-none">
                   <SurfaceFieldLabel
-                    label="Clasificacion opcional"
+                    label="Clasificación opcional"
                     description="Solo si quieres encajar este plan en la biblioteca."
                     compact
                   />
@@ -303,7 +452,7 @@ export function SeedComposerSurface(props: SeedComposerSurfaceProps) {
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-medium text-[var(--lv-text)]">{block.label}</div>
                       <div className="mt-1 text-xs leading-5 text-[var(--lv-text-muted)]">
-                        Se puede dejar vacio o resolver luego desde el mapa.
+                        Se puede dejar vacío o resolver luego desde el mapa.
                       </div>
                     </div>
                   </div>
@@ -339,8 +488,8 @@ export function SeedComposerSurface(props: SeedComposerSurfaceProps) {
                     <>
                       <div className="mt-3 text-sm text-[var(--lv-text-muted)]">
                         {placeOptions.length
-                          ? `Todavia no hay lugar vinculado. Ya existen ${placeOptions.length} sitio(s) guardados.`
-                          : "Todavia no hay lugar vinculado."}
+                          ? `Todavía no hay lugar vinculado. Ya existen ${placeOptions.length} sitio(s) guardados.`
+                          : "Todavía no hay lugar vinculado."}
                       </div>
                       <div className="mt-4">
                         <button
@@ -406,5 +555,6 @@ export function SeedComposerSurface(props: SeedComposerSurfaceProps) {
           );
         })}
     </div>
+    </>
   );
 }

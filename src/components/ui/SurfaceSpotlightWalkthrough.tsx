@@ -138,11 +138,11 @@ export function SurfaceSpotlightWalkthrough({
 
   return (
     <div className="fixed inset-0 z-[160]">
-      <div className="absolute inset-0 bg-[rgba(12,18,14,0.72)]" />
+      <div className="absolute inset-0 bg-[rgba(12,18,14,0.48)] backdrop-blur-[1px]" />
 
       {highlightRect ? (
         <div
-          className="pointer-events-none absolute rounded-[28px] border-2 border-white/90 shadow-[0_0_0_9999px_rgba(12,18,14,0.58)] transition-all duration-200"
+          className="pointer-events-none absolute rounded-[28px] border-2 border-white/90 shadow-[0_0_0_9999px_rgba(12,18,14,0.32)] transition-all duration-200"
           style={{
             top: Math.max(8, highlightRect.top - 8),
             left: Math.max(8, highlightRect.left - 8),

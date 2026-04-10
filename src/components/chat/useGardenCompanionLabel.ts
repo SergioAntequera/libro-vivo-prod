@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getSessionAccessToken } from "@/lib/auth";
 import { isSchemaNotReadyError } from "@/lib/gardens";
 
 type ProfileLookupRow = {
@@ -13,6 +14,18 @@ type ProfileLookupRow = {
 type CompanionEntry = {
   name: string;
   pronoun: string;
+};
+
+type GardenApiParticipantRow = {
+  id?: string | null;
+  name?: string | null;
+};
+
+type GardensApiPayload = {
+  gardens?: Array<{
+    id?: string | null;
+    participants?: GardenApiParticipantRow[] | null;
+  }> | null;
 };
 
 function compactPersonName(value: string) {
@@ -34,6 +47,27 @@ function normalizePronounLabel(value: string | null | undefined) {
   return "";
 }
 
+function mapApiCompanions(input: {
+  payload: GardensApiPayload | null;
+  targetGardenId: string;
+  currentProfileId: string;
+}) {
+  const garden = (input.payload?.gardens ?? []).find(
+    (item) => String(item?.id ?? "").trim() === input.targetGardenId,
+  );
+  return (garden?.participants ?? [])
+    .map((participant) => ({
+      id: String(participant?.id ?? "").trim(),
+      name: compactPersonName(participant?.name ?? ""),
+    }))
+    .filter((participant) => participant.id && participant.id !== input.currentProfileId)
+    .map((participant) => ({
+      name: participant.name,
+      pronoun: "",
+    }))
+    .sort((left, right) => left.name.localeCompare(right.name, "es"));
+}
+
 export function useGardenCompanionLabel(
   gardenId: string | null | undefined,
   myProfileId: string | null | undefined,
@@ -49,6 +83,32 @@ export function useGardenCompanionLabel(
     let cancelled = false;
 
     void (async () => {
+      const accessToken = await getSessionAccessToken().catch(() => null);
+      if (accessToken) {
+        try {
+          const response = await fetch("/api/gardens", {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            credentials: "same-origin",
+          });
+          if (response.ok) {
+            const payload = (await response.json().catch(() => null)) as GardensApiPayload | null;
+            const apiCompanions = mapApiCompanions({
+              payload,
+              targetGardenId,
+              currentProfileId,
+            });
+            if (apiCompanions.length) {
+              if (!cancelled) setCompanions(apiCompanions);
+              return;
+            }
+          }
+        } catch {
+          // Fallback to the direct RLS-safe query below.
+        }
+      }
+
       const memberRes = await supabase
         .from("garden_members")
         .select("user_id")
