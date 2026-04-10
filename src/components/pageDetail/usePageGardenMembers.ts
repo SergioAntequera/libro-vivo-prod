@@ -14,29 +14,51 @@ export function usePageGardenMembers({
   enabled = true,
 }: UsePageGardenMembersParams) {
   const [activeGardenMemberCount, setActiveGardenMemberCount] = useState(1);
+  const [activeGardenMemberCountLoaded, setActiveGardenMemberCountLoaded] = useState(false);
   const [memberNamesById, setMemberNamesById] = useState<Record<string, string>>({});
 
   useEffect(() => {
     let active = true;
+    setActiveGardenMemberCountLoaded(false);
 
     void (async () => {
       if (!enabled || !activeGardenId) {
         if (active) {
           setActiveGardenMemberCount(1);
+          setActiveGardenMemberCountLoaded(false);
           setMemberNamesById({});
         }
         return;
       }
 
-      const { data: memberRows, error: memberError } = await withGardenScope(
-        supabase
-          .from("garden_members")
-          .select("user_id")
-          .is("left_at", null),
-        activeGardenId,
-      );
+      const [memberCountRes, memberRowsRes] = await Promise.all([
+        supabase.rpc("get_active_garden_member_count", {
+          target_garden_id: activeGardenId,
+        }),
+        withGardenScope(
+          supabase
+            .from("garden_members")
+            .select("user_id")
+            .is("left_at", null),
+          activeGardenId,
+        ),
+      ]);
 
       if (!active) return;
+      if (memberCountRes.error) {
+        if (!isSchemaNotReadyError(memberCountRes.error)) {
+          console.warn("[page/detail] no se pudo contar garden_members:", memberCountRes.error);
+        }
+        setActiveGardenMemberCountLoaded(false);
+      } else {
+        const resolvedCount = Number(memberCountRes.data);
+        setActiveGardenMemberCount(
+          Number.isFinite(resolvedCount) && resolvedCount > 0 ? resolvedCount : 1,
+        );
+        setActiveGardenMemberCountLoaded(true);
+      }
+
+      const { data: memberRows, error: memberError } = memberRowsRes;
       if (memberError) {
         if (!isSchemaNotReadyError(memberError)) {
           console.warn("[page/detail] no se pudieron cargar garden_members:", memberError);
@@ -47,7 +69,6 @@ export function usePageGardenMembers({
       const userIds = (((memberRows as Array<{ user_id?: string | null }> | null) ?? [])
         .map((row) => String(row.user_id ?? "").trim())
         .filter(Boolean));
-      setActiveGardenMemberCount(Math.max(userIds.length, 1));
 
       if (!userIds.length) {
         setMemberNamesById({});
@@ -84,6 +105,7 @@ export function usePageGardenMembers({
 
   return {
     activeGardenMemberCount,
+    activeGardenMemberCountLoaded,
     memberNamesById,
   };
 }

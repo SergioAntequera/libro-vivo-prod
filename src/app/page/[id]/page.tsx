@@ -136,6 +136,7 @@ import { derivePageCompletionState } from "@/lib/pageCompletionState";
 import {
   resolveSharedGardenRequiredParticipants,
   sharedGardenRitualChannelName,
+  type SharedGardenParticipantPresence,
 } from "@/lib/sharedGardenSessions";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -483,7 +484,7 @@ export default function PageDetail() {
     enabled: Boolean(page?.id && activeGardenId) || ritualRequested,
     page,
   });
-  const { activeGardenMemberCount, memberNamesById } = usePageGardenMembers({
+  const { activeGardenMemberCount, activeGardenMemberCountLoaded, memberNamesById } = usePageGardenMembers({
     activeGardenId,
     enabled: flowerBirthRitualPending || detailSection === "reflections",
   });
@@ -970,10 +971,17 @@ export default function PageDetail() {
     () => serializeFlowerBirthRitualSnapshot(flowerBirthSnapshot),
     [flowerBirthSnapshot],
   );
-  const requiredSharedParticipants = useMemo(
-    () => resolveSharedGardenRequiredParticipants(activeGardenMemberCount),
-    [activeGardenMemberCount],
-  );
+  const requiredSharedParticipants = useMemo(() => {
+    if (flowerBirthRitualPending && activeGardenId && !activeGardenMemberCountLoaded) {
+      return 2;
+    }
+    return resolveSharedGardenRequiredParticipants(activeGardenMemberCount);
+  }, [
+    activeGardenId,
+    activeGardenMemberCount,
+    activeGardenMemberCountLoaded,
+    flowerBirthRitualPending,
+  ]);
   const flowerBirthChannelName = useMemo(() => {
     if (!page?.id || !flowerBirthRitualPending) return null;
     return sharedGardenRitualChannelName({
@@ -1291,6 +1299,44 @@ export default function PageDetail() {
     requiredSharedParticipants,
     saving,
   });
+  const flowerBirthDisplayParticipants = useMemo<SharedGardenParticipantPresence[]>(() => {
+    const participants = [...flowerBirthRitualParticipants];
+    if (!flowerBirthRitualPending || requiredSharedParticipants <= participants.length) {
+      return participants;
+    }
+    if (requiredSharedParticipants <= 1) return participants;
+
+    const currentProfileId = String(myProfileId ?? "").trim();
+    const hasOtherParticipant = participants.some(
+      (participant) => participant.userId !== currentProfileId,
+    );
+    if (hasOtherParticipant) return participants;
+
+    const companionName = String(companionReference ?? "").trim() || "La otra persona";
+    return [
+      ...participants,
+      {
+        activityLabel: "Todavia no esta dentro",
+        activityProgress: null,
+        cursorOffset: null,
+        focusKey: null,
+        focusLabel: null,
+        holding: false,
+        name: companionName,
+        pointerX: null,
+        pointerY: null,
+        ready: false,
+        updatedAt: "1970-01-01T00:00:00.000Z",
+        userId: `expected-companion:${companionName.toLowerCase()}`,
+      },
+    ];
+  }, [
+    companionReference,
+    flowerBirthRitualParticipants,
+    flowerBirthRitualPending,
+    myProfileId,
+    requiredSharedParticipants,
+  ]);
 
   useEffect(() => {
     let active = true;
@@ -2063,7 +2109,7 @@ export default function PageDetail() {
             companionReference={companionReference}
             myProfileId={myProfileId || null}
             onExit={requestExitToHome}
-            participants={flowerBirthRitualParticipants}
+            participants={flowerBirthDisplayParticipants}
             requiredParticipants={requiredSharedParticipants}
           />
         ) : flowerBirthRitualPending ? (
@@ -2099,11 +2145,18 @@ export default function PageDetail() {
                     {flowerBirthConnected ? "En directo" : "Conectando ritual..."}
                   </div>
                   <div className="mt-3 space-y-2">
-                    {flowerBirthRitualParticipants.length ? (
-                      flowerBirthRitualParticipants.map((participant) => (
+                    {flowerBirthDisplayParticipants.length ? (
+                      flowerBirthDisplayParticipants.map((participant) => {
+                        const participantMissing = participant.userId.startsWith("expected-companion:");
+                        return (
                         <div
                           key={`flower-birth:${participant.userId}`}
-                          className="rounded-[16px] border border-[var(--lv-border)] bg-[var(--lv-surface)] px-3 py-2"
+                          data-testid="flower-birth-participant"
+                          className={`rounded-[16px] border px-3 py-2 ${
+                            participantMissing
+                              ? "border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_74%,transparent)]"
+                              : "border-[var(--lv-border)] bg-[var(--lv-surface)]"
+                          }`}
                         >
                           <div className="flex items-center justify-between gap-2">
                             <span className="text-sm font-medium text-[var(--lv-text)]">
@@ -2111,34 +2164,49 @@ export default function PageDetail() {
                             </span>
                             <span
                               className="inline-block h-2.5 w-2.5 rounded-full"
-                              style={{ backgroundColor: flowerPresenceColor(participant.userId) }}
+                              style={{
+                                backgroundColor: participantMissing
+                                  ? "var(--lv-text-muted)"
+                                  : flowerPresenceColor(participant.userId),
+                              }}
                             />
                           </div>
                           <div className="mt-1 text-xs text-[var(--lv-text-muted)]">
-                            {participant.focusLabel ?? participant.activityLabel ?? "Mirando la flor"}
+                            {participantMissing
+                              ? "Todavia no esta dentro"
+                              : participant.focusLabel ?? participant.activityLabel ?? "Mirando la flor"}
                           </div>
                           <div className="mt-2 flex flex-wrap gap-1.5 text-[11px]">
                             <span
                               className={`rounded-full px-2 py-0.5 font-medium ${
-                                participant.ready
+                                participantMissing
+                                  ? "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
+                                  : participant.ready
                                   ? "bg-[var(--lv-primary-soft)] text-[var(--lv-primary-strong)]"
                                   : "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
                               }`}
                             >
-                              {participant.ready ? "a punto" : "preparando"}
+                              {participantMissing ? "fuera" : participant.ready ? "a punto" : "preparando"}
                             </span>
                             <span
                               className={`rounded-full px-2 py-0.5 font-medium ${
-                                participant.holding
+                                participantMissing
+                                  ? "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
+                                  : participant.holding
                                   ? "bg-[var(--lv-warning-soft)] text-[var(--lv-warning)]"
                                   : "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
                               }`}
                             >
-                              {participant.holding ? "guardando" : "sin sellar"}
+                              {participantMissing
+                                ? "sin entrar"
+                                : participant.holding
+                                  ? "guardando"
+                                  : "sin sellar"}
                             </span>
                           </div>
                         </div>
-                      ))
+                        );
+                      })
                     ) : (
                       <div className="rounded-[16px] border border-[var(--lv-border)] bg-[var(--lv-surface)] px-3 py-2 text-sm text-[var(--lv-text-muted)]">
                         Esperando presencia compartida.

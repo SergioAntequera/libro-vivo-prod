@@ -214,6 +214,12 @@ export function useSharedRitualChannel<TSnapshot>(
       if (!channelRef.current || !snapshotRef.current || !snapshotVersionRef.current) return;
       const requesterId = String((payload as { clientId?: string } | null)?.clientId ?? "");
       if (!requesterId || requesterId === clientIdRef.current) return;
+      if (localPresenceRef.current) {
+        await channelRef.current.track({
+          ...localPresenceRef.current,
+          updatedAt: new Date().toISOString(),
+        });
+      }
       await channelRef.current.send({
         type: "broadcast",
         event: "snapshot",
@@ -284,6 +290,21 @@ export function useSharedRitualChannel<TSnapshot>(
       ...localPresence,
       updatedAt: new Date().toISOString(),
     });
+  }, [connected, localPresence]);
+
+  useEffect(() => {
+    if (!connected || !localPresence) return;
+    const intervalId = window.setInterval(() => {
+      if (!channelRef.current || !localPresenceRef.current) return;
+      void channelRef.current.track({
+        ...localPresenceRef.current,
+        updatedAt: new Date().toISOString(),
+      });
+    }, 6000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
   }, [connected, localPresence]);
 
   useEffect(() => {

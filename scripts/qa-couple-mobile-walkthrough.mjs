@@ -448,6 +448,30 @@ function tomorrowIsoDate() {
   return date.toISOString().slice(0, 10);
 }
 
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+async function selectFirstAvailablePlanType(page, report, label) {
+  await page.getByTestId("seed-preparation-plan-type-input").click();
+  const firstOption = page.getByTestId("seed-preparation-plan-type-option").first();
+  const visible = await firstOption
+    .waitFor({ state: "visible", timeout: 10_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!visible) {
+    addObservation(
+      report,
+      "error",
+      `${label}: no hay tipos de plan disponibles para plantar`,
+      "El dossier exige un tipo de plan antes de plantar la semilla.",
+    );
+    return false;
+  }
+  await firstOption.click();
+  return true;
+}
+
 async function runMobileJourney(input) {
   const report = input.report;
   const browser = await chromium.launch({
@@ -720,7 +744,9 @@ async function runMobileJourney(input) {
       }
     });
 
-    await step(report, "preparacion compartida: abrir dossier en dos moviles", async () => {
+    await step(report, "preparacion compartida y nacimiento: dos moviles", async () => {
+      const dossierTitle = `Dossier QA movil ${Date.now()}`;
+
       await gotoPath(pageA, input.baseUrl, "/plans");
       await dismissPlansWalkthroughIfPresent(pageA);
       await pageA.getByTestId("plans-new-seed").click();
@@ -729,9 +755,13 @@ async function runMobileJourney(input) {
         state: "visible",
         timeout: 45_000,
       });
-      await pageA.getByTestId("seed-preparation-title").fill(`Dossier QA movil ${Date.now()}`);
+      await pageA.getByTestId("seed-preparation-title").fill(dossierTitle);
+      assertCondition(
+        await selectFirstAvailablePlanType(pageA, report, "Sergio"),
+        "No se pudo seleccionar un tipo de plan para la semilla preparada.",
+      );
       await pageA.getByTestId("seed-preparation-summary").fill("Prueba movil compartida");
-      await pageA.getByTestId("seed-preparation-starts-on").fill(tomorrowIsoDate()).catch(() => {});
+      await pageA.getByTestId("seed-preparation-starts-on").fill(todayIsoDate()).catch(() => {});
       await capture(report, pageA, "sergio-dossier-preparacion-abierto");
       await pageA.getByTestId("seed-preparation-collaboration-shared").click();
       await pageA.getByTestId("seed-preparation-save").click();
@@ -759,20 +789,193 @@ async function runMobileJourney(input) {
       await pageB.getByTestId("seed-preparation-editor-modal").waitFor({ state: "visible", timeout: 30_000 });
       await capture(report, pageB, "carmen-dossier-compartido-abierto");
 
-      const presenceSeen = await pageA
+      const presenceSeenBySergio = await pageA
         .getByText(/Dentro ahora:\s*2/i)
         .waitFor({ state: "visible", timeout: 20_000 })
         .then(() => true)
         .catch(() => false);
-      if (!presenceSeen) {
+      const presenceSeenByCarmen = await pageB
+        .getByText(/Dentro ahora:\s*2/i)
+        .waitFor({ state: "visible", timeout: 20_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!presenceSeenBySergio || !presenceSeenByCarmen) {
         addObservation(
           report,
           "error",
-          "Sergio no detecta a Carmen dentro del dossier",
-          "Reproduce el problema de presencia/sync.",
+          "La presencia del dossier no es simetrica",
+          `Sergio ve 2=${presenceSeenBySergio}, Carmen ve 2=${presenceSeenByCarmen}.`,
         );
         await capture(report, pageA, "sergio-dossier-sin-presencia-carmen");
+        await capture(report, pageB, "carmen-dossier-sin-presencia-sergio");
       }
+
+      const remoteSummary = `Cambio de Carmen ${Date.now()}`;
+      await pageB.getByTestId("seed-preparation-summary").fill(remoteSummary);
+      const sergioSeesCarmenEdit = await pageA
+        .waitForFunction(
+          (expected) => {
+            const element = document.querySelector("[data-testid='seed-preparation-summary']");
+            return element instanceof HTMLTextAreaElement && element.value.includes(expected);
+          },
+          remoteSummary,
+          { timeout: 18_000 },
+        )
+        .then(() => true)
+        .catch(() => false);
+      if (!sergioSeesCarmenEdit) {
+        addObservation(
+          report,
+          "error",
+          "Sergio no recibe la edicion de Carmen en el dossier sin recargar",
+          remoteSummary,
+        );
+        await capture(report, pageA, "sergio-dossier-no-recibe-edicion-carmen");
+      }
+
+      await pageB.getByTestId("seed-preparation-save").click();
+      await pageB
+        .waitForFunction(
+          () =>
+            Array.from(document.querySelectorAll("[data-testid='seed-preparation-save']")).some(
+              (element) =>
+                element instanceof HTMLButtonElement &&
+                !element.disabled &&
+                /guardar preparacion/i.test(element.textContent ?? ""),
+            ),
+          null,
+          { timeout: 25_000 },
+        )
+        .catch(() => {});
+      await pageB.getByRole("button", { name: "Cerrar" }).last().click();
+      await pageB.getByTestId("seed-preparation-editor-modal").waitFor({ state: "hidden", timeout: 20_000 }).catch(() => {});
+
+      await pageA
+        .waitForFunction(
+          () =>
+            Array.from(document.querySelectorAll("[data-testid='seed-preparation-save-and-plant']")).some(
+              (element) => element instanceof HTMLButtonElement && !element.disabled,
+            ),
+          null,
+          { timeout: 25_000 },
+        )
+        .catch(() => {});
+      await pageA.getByTestId("seed-preparation-save-and-plant").last().click();
+      await pageA.getByTestId("seed-preparation-editor-modal").waitFor({ state: "hidden", timeout: 30_000 }).catch(() => {});
+      await capture(report, pageA, "sergio-dossier-plantado");
+
+      await Promise.all([
+        gotoPath(pageA, input.baseUrl, "/plans"),
+        gotoPath(pageB, input.baseUrl, "/plans"),
+      ]);
+      await dismissPlansWalkthroughIfPresent(pageA);
+      await dismissPlansWalkthroughIfPresent(pageB);
+
+      const agendaCardA = pageA.locator("[data-testid='plans-agenda-card']", { hasText: dossierTitle }).first();
+      const agendaCardB = pageB.locator("[data-testid='plans-agenda-card']", { hasText: dossierTitle }).first();
+      await agendaCardA.waitFor({ state: "visible", timeout: 45_000 });
+      await agendaCardB.waitFor({ state: "visible", timeout: 45_000 });
+      await capture(report, pageA, "sergio-semilla-plantada-lista-para-riego");
+
+      await agendaCardA.getByRole("button", { name: /^Regar$/i }).click();
+      const carmenCanFinishWatering = await agendaCardB
+        .getByRole("button", { name: /Regar y empezar flor/i })
+        .waitFor({ state: "visible", timeout: 30_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!carmenCanFinishWatering) {
+        addObservation(
+          report,
+          "error",
+          "Carmen no ve que Sergio ya rego la semilla sin recargar",
+          "No aparece 'Regar y empezar flor' tras el riego de Sergio.",
+        );
+        await capture(report, pageB, "carmen-no-ve-riego-de-sergio");
+        return;
+      }
+
+      await agendaCardB.getByRole("button", { name: /Regar y empezar flor/i }).click();
+      const birthOpenedForCarmen = await pageB
+        .waitForURL(/\/page\/.+ritual=flower_birth/, { timeout: 45_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!birthOpenedForCarmen) {
+        addObservation(
+          report,
+          "error",
+          "Carmen no entra al nacimiento compartido tras el segundo riego",
+          pageB.url(),
+        );
+        await capture(report, pageB, "carmen-no-entra-nacimiento-compartido");
+        return;
+      }
+      await pageB.getByText(/Nacimiento compartido|Nacimiento pendiente/i).first().waitFor({
+        state: "visible",
+        timeout: 45_000,
+      });
+      await capture(report, pageB, "carmen-nacimiento-compartido-abierto");
+
+      const sergioReceivesBirthNotice = await pageA
+        .getByText(/La flor ya puede nacer|nacimiento compartido/i)
+        .first()
+        .waitFor({ state: "visible", timeout: 25_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!sergioReceivesBirthNotice) {
+        addObservation(
+          report,
+          "warn",
+          "Sergio no recibe aviso visible del nacimiento sin recargar",
+          "Carmen ya entro al nacimiento, pero Sergio no vio aviso en /plans.",
+        );
+        await capture(report, pageA, "sergio-sin-aviso-nacimiento");
+      }
+
+      const birthUrl = new URL(pageB.url());
+      await gotoPath(pageA, input.baseUrl, `${birthUrl.pathname}${birthUrl.search}`);
+      await pageA.getByText(/Nacimiento compartido|Nacimiento pendiente/i).first().waitFor({
+        state: "visible",
+        timeout: 45_000,
+      });
+
+      const bothPresentInBirthForSergio = await pageA
+        .waitForFunction(
+          () => {
+            const text = Array.from(document.querySelectorAll("[data-testid='flower-birth-participant']"))
+              .map((element) => element.textContent ?? "")
+              .join(" ")
+              .toLowerCase();
+            return text.includes("sergio") && text.includes("carmen");
+          },
+          null,
+          { timeout: 30_000 },
+        )
+        .then(() => true)
+        .catch(() => false);
+      const bothPresentInBirthForCarmen = await pageB
+        .waitForFunction(
+          () => {
+            const text = Array.from(document.querySelectorAll("[data-testid='flower-birth-participant']"))
+              .map((element) => element.textContent ?? "")
+              .join(" ")
+              .toLowerCase();
+            return text.includes("sergio") && text.includes("carmen");
+          },
+          null,
+          { timeout: 30_000 },
+        )
+        .then(() => true)
+        .catch(() => false);
+      if (!bothPresentInBirthForSergio || !bothPresentInBirthForCarmen) {
+        addObservation(
+          report,
+          "error",
+          "El nacimiento no muestra a las dos personas de forma simetrica",
+          `Sergio ve ambos=${bothPresentInBirthForSergio}, Carmen ve ambos=${bothPresentInBirthForCarmen}.`,
+        );
+      }
+      await capture(report, pageA, "sergio-nacimiento-presencia-compartida");
+      await capture(report, pageB, "carmen-nacimiento-presencia-compartida");
     });
   } catch (error) {
     await capture(report, pageA, "failure-sergio").catch(() => {});

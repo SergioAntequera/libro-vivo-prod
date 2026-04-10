@@ -525,7 +525,7 @@ export function PageDetailMainPanel(props: PageDetailMainPanelProps) {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
         <label className="min-w-0">
           <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
-            Clasificacion opcional
+            Tipo de plan
           </div>
           {planTypePresenceLabel ? (
             <div className="mt-2 rounded-full border border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_92%,transparent)] px-3 py-1 text-xs font-medium text-[var(--lv-primary-strong)]">
@@ -816,6 +816,249 @@ export function PageDetailMainPanel(props: PageDetailMainPanelProps) {
     );
   }
 
+  const mobileMainPanel =
+    !immersiveSurface && !blockEditor ? (
+      <div className="space-y-4 md:hidden">
+        {readMode ? (
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            {!hideReadModeBackButton ? (
+              <button
+                type="button"
+                onClick={onBackHome}
+                className="lv-btn lv-btn-secondary px-4 py-2.5 text-sm"
+              >
+                <ArrowLeft size={16} />
+                <span>{backButtonLabel}</span>
+              </button>
+            ) : null}
+            {!hideReadModeEditButton ? (
+              <button
+                type="button"
+                className="lv-btn lv-btn-primary px-4 py-2.5"
+                onClick={() => onModeChange("edit")}
+              >
+                Editar flor
+              </button>
+            ) : null}
+          </div>
+        ) : !hideEditTopControls ? (
+          <div className="space-y-3 rounded-[26px] border border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_88%,transparent)] p-4 shadow-[var(--lv-shadow-sm)]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={onCancelEdit}
+                className="lv-btn lv-btn-secondary px-4 py-2.5 text-sm"
+              >
+                Cancelar
+              </button>
+              <div className="flex flex-wrap justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={onOpenDeleteConfirm}
+                  disabled={deletingPage}
+                  className="lv-btn lv-btn-danger px-4 py-2.5 disabled:opacity-60"
+                >
+                  {deletingPage ? "Borrando..." : "Borrar pagina"}
+                </button>
+                {hideSaveButton ? null : (
+                  <button
+                    type="button"
+                    onClick={onSave}
+                    disabled={saving}
+                    className="lv-btn lv-btn-primary px-4 py-2.5 disabled:opacity-50"
+                  >
+                    {saving ? "Guardando..." : "Guardar cambios"}
+                  </button>
+                )}
+              </div>
+            </div>
+            {hasUnsavedChanges ? (
+              <div className="rounded-[18px] border border-[var(--lv-warning)] bg-[var(--lv-warning-soft)] px-3 py-2 text-xs text-[var(--lv-warning)]">
+                Tienes cambios sin guardar en esta flor.
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="rounded-[30px] border border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_88%,transparent)] p-5 shadow-[var(--lv-shadow-sm)] backdrop-blur-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm text-[var(--lv-text-muted)]">{page.date}</div>
+              <h1 className="mt-2 max-w-full break-words text-3xl font-semibold leading-[1.03] tracking-[-0.03em] text-[var(--lv-text)]">
+                {page.title ?? "Pagina sin titulo"}
+              </h1>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button
+                type="button"
+                onClick={onToggleFavorite}
+                aria-label={page.is_favorite ? "Quitar de favoritas" : "Anadir a favoritas"}
+                title={page.is_favorite ? "Quitar de favoritas" : "Anadir a favoritas"}
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
+                  page.is_favorite
+                    ? "border-[var(--lv-warning)] bg-[var(--lv-warning-soft)] text-[var(--lv-warning)]"
+                    : "border-[var(--lv-border)] bg-[var(--lv-surface)] text-[var(--lv-text-muted)]"
+                }`}
+              >
+                <Star
+                  size={18}
+                  style={page.is_favorite ? { fill: "currentColor" } : undefined}
+                />
+              </button>
+              <button
+                type="button"
+                onClick={onToggleYearHighlight}
+                aria-label={yearHighlightActionLabel}
+                aria-pressed={isYearHighlight}
+                title={yearHighlightActionLabel}
+                disabled={!canToggleYearHighlight || updatingYearHighlight}
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition disabled:cursor-not-allowed disabled:opacity-55 ${
+                  isYearHighlight
+                    ? "border-[var(--lv-primary)] bg-[var(--lv-primary-soft)] text-[var(--lv-primary-strong)]"
+                    : "border-[var(--lv-border)] bg-[var(--lv-surface)] text-[var(--lv-text-muted)]"
+                }`}
+              >
+                <Sparkles
+                  size={18}
+                  style={isYearHighlight ? { fill: "currentColor" } : undefined}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-[var(--lv-primary)] bg-[color-mix(in_srgb,var(--lv-primary-soft)_82%,white)] px-3 py-1 text-sm font-medium text-[var(--lv-primary-strong)]">
+              {combinedPlanMetaLabel}
+            </span>
+            <span className="rounded-full border border-[var(--lv-border)] bg-[var(--lv-surface)] px-3 py-1 text-sm font-medium text-[var(--lv-text)]">
+              {placeType ?? "Tipo de lugar"}
+            </span>
+            <span className="rounded-full border border-[var(--lv-warning)] bg-[color-mix(in_srgb,var(--lv-warning-soft)_92%,white)] px-3 py-1 text-sm font-medium text-[var(--lv-warning)]">
+              {completionBadgeLabel(completionState)}
+            </span>
+          </div>
+
+          <p className="mt-4 text-sm leading-6 text-[var(--lv-text-muted)]">
+            {completionHint(completionState)}
+          </p>
+        </div>
+
+        <div className="rounded-[30px] border border-[var(--lv-border)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--lv-surface)_82%,transparent),color-mix(in_srgb,var(--lv-bg-soft)_68%,transparent))] p-5 shadow-[var(--lv-shadow-sm)] backdrop-blur-sm">
+          <div className="mx-auto flex h-52 max-w-[220px] items-center justify-center overflow-hidden rounded-[34px] bg-[radial-gradient(circle_at_50%_30%,color-mix(in_srgb,var(--lv-surface)_88%,white),color-mix(in_srgb,var(--lv-bg-soft)_28%,transparent)_62%)]">
+            <Image
+              src={plantAssetSrc}
+              alt={`Flor de ${resolvedPlanLabel.toLowerCase()}`}
+              width={160}
+              height={160}
+              className={`h-[138px] w-[138px] object-contain transition ${flowerScaleClass}`}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`rounded-[28px] p-5 shadow-[var(--lv-shadow-sm)] backdrop-blur-sm ${
+            readMode || ratingReadOnly
+              ? "border border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_80%,transparent)]"
+              : "border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_88%,transparent)]"
+          }`}
+        >
+          <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
+            Valoracion
+          </div>
+          <div className="mt-4">
+            <InlineStars
+              value={rating}
+              onChange={onRatingChange}
+              readOnly={readMode || ratingReadOnly}
+            />
+          </div>
+          {ratingHint ? (
+            <p className="mt-3 text-sm leading-6 text-[var(--lv-text-muted)]">{ratingHint}</p>
+          ) : null}
+        </div>
+
+        <div
+          className={`rounded-[30px] p-5 shadow-[var(--lv-shadow-sm)] backdrop-blur-sm ${
+            readMode
+              ? "border border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_84%,transparent)]"
+              : "border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_90%,transparent)]"
+          }`}
+        >
+          <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
+            {readMode ? "Sentido del recuerdo" : "Descripcion del recuerdo"}
+          </div>
+          {readMode ? (
+            <div className="mt-3 text-[16px] leading-7 text-[var(--lv-text)] [overflow-wrap:anywhere]">
+              {planSummaryText ? (
+                <p className="whitespace-pre-wrap break-words">{planSummaryText}</p>
+              ) : (
+                <p className="text-[var(--lv-text-muted)]">
+                  Esta flor aun no tiene una descripcion escrita. Entra en editar cuando quieras
+                  darle contexto.
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="mt-3 rounded-[22px] border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_94%,transparent)] px-4 py-3">
+              {summaryPresenceLabel || summaryConflictNotice ? (
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {summaryPresenceLabel ? (
+                    <span className="rounded-full bg-[color-mix(in_srgb,var(--lv-primary-soft)_86%,white)] px-3 py-1 text-xs font-medium text-[var(--lv-primary-strong)]">
+                      {summaryPresenceLabel}
+                    </span>
+                  ) : null}
+                  {summaryConflictNotice ? (
+                    <span className="rounded-full bg-[var(--lv-warning-soft)] px-3 py-1 text-xs font-medium text-[var(--lv-warning)]">
+                      Han entrado cambios del otro lado en este mismo texto.
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+              <textarea
+                value={page.plan_summary ?? ""}
+                onChange={(event) => onPlanSummaryChange(event.target.value)}
+                onFocus={onSummaryFocus}
+                onBlur={onSummaryBlur}
+                placeholder="Describe en una o dos frases que plan fue, como se dio o que tuvo de especial..."
+                className="min-h-[180px] w-full resize-y bg-transparent text-[16px] leading-7 text-[var(--lv-text)] outline-none placeholder:text-[var(--lv-text-muted)] [overflow-wrap:anywhere]"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {showSeedLine ? (
+            <DetailLine icon={<Sparkles size={16} />} label="Semilla" value={linkedSeedTitle ?? ""} />
+          ) : (
+            <div className="rounded-[22px] border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_74%,transparent)] px-4 py-3 text-sm text-[var(--lv-text-muted)]">
+              Semilla sin vincular
+            </div>
+          )}
+          {resolvedPlaceLabel ? (
+            <DetailLine icon={<MapPin size={16} />} label="Lugar" value={resolvedPlaceLabel} />
+          ) : (
+            <div className="rounded-[22px] border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_74%,transparent)] px-4 py-3 text-sm text-[var(--lv-text-muted)]">
+              Lugar sin vincular
+            </div>
+          )}
+          {linkedRouteLabel ? (
+            <DetailLine icon={<Route size={16} />} label="Ruta" value={linkedRouteLabel} />
+          ) : (
+            <div className="rounded-[22px] border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_74%,transparent)] px-4 py-3 text-sm text-[var(--lv-text-muted)]">
+              Ruta sin vincular
+            </div>
+          )}
+          {resolvedAudioUrl ? (
+            <DetailLine icon={<Volume2 size={16} />} label="Audio" value="Audio asociado" />
+          ) : (
+            <div className="rounded-[22px] border border-dashed border-[var(--lv-border)] bg-[color-mix(in_srgb,var(--lv-surface)_74%,transparent)] px-4 py-3 text-sm text-[var(--lv-text-muted)]">
+              Audio sin vincular
+            </div>
+          )}
+        </div>
+      </div>
+    ) : null;
+
   return (
     <section
       className={
@@ -861,10 +1104,13 @@ export function PageDetailMainPanel(props: PageDetailMainPanelProps) {
           />
 
           {editMetaCard ? <div className="relative z-30 mb-5">{editMetaCard}</div> : null}
+          {mobileMainPanel}
 
           <div
             className={
-              immersiveSurface ? "absolute inset-0" : "relative mt-5 w-full"
+              immersiveSurface
+                ? "absolute inset-0"
+                : `relative mt-5 w-full ${blockEditor ? "" : "hidden md:block"}`
             }
             ref={blockEditor?.stageRef}
             style={

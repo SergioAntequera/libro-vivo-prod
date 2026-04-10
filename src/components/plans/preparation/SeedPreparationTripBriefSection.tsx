@@ -204,10 +204,10 @@ export function SeedPreparationTripBriefSection({
 
         <label className="space-y-2">
           <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-text-muted)]">
-            Clasificacion opcional
+            Tipo de plan
           </div>
           <div className="text-xs leading-5 text-[var(--lv-text-muted)]">
-            Solo si quieres encajar este viaje en la biblioteca.
+            Necesario para plantar esta semilla y encajarla en la biblioteca.
           </div>
           <div data-testid="seed-preparation-plan-type">
             <PlanTypePicker
