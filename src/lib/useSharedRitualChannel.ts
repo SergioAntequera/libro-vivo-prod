@@ -3,7 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
-import type { SharedGardenParticipantPresence } from "@/lib/sharedGardenSessions";
+import { useSharedPresenceSessions } from "@/lib/useSharedPresenceSessions";
+import {
+  DEFAULT_SHARED_LIVE_FLOWER_PRESENCE_MS,
+  type SharedLiveSessionScopeKind,
+} from "@/lib/sharedLiveSessions";
 
 type SnapshotEnvelope<TSnapshot> = {
   clientId: string;
@@ -36,58 +40,32 @@ type SharedRitualChannelOptions<TSnapshot> = {
   userId: string | null;
 };
 
-function flattenPresenceState(
-  input: Record<string, Array<Partial<SharedGardenParticipantPresence>>>,
-) {
-  const latestByUserId = new Map<string, SharedGardenParticipantPresence>();
+function resolvePresenceScopeKind(
+  channelName: string | null | undefined,
+): SharedLiveSessionScopeKind | null {
+  const normalized = String(channelName ?? "").trim();
+  if (!normalized) return null;
+  const parts = normalized.split(":");
+  if (parts.length < 4) return null;
+  if (parts[1] === "flower") return "flower_birth";
+  if (parts[1] === "capsule") return "time_capsule";
+  return null;
+}
 
-  for (const entries of Object.values(input)) {
-    for (const entry of entries) {
-      const userId = String(entry.userId ?? "").trim();
-      if (!userId) continue;
-      const candidate: SharedGardenParticipantPresence = {
-        userId,
-        name: String(entry.name ?? "Sin nombre").trim() || "Sin nombre",
-        ready: Boolean(entry.ready),
-        holding: Boolean(entry.holding),
-        activityLabel:
-          typeof entry.activityLabel === "string" && entry.activityLabel.trim()
-            ? entry.activityLabel.trim()
-            : null,
-        activityProgress:
-          typeof entry.activityProgress === "number" && Number.isFinite(entry.activityProgress)
-            ? entry.activityProgress
-            : null,
-        focusKey:
-          typeof entry.focusKey === "string" && entry.focusKey.trim() ? entry.focusKey.trim() : null,
-        focusLabel:
-          typeof entry.focusLabel === "string" && entry.focusLabel.trim()
-            ? entry.focusLabel.trim()
-            : null,
-        cursorOffset:
-          typeof entry.cursorOffset === "number" && Number.isFinite(entry.cursorOffset)
-            ? entry.cursorOffset
-            : null,
-        pointerX:
-          typeof entry.pointerX === "number" && Number.isFinite(entry.pointerX)
-            ? entry.pointerX
-            : null,
-        pointerY:
-          typeof entry.pointerY === "number" && Number.isFinite(entry.pointerY)
-            ? entry.pointerY
-            : null,
-        updatedAt: String(entry.updatedAt ?? new Date(0).toISOString()),
-      };
-      const existing = latestByUserId.get(userId);
-      if (!existing || candidate.updatedAt >= existing.updatedAt) {
-        latestByUserId.set(userId, candidate);
-      }
-    }
-  }
+function resolveGardenIdFromChannelName(channelName: string | null | undefined) {
+  const normalized = String(channelName ?? "").trim();
+  if (!normalized) return null;
+  const parts = normalized.split(":");
+  return parts.length >= 4 ? parts[2] ?? null : null;
+}
 
-  return [...latestByUserId.values()].sort(
-    (a, b) => a.name.localeCompare(b.name, "es") || a.userId.localeCompare(b.userId),
-  );
+function resolveScopeKeyFromChannelName(channelName: string | null | undefined) {
+  const normalized = String(channelName ?? "").trim();
+  if (!normalized) return null;
+  const parts = normalized.split(":");
+  if (parts.length < 4) return null;
+  const scopeKey = parts.slice(3).join(":").trim();
+  return scopeKey || null;
 }
 
 export function useSharedRitualChannel<TSnapshot>(
@@ -111,10 +89,9 @@ export function useSharedRitualChannel<TSnapshot>(
     userId,
   } = options;
 
-  const [connected, setConnected] = useState(false);
+  const [broadcastConnected, setBroadcastConnected] = useState(false);
   const [localReady, setLocalReady] = useState(false);
   const [localHolding, setLocalHolding] = useState(false);
-  const [participants, setParticipants] = useState<SharedGardenParticipantPresence[]>([]);
   const channelRef = useRef<RealtimeChannel | null>(null);
   const clientIdRef = useRef(crypto.randomUUID());
   const lastAcceptedEnvelopeRef = useRef("");
@@ -124,7 +101,6 @@ export function useSharedRitualChannel<TSnapshot>(
   const onRemoteSealedRef = useRef(onRemoteSealed);
   const snapshotRef = useRef(snapshot);
   const snapshotVersionRef = useRef(snapshotVersion);
-  const localPresenceRef = useRef<SharedGardenParticipantPresence | null>(null);
 
   useEffect(() => {
     onRemoteSnapshotRef.current = onRemoteSnapshot;
@@ -139,39 +115,28 @@ export function useSharedRitualChannel<TSnapshot>(
     snapshotVersionRef.current = snapshotVersion;
   }, [snapshot, snapshotVersion]);
 
-  const localPresence = useMemo<SharedGardenParticipantPresence | null>(() => {
-    const normalizedUserId = String(userId ?? "").trim();
-    if (!normalizedUserId) return null;
-    return {
-      userId: normalizedUserId,
-      name: displayName.trim() || "Sin nombre",
-      ready: localReady,
-      holding: localHolding,
-      activityLabel:
-        typeof localActivityLabel === "string" && localActivityLabel.trim()
-          ? localActivityLabel.trim()
-          : null,
-      activityProgress:
-        typeof localActivityProgress === "number" && Number.isFinite(localActivityProgress)
-          ? localActivityProgress
-          : null,
-      focusKey: typeof localFocusKey === "string" && localFocusKey.trim() ? localFocusKey.trim() : null,
-      focusLabel:
-        typeof localFocusLabel === "string" && localFocusLabel.trim()
-          ? localFocusLabel.trim()
-          : null,
-      cursorOffset:
-        typeof localCursorOffset === "number" && Number.isFinite(localCursorOffset)
-          ? localCursorOffset
-          : null,
-      pointerX:
-        typeof localPointerX === "number" && Number.isFinite(localPointerX) ? localPointerX : null,
-      pointerY:
-        typeof localPointerY === "number" && Number.isFinite(localPointerY) ? localPointerY : null,
-      updatedAt: "1970-01-01T00:00:00.000Z",
-    };
-  }, [
+  const shouldConnect = enabled && Boolean(channelName) && Boolean(userId);
+  const presenceScopeKind = useMemo(
+    () => resolvePresenceScopeKind(channelName),
+    [channelName],
+  );
+  const presenceGardenId = useMemo(
+    () => resolveGardenIdFromChannelName(channelName),
+    [channelName],
+  );
+  const presenceScopeKey = useMemo(
+    () => resolveScopeKeyFromChannelName(channelName),
+    [channelName],
+  );
+
+  const presenceSync = useSharedPresenceSessions({
     displayName,
+    enabled: shouldConnect && Boolean(presenceScopeKind),
+    freshMs:
+      presenceScopeKind === "flower_birth"
+        ? DEFAULT_SHARED_LIVE_FLOWER_PRESENCE_MS
+        : undefined,
+    gardenId: presenceGardenId,
     localActivityLabel,
     localActivityProgress,
     localCursorOffset,
@@ -181,13 +146,10 @@ export function useSharedRitualChannel<TSnapshot>(
     localPointerX,
     localPointerY,
     localReady,
+    scopeKey: presenceScopeKey,
+    scopeKind: presenceScopeKind ?? "flower_birth",
     userId,
-  ]);
-  const shouldConnect = enabled && Boolean(channelName) && Boolean(userId);
-
-  useEffect(() => {
-    localPresenceRef.current = localPresence;
-  }, [localPresence]);
+  });
 
   useEffect(() => {
     if (!shouldConnect || !channelName || !userId) {
@@ -197,29 +159,14 @@ export function useSharedRitualChannel<TSnapshot>(
     const channel = supabase.channel(channelName, {
       config: {
         broadcast: { self: true },
-        presence: { key: userId },
       },
     });
     channelRef.current = channel;
-
-    channel.on("presence", { event: "sync" }, () => {
-      setParticipants(
-        flattenPresenceState(
-          channel.presenceState<SharedGardenParticipantPresence>(),
-        ),
-      );
-    });
 
     channel.on("broadcast", { event: "request_snapshot" }, async ({ payload }) => {
       if (!channelRef.current || !snapshotRef.current || !snapshotVersionRef.current) return;
       const requesterId = String((payload as { clientId?: string } | null)?.clientId ?? "");
       if (!requesterId || requesterId === clientIdRef.current) return;
-      if (localPresenceRef.current) {
-        await channelRef.current.track({
-          ...localPresenceRef.current,
-          updatedAt: new Date().toISOString(),
-        });
-      }
       await channelRef.current.send({
         type: "broadcast",
         event: "snapshot",
@@ -255,14 +202,13 @@ export function useSharedRitualChannel<TSnapshot>(
     });
 
     channel.subscribe(async (status) => {
-      if (status !== "SUBSCRIBED") return;
-      setConnected(true);
-      if (localPresenceRef.current) {
-        await channel.track({
-          ...localPresenceRef.current,
-          updatedAt: new Date().toISOString(),
-        });
+      if (status !== "SUBSCRIBED") {
+        if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+          setBroadcastConnected(false);
+        }
+        return;
       }
+      setBroadcastConnected(true);
       await channel.send({
         type: "broadcast",
         event: "request_snapshot",
@@ -273,8 +219,7 @@ export function useSharedRitualChannel<TSnapshot>(
     });
 
     return () => {
-      setConnected(false);
-      setParticipants([]);
+      setBroadcastConnected(false);
       if (snapshotTimerRef.current) {
         clearTimeout(snapshotTimerRef.current);
         snapshotTimerRef.current = null;
@@ -285,30 +230,7 @@ export function useSharedRitualChannel<TSnapshot>(
   }, [channelName, shouldConnect, userId]);
 
   useEffect(() => {
-    if (!connected || !channelRef.current || !localPresence) return;
-    void channelRef.current.track({
-      ...localPresence,
-      updatedAt: new Date().toISOString(),
-    });
-  }, [connected, localPresence]);
-
-  useEffect(() => {
-    if (!connected || !localPresence) return;
-    const intervalId = window.setInterval(() => {
-      if (!channelRef.current || !localPresenceRef.current) return;
-      void channelRef.current.track({
-        ...localPresenceRef.current,
-        updatedAt: new Date().toISOString(),
-      });
-    }, 6000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [connected, localPresence]);
-
-  useEffect(() => {
-    if (!connected || !channelRef.current || !snapshot || !snapshotVersion) return;
+    if (!broadcastConnected || !channelRef.current || !snapshot || !snapshotVersion) return;
     if (snapshotVersion === lastBroadcastVersionRef.current) return;
     if (snapshotTimerRef.current) clearTimeout(snapshotTimerRef.current);
     snapshotTimerRef.current = setTimeout(() => {
@@ -332,7 +254,7 @@ export function useSharedRitualChannel<TSnapshot>(
         snapshotTimerRef.current = null;
       }
     };
-  }, [connected, snapshot, snapshotVersion]);
+  }, [broadcastConnected, snapshot, snapshotVersion]);
 
   const broadcastSealed = useCallback(async (title?: string) => {
     if (!channelRef.current) return;
@@ -350,13 +272,24 @@ export function useSharedRitualChannel<TSnapshot>(
   return useMemo(
     () => ({
       broadcastSealed,
-      connected: shouldConnect ? connected : false,
+      connected: shouldConnect ? presenceSync.connected : false,
       localHolding,
       localReady,
-      participants: shouldConnect ? participants : [],
+      participants: shouldConnect ? presenceSync.participants : [],
+      refreshPresence: presenceSync.refresh,
+      serverClockOffsetMs: shouldConnect ? presenceSync.serverClockOffsetMs : null,
       setLocalHolding,
       setLocalReady,
     }),
-    [broadcastSealed, connected, localHolding, localReady, participants, shouldConnect],
+    [
+      broadcastSealed,
+      localHolding,
+      localReady,
+      presenceSync.connected,
+      presenceSync.participants,
+      presenceSync.refresh,
+      presenceSync.serverClockOffsetMs,
+      shouldConnect,
+    ],
   );
 }

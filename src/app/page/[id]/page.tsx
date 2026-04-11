@@ -461,6 +461,7 @@ export default function PageDetail() {
     flowerRevisions,
     flowerRevisionsAvailable,
     refreshFlowerBirthRatings,
+    refreshFlowerBirthRitual,
     refreshFlowerRevisions,
     savedFlowerBirthRating,
     setFlowerBirthRatings,
@@ -936,6 +937,84 @@ export default function PageDetail() {
     () => new Map(flowerBirthRatings.map((entry) => [entry.user_id, entry.rating] as const)),
     [flowerBirthRatings],
   );
+  const flowerBirthReadyUserIds = useMemo(
+    () => new Set(flowerBirthRatings.filter((entry) => entry.ready_at).map((entry) => entry.user_id)),
+    [flowerBirthRatings],
+  );
+  const persistFlowerBirthReady = useCallback(
+    (ready: boolean) => {
+      if (!myProfileId || !activeGardenId || !page?.id || !flowerBirthRatingsAvailable) return;
+      const normalizedRating = Math.min(5, Math.max(1, Math.round(localFlowerBirthRating)));
+      if (!Number.isFinite(normalizedRating)) return;
+      const readyAt = ready ? new Date().toISOString() : null;
+      setFlowerBirthRatings((prev) => {
+        const existingEntry = prev.find((entry) => entry.user_id === myProfileId) ?? null;
+        const filtered = prev.filter((entry) => entry.user_id !== myProfileId);
+        return [
+          ...filtered,
+          {
+            page_id: page.id,
+            garden_id: activeGardenId,
+            user_id: myProfileId,
+            rating: existingEntry?.rating ?? normalizedRating,
+            ready_at: readyAt,
+            created_at: existingEntry?.created_at ?? new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        ];
+      });
+      const payload = withGardenIdOnInsert(
+        {
+          page_id: page.id,
+          user_id: myProfileId,
+          rating: normalizedRating,
+          ready_at: readyAt,
+        },
+        activeGardenId,
+      );
+      void withGardenScope(
+        supabase
+          .from("flower_birth_ritual_ratings")
+          .upsert(payload, { onConflict: "page_id,user_id" }),
+        activeGardenId,
+      ).then(({ error }) => {
+        if (error) {
+          if (isSchemaNotReadyError(error)) {
+            setFlowerBirthRatingsAvailable(false);
+            return;
+          }
+          console.warn("[page/detail] no se pudo guardar ready_at del flower_birth:", error);
+          return;
+        }
+        void refreshFlowerBirthRatings();
+      });
+    },
+    [
+      activeGardenId,
+      flowerBirthRatingsAvailable,
+      localFlowerBirthRating,
+      myProfileId,
+      page?.id,
+      refreshFlowerBirthRatings,
+      setFlowerBirthRatings,
+      setFlowerBirthRatingsAvailable,
+    ],
+  );
+  useEffect(() => {
+    if (!flowerBirthRitualPending) return;
+    const intervalId = window.setInterval(() => {
+      void refreshFlowerBirthRitual();
+      if (flowerBirthRatingsAvailable) {
+        void refreshFlowerBirthRatings();
+      }
+    }, 3000);
+    return () => window.clearInterval(intervalId);
+  }, [
+    flowerBirthRatingsAvailable,
+    flowerBirthRitualPending,
+    refreshFlowerBirthRatings,
+    refreshFlowerBirthRitual,
+  ]);
   const flowerBirthSnapshot = useMemo(
     () =>
       buildFlowerBirthRitualSnapshot({
@@ -1279,6 +1358,7 @@ export default function PageDetail() {
     objects,
     onApplySnapshot: applyFlowerBirthSnapshot,
     onBeforeFinalizeSeal: save,
+    onPersistLocalReady: persistFlowerBirthReady,
     onRemoteSeal: ({ sentAt }) => {
       setFlowerBirthRitual((prev) =>
         prev
@@ -1295,6 +1375,7 @@ export default function PageDetail() {
     pagePlanSummary: page?.plan_summary,
     pageRating: rating,
     pageTitle: page?.title ?? null,
+    readyUserIds: flowerBirthReadyUserIds,
     ratingsByUserId: flowerBirthRatingsByUserId,
     requiredSharedParticipants,
     saving,
@@ -2026,6 +2107,7 @@ export default function PageDetail() {
     if (!flowerBirthRitualPending) return;
     markRatingInteraction();
     setFlowerBirthRatings((prev) => {
+      const existingEntry = prev.find((entry) => entry.user_id === myProfileId) ?? null;
       const filtered = prev.filter((entry) => entry.user_id !== myProfileId);
       if (value <= 0 || !myProfileId || !activeGardenId || !page?.id) return filtered;
       return [
@@ -2035,7 +2117,8 @@ export default function PageDetail() {
           garden_id: activeGardenId,
           user_id: myProfileId,
           rating: value,
-          created_at: new Date().toISOString(),
+          ready_at: existingEntry?.ready_at ?? null,
+          created_at: existingEntry?.created_at ?? new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },
       ];
@@ -2047,6 +2130,8 @@ export default function PageDetail() {
             page_id: page.id,
             user_id: myProfileId,
             rating: value,
+            ready_at:
+              flowerBirthRatings.find((entry) => entry.user_id === myProfileId)?.ready_at ?? null,
           },
           activeGardenId,
         );
@@ -2148,6 +2233,10 @@ export default function PageDetail() {
                     {flowerBirthDisplayParticipants.length ? (
                       flowerBirthDisplayParticipants.map((participant) => {
                         const participantMissing = participant.userId.startsWith("expected-companion:");
+                        const participantReady =
+                          !participantMissing &&
+                          (participant.ready ||
+                            flowerBirthReadyUserIds.has(participant.userId));
                         return (
                         <div
                           key={`flower-birth:${participant.userId}`}
@@ -2181,12 +2270,12 @@ export default function PageDetail() {
                               className={`rounded-full px-2 py-0.5 font-medium ${
                                 participantMissing
                                   ? "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
-                                  : participant.ready
+                                  : participantReady
                                   ? "bg-[var(--lv-primary-soft)] text-[var(--lv-primary-strong)]"
                                   : "bg-[var(--lv-surface-elevated)] text-[var(--lv-text-muted)]"
                               }`}
                             >
-                              {participantMissing ? "fuera" : participant.ready ? "a punto" : "preparando"}
+                              {participantMissing ? "fuera" : participantReady ? "a punto" : "preparando"}
                             </span>
                             <span
                               className={`rounded-full px-2 py-0.5 font-medium ${
@@ -2746,6 +2835,8 @@ export default function PageDetail() {
                     {flowerBirthRitualParticipants.map((participant) => {
                       const participantRating =
                         flowerBirthRatingsByUserId.get(participant.userId) ?? 0;
+                      const participantReady =
+                        participant.ready || flowerBirthReadyUserIds.has(participant.userId);
 
                       return (
                         <div
@@ -2773,12 +2864,12 @@ export default function PageDetail() {
                           <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-[var(--lv-text-muted)]">
                             <span
                               className={`rounded-full px-2.5 py-1 ${
-                                participant.ready
+                                participantReady
                                   ? "bg-[var(--lv-primary-soft)] text-[var(--lv-primary-strong)]"
                                   : "bg-[var(--lv-surface-elevated)]"
                               }`}
                             >
-                              {participant.ready ? "a punto" : "preparando"}
+                              {participantReady ? "a punto" : "preparando"}
                             </span>
                             <span
                               className={`rounded-full px-2.5 py-1 ${

@@ -6,10 +6,10 @@ import { supabase } from "@/lib/supabase";
 import { getSessionAccessToken } from "@/lib/auth";
 import { isSchemaNotReadyError } from "@/lib/gardens";
 import { toErrorMessage } from "@/lib/errorMessage";
+import { useSharedPresenceSessions } from "@/lib/useSharedPresenceSessions";
 import {
   buildGardenChatAttachmentMap,
   buildGardenChatReactionMap,
-  buildGardenChatPresenceList,
   gardenChatDbChannelName,
   gardenChatLiveChannelName,
   isPersistedGardenChatMessageId,
@@ -163,11 +163,11 @@ export function useGardenChatRoom({
   const [attachments, setAttachments] = useState<GardenChatMessageAttachmentRow[]>([]);
   const [reactions, setReactions] = useState<GardenChatReactionRow[]>([]);
   const [readStates, setReadStates] = useState<GardenChatReadStateRow[]>([]);
-  const [presence, setPresence] = useState<GardenChatPresence[]>([]);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
   const [composerFocused, setComposerFocused] = useState(false);
-  const [liveConnected, setLiveConnected] = useState(false);
+  const [dbConnected, setDbConnected] = useState(false);
+  const [typingConnected, setTypingConnected] = useState(false);
   const [typingByUserId, setTypingByUserId] = useState<Record<string, string>>({});
   const [messageActionPendingById, setMessageActionPendingById] = useState<
     Record<string, "edit" | "delete">
@@ -176,6 +176,35 @@ export function useGardenChatRoom({
   const liveChannelRef = useRef<RealtimeChannel | null>(null);
   const dbChannelRef = useRef<RealtimeChannel | null>(null);
   const lastReadMessageIdRef = useRef("");
+  const roomId = String(room?.id ?? "").trim();
+  const wantsTypingSignal = useMemo(
+    () => composerFocused && normalizeGardenChatBody(draft).length > 0,
+    [composerFocused, draft],
+  );
+
+  const sharedPresence = useSharedPresenceSessions({
+    displayName: myDisplayName,
+    enabled: liveEnabled && Boolean(roomId) && Boolean(myProfileId) && Boolean(gardenId),
+    gardenId,
+    localActivityLabel: wantsTypingSignal ? "Escribiendo" : isViewingThread ? "En el hilo" : "Fuera del hilo",
+    localFocusKey: isViewingThread ? "thread" : "launcher",
+    localFocusLabel: isViewingThread ? "Hilo principal" : "Chat minimizado",
+    scopeKey: roomId,
+    scopeKind: "garden_chat",
+    userId: myProfileId,
+  });
+
+  const presence = useMemo<GardenChatPresence[]>(
+    () =>
+      sharedPresence.participants.map((participant) => ({
+        avatarUrl: null,
+        inChat: true,
+        name: participant.name,
+        updatedAt: participant.updatedAt,
+        userId: participant.userId,
+      })),
+    [sharedPresence.participants],
+  );
 
   const loadMembers = useCallback(async (targetGardenId: string) => {
     const accessToken = await getSessionAccessToken().catch(() => null);
@@ -321,7 +350,6 @@ export function useGardenChatRoom({
       setAttachments([]);
       setReactions([]);
       setReadStates([]);
-      setPresence([]);
       setTypingByUserId({});
       setLoading(false);
       return;
@@ -358,7 +386,6 @@ export function useGardenChatRoom({
       setAttachments([]);
       setReactions([]);
       setReadStates([]);
-      setPresence([]);
       setTypingByUserId({});
       if (isGardenChatSchemaMissing(error)) {
         setSchemaMissing(true);
@@ -453,6 +480,19 @@ export function useGardenChatRoom({
 
   useEffect(() => {
     const roomId = String(room?.id ?? "").trim();
+    if (!roomId || !isViewingThread) return;
+
+    const timer = window.setInterval(() => {
+      void refreshMessages();
+      void refreshReadStates();
+      void refreshReactions();
+    }, dbConnected ? 3_000 : 2_000);
+
+    return () => window.clearInterval(timer);
+  }, [dbConnected, isViewingThread, refreshMessages, refreshReadStates, refreshReactions, room?.id]);
+
+  useEffect(() => {
+    const roomId = String(room?.id ?? "").trim();
     const targetGardenId = String(gardenId ?? "").trim();
     const channelName = gardenChatDbChannelName({ roomId });
     if (!channelName) return;
@@ -514,9 +554,18 @@ export function useGardenChatRoom({
       );
     }
 
-    channel.subscribe();
+    channel.subscribe((status) => {
+      if (status === "SUBSCRIBED") {
+        setDbConnected(true);
+        return;
+      }
+      if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+        setDbConnected(false);
+      }
+    });
 
     return () => {
+      setDbConnected(false);
       dbChannelRef.current = null;
       void supabase.removeChannel(channel);
     };
@@ -532,27 +581,17 @@ export function useGardenChatRoom({
     });
 
     if (!channelName || !currentProfileId || !liveEnabled) {
-      setPresence([]);
       setTypingByUserId({});
-      setLiveConnected(false);
+      setTypingConnected(false);
       return;
     }
 
     const channel = supabase.channel(channelName, {
       config: {
         broadcast: { self: false },
-        presence: { key: currentProfileId },
       },
     });
     liveChannelRef.current = channel;
-
-    channel.on("presence", { event: "sync" }, () => {
-      setPresence(
-        buildGardenChatPresenceList(
-          channel.presenceState() as Record<string, Array<Partial<GardenChatPresence>>>,
-        ),
-      );
-    });
 
     channel.on("broadcast", { event: "typing" }, ({ payload }) => {
       const payloadUserId = String(payload?.userId ?? "").trim();
@@ -576,22 +615,17 @@ export function useGardenChatRoom({
 
     channel.subscribe(async (status) => {
       if (status !== "SUBSCRIBED") {
-        setLiveConnected(false);
+        if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+          setTypingConnected(false);
+        }
         return;
       }
 
-      setLiveConnected(true);
-      await channel.track({
-        userId: currentProfileId,
-        name: myDisplayName,
-        avatarUrl: myAvatarUrl,
-        inChat: true,
-        updatedAt: new Date().toISOString(),
-      });
+      setTypingConnected(true);
     });
 
     return () => {
-      setLiveConnected(false);
+      setTypingConnected(false);
       liveChannelRef.current = null;
       void supabase.removeChannel(channel);
     };
@@ -635,14 +669,9 @@ export function useGardenChatRoom({
     [myDisplayName, myProfileId],
   );
 
-  const wantsTypingSignal = useMemo(
-    () => composerFocused && normalizeGardenChatBody(draft).length > 0,
-    [composerFocused, draft],
-  );
-
   useEffect(() => {
     if (!liveEnabled) return;
-    if (!liveConnected) return;
+    if (!typingConnected) return;
     if (!liveChannelRef.current) return;
 
     if (!wantsTypingSignal) {
@@ -659,7 +688,41 @@ export function useGardenChatRoom({
       window.clearInterval(timer);
       void sendTyping(false);
     };
-  }, [liveConnected, liveEnabled, sendTyping, wantsTypingSignal]);
+  }, [liveEnabled, sendTyping, typingConnected, wantsTypingSignal]);
+
+  useEffect(() => {
+    const roomId = String(room?.id ?? "").trim();
+    if (!roomId) return;
+
+    const refreshEverything = () => {
+      void refreshMessages();
+      void refreshReadStates();
+      void refreshReactions();
+      void refreshAttachments();
+      void sharedPresence.refresh();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== "visible") return;
+      refreshEverything();
+    };
+
+    window.addEventListener("focus", refreshEverything);
+    window.addEventListener("online", refreshEverything);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("focus", refreshEverything);
+      window.removeEventListener("online", refreshEverything);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [
+    refreshAttachments,
+    refreshMessages,
+    refreshReadStates,
+    refreshReactions,
+    room?.id,
+    sharedPresence.refresh,
+  ]);
 
   const persistReadState = useCallback(
     async (messageId: string, messageCreatedAt: string) => {
@@ -1044,7 +1107,7 @@ export function useGardenChatRoom({
     reactionsByMessageId,
     readStates,
     presence,
-    liveConnected,
+    liveConnected: dbConnected,
     draft,
     setDraft,
     sending,

@@ -60,11 +60,13 @@ type UsePageFlowerBirthRitualParams = {
   objects: CanvasObject[];
   onApplySnapshot: (snapshot: FlowerBirthRitualSnapshot) => void;
   onBeforeFinalizeSeal: () => Promise<{ ritualCompleted: boolean } | undefined>;
+  onPersistLocalReady?: (ready: boolean) => void;
   onRemoteSeal: (payload: { sentAt: string; title?: string }) => void;
   onSetMessage: (message: string | null) => void;
   pagePlanSummary: string | null | undefined;
   pageRating: number;
   pageTitle: string | null | undefined;
+  readyUserIds: ReadonlySet<string>;
   ratingsByUserId: ReadonlyMap<string, number>;
   requiredSharedParticipants: number;
   saving: boolean;
@@ -187,11 +189,13 @@ export function usePageFlowerBirthRitual({
   objects,
   onApplySnapshot,
   onBeforeFinalizeSeal,
+  onPersistLocalReady,
   onRemoteSeal,
   onSetMessage,
   pagePlanSummary,
   pageRating,
   pageTitle,
+  readyUserIds,
   ratingsByUserId,
   requiredSharedParticipants,
   saving,
@@ -333,12 +337,23 @@ export function usePageFlowerBirthRitual({
     flowerBirthRitualPending &&
     flowerBirthHasEnteredLive &&
     !enoughFlowerBirthParticipantsPresent;
+  const flowerBirthReadyUserIds = useMemo(() => {
+    const next = new Set<string>();
+    for (const userId of readyUserIds) {
+      const normalized = String(userId ?? "").trim();
+      if (normalized) next.add(normalized);
+    }
+    for (const participant of flowerBirthRitualParticipants) {
+      if (participant.ready && participant.userId) next.add(participant.userId);
+    }
+    return next;
+  }, [flowerBirthRitualParticipants, readyUserIds]);
   const readyFlowerBirthParticipantsCount =
     requiredSharedParticipants === 1
       ? flowerBirthSharedChannel.localReady
         ? 1
         : 0
-      : flowerBirthRitualParticipants.filter((participant) => participant.ready).length;
+      : flowerBirthReadyUserIds.size;
   const holdingFlowerBirthParticipantsCount =
     requiredSharedParticipants === 1
       ? flowerBirthSharedChannel.localHolding
@@ -627,11 +642,13 @@ export function usePageFlowerBirthRitual({
       }
     }
     flowerBirthSharedChannel.setLocalReady(nextReady);
+    onPersistLocalReady?.(nextReady);
   }, [
     companionReference,
     flowerBirthEditingLocked,
     flowerBirthSharedChannel,
     hasLocalFlowerBirthRating,
+    onPersistLocalReady,
     onSetMessage,
   ]);
 
@@ -644,9 +661,10 @@ export function usePageFlowerBirthRitual({
     }
     if (flowerBirthSharedChannel.localReady) {
       flowerBirthSharedChannel.setLocalReady(false);
+      onPersistLocalReady?.(false);
     }
     setFlowerBirthRitualNotice("Has vuelto a seguir preparando la flor.");
-  }, [flowerBirthSharedChannel]);
+  }, [flowerBirthSharedChannel, onPersistLocalReady]);
 
   const handleFlowerBirthHoldStart = useCallback(() => {
     if (!canArmFlowerBirthHold || saving) return;

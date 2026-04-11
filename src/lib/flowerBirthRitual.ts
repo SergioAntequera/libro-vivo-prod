@@ -16,6 +16,7 @@ export type FlowerBirthRitualRatingRow = {
   garden_id: string;
   user_id: string;
   rating: number;
+  ready_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -72,6 +73,7 @@ export function normalizeFlowerBirthRitualRatingRow(
     garden_id: gardenId,
     user_id: userId,
     rating,
+    ready_at: String(raw.ready_at ?? "").trim() || null,
     created_at: String(raw.created_at ?? "").trim() || new Date(0).toISOString(),
     updated_at: String(raw.updated_at ?? "").trim() || new Date(0).toISOString(),
   };

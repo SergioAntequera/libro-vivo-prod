@@ -249,11 +249,14 @@ export async function savePageDetail({
 
     if (flowerBirthRitualPending && flowerBirthRatingsAvailable && activeGardenId && myProfileId) {
       if (resolvedLocalFlowerBirthRating > 0) {
+        const existingLocalRatingEntry =
+          flowerBirthRatings.find((entry) => entry.user_id === myProfileId) ?? null;
         const ratingPayload = withGardenIdOnInsert(
           {
             page_id: page.id,
             user_id: myProfileId,
             rating: resolvedLocalFlowerBirthRating,
+            ready_at: existingLocalRatingEntry?.ready_at ?? null,
           },
           activeGardenId,
         );
@@ -270,7 +273,7 @@ export async function savePageDetail({
       const { data: ratingRows, error: ratingsLoadError } = await withGardenScope(
         supabase
           .from("flower_birth_ritual_ratings")
-          .select("page_id,garden_id,user_id,rating,created_at,updated_at")
+          .select("page_id,garden_id,user_id,rating,ready_at,created_at,updated_at")
           .eq("page_id", page.id),
         activeGardenId,
       );

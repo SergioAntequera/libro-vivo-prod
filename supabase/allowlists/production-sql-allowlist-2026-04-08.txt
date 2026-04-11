@@ -73,3 +73,6 @@ supabase/sql/2026-04-08_garden_year_tree_states.sql
 supabase/sql/2026-04-08_page_plan_type_canonical_sync.sql
 supabase/sql/2026-04-08_page_visual_states.sql
 supabase/sql/2026-04-08_settings_garden_name.sql
+supabase/sql/2026-04-10_flower_birth_ritual_ready_state.sql
+supabase/sql/2026-04-11_shared_live_server_now.sql
+supabase/sql/2026-04-11_shared_live_sessions.sql

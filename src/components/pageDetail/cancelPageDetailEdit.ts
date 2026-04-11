@@ -233,6 +233,7 @@ export async function cancelPageDetailEdit({
 
     if (flowerBirthRitualPending && myProfileId) {
       setFlowerBirthRatings((prev) => {
+        const existingEntry = prev.find((entry) => entry.user_id === myProfileId) ?? null;
         const others = prev.filter((entry) => entry.user_id !== myProfileId);
         if (savedFlowerBirthRating <= 0 || !activeGardenId) return others;
         return [
@@ -242,7 +243,8 @@ export async function cancelPageDetailEdit({
             garden_id: activeGardenId,
             user_id: myProfileId,
             rating: savedFlowerBirthRating,
-            created_at: new Date().toISOString(),
+            ready_at: existingEntry?.ready_at ?? null,
+            created_at: existingEntry?.created_at ?? new Date().toISOString(),
             updated_at: new Date().toISOString(),
           },
         ];

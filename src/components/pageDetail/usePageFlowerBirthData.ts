@@ -81,7 +81,7 @@ export function usePageFlowerBirthData({
     const { data, error } = await withGardenScope(
       supabase
         .from("flower_birth_ritual_ratings")
-        .select("page_id,garden_id,user_id,rating,created_at,updated_at")
+        .select("page_id,garden_id,user_id,rating,ready_at,created_at,updated_at")
         .eq("page_id", pageId),
       activeGardenId,
     );
@@ -109,49 +109,40 @@ export function usePageFlowerBirthData({
     );
   }, [activeGardenId, myProfileId, pageId]);
 
-  useEffect(() => {
+  const refreshFlowerBirthRitual = useCallback(async () => {
     if (!pageId || !activeGardenId || !loadRitualData) {
-      const frameId = window.requestAnimationFrame(() => {
-        setFlowerBirthRitual(null);
-      });
-      return () => {
-        window.cancelAnimationFrame(frameId);
-      };
+      setFlowerBirthRitual(null);
+      return;
     }
 
-    let active = true;
+    const { data, error } = await withGardenScope(
+      supabase
+        .from("flower_birth_rituals")
+        .select("*")
+        .eq("page_id", pageId)
+        .maybeSingle(),
+      activeGardenId,
+    );
 
-    (async () => {
-      const { data, error } = await withGardenScope(
-        supabase
-          .from("flower_birth_rituals")
-          .select("*")
-          .eq("page_id", pageId)
-          .maybeSingle(),
-        activeGardenId,
-      );
-
-      if (!active) return;
-      if (error) {
-        if (isSchemaNotReadyError(error)) {
-          setFlowerBirthRitualAvailable(false);
-          setFlowerBirthRitual(null);
-          return;
-        }
-        console.warn("[page/detail] no se pudo cargar flower_birth_rituals:", error);
+    if (error) {
+      if (isSchemaNotReadyError(error)) {
+        setFlowerBirthRitualAvailable(false);
+        setFlowerBirthRitual(null);
         return;
       }
+      console.warn("[page/detail] no se pudo cargar flower_birth_rituals:", error);
+      return;
+    }
 
-      setFlowerBirthRitualAvailable(true);
-      setFlowerBirthRitual(
-        normalizeFlowerBirthRitualRow((data as Record<string, unknown> | null) ?? null),
-      );
-    })();
-
-    return () => {
-      active = false;
-    };
+    setFlowerBirthRitualAvailable(true);
+    setFlowerBirthRitual(
+      normalizeFlowerBirthRitualRow((data as Record<string, unknown> | null) ?? null),
+    );
   }, [activeGardenId, loadRitualData, pageId]);
+
+  useEffect(() => {
+    void refreshFlowerBirthRitual();
+  }, [refreshFlowerBirthRitual]);
 
   useEffect(() => {
     const shouldLoadSecondaryData =
@@ -200,6 +191,7 @@ export function usePageFlowerBirthData({
     flowerRevisions,
     flowerRevisionsAvailable,
     refreshFlowerBirthRatings,
+    refreshFlowerBirthRitual,
     refreshFlowerRevisions,
     savedFlowerBirthRating,
     setFlowerBirthRatings,
