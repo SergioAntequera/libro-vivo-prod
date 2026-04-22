@@ -2955,9 +2955,16 @@ export default function PageDetail() {
                         onPointerUp={handleFlowerBirthHoldEnd}
                         onPointerLeave={handleFlowerBirthHoldEnd}
                         onPointerCancel={handleFlowerBirthHoldEnd}
-                        className={`lv-capsule-ritual-shell lv-flower-birth-shell relative z-10 flex h-[300px] w-[300px] flex-col items-center justify-end overflow-hidden rounded-full border px-8 pb-9 pt-12 transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                        onDragStart={(event) => event.preventDefault()}
+                        className={`lv-capsule-ritual-shell lv-flower-birth-shell relative z-10 flex h-[300px] w-[300px] touch-none select-none flex-col items-center justify-end overflow-hidden rounded-full border px-8 pb-9 pt-12 transition disabled:cursor-not-allowed disabled:opacity-60 ${
                           canArmFlowerBirthHold ? "lv-capsule-ritual-shell-armed" : ""
                         } ${flowerBirthHoldCanProgress ? "lv-capsule-ritual-shell-holding" : ""}`}
+                        style={{
+                          touchAction: "none",
+                          userSelect: "none",
+                          WebkitUserSelect: "none",
+                          WebkitTouchCallout: "none",
+                        }}
                       >
                         <span className="sr-only">{flowerBirthHoldStatusLabel}</span>
                         <span className="absolute inset-[7%] rounded-full border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.74)_0%,rgba(255,255,255,0.12)_44%,rgba(104,67,42,0.1)_100%)]" />
@@ -2983,7 +2990,7 @@ export default function PageDetail() {
                             ? `${flowerBirthHoldProgressPercent}%`
                             : "Guardar"}
                         </span>
-                        <span className="relative z-10 flex flex-col items-center text-center">
+                        <span className="relative z-10 flex select-none flex-col items-center text-center">
                           <span className="rounded-full border border-white/55 bg-white/70 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-[var(--lv-text-muted)] backdrop-blur">
                             Nacimiento compartido
                           </span>
@@ -2991,6 +2998,7 @@ export default function PageDetail() {
                             <img
                               src={plantAssetSrc}
                               alt=""
+                              draggable={false}
                               className={`h-full w-full object-contain transition ${
                                 flowerBirthHoldCanProgress ? "scale-110" : "scale-100"
                               }`}

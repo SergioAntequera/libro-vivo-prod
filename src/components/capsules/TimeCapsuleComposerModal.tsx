@@ -2404,6 +2404,13 @@ export function TimeCapsuleComposerModal(props: TimeCapsuleComposerModalProps) {
                         onPointerUp={handleHoldEnd}
                         onPointerLeave={handleHoldEnd}
                         onPointerCancel={handleHoldEnd}
+                        onDragStart={(event) => event.preventDefault()}
+                        style={{
+                          touchAction: "none",
+                          userSelect: "none",
+                          WebkitUserSelect: "none",
+                          WebkitTouchCallout: "none",
+                        }}
                       >
                         <span className="sr-only">{holdLabel()}</span>
                         <span className="absolute inset-[7%] rounded-[42%_42%_36%_36%/28%_28%_58%_58%] border border-white/55 bg-[linear-gradient(180deg,rgba(255,255,255,0.68)_0%,rgba(255,255,255,0.08)_38%,rgba(94,48,28,0.06)_100%)]" />
@@ -2422,7 +2429,7 @@ export function TimeCapsuleComposerModal(props: TimeCapsuleComposerModalProps) {
                         <span className="absolute left-1/2 top-[16%] flex h-24 w-24 -translate-x-1/2 items-center justify-center rounded-full border border-[#b87962] bg-[radial-gradient(circle,#d98668_0%,#b56249_66%,#914431_100%)] text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-[#fff4eb] shadow-[0_12px_28px_rgba(98,43,30,0.34)]">
                           {holdProgress > 0 ? `${holdProgressPercent}%` : "Sello"}
                         </span>
-                        <span className="relative z-10 flex flex-col items-center text-center">
+                        <span className="relative z-10 flex select-none flex-col items-center text-center">
                           <span className="rounded-full border border-white/55 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-slate-600 backdrop-blur">
                             {holdLabel()}
                           </span>
