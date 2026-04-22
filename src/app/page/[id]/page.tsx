@@ -2955,12 +2955,14 @@ export default function PageDetail() {
                         onPointerUp={handleFlowerBirthHoldEnd}
                         onPointerLeave={handleFlowerBirthHoldEnd}
                         onPointerCancel={handleFlowerBirthHoldEnd}
+                        onTouchStart={handleFlowerBirthHoldStart}
+                        onTouchEnd={handleFlowerBirthHoldEnd}
+                        onTouchCancel={handleFlowerBirthHoldEnd}
                         onDragStart={(event) => event.preventDefault()}
-                        className={`lv-capsule-ritual-shell lv-flower-birth-shell relative z-10 flex h-[300px] w-[300px] touch-none select-none flex-col items-center justify-end overflow-hidden rounded-full border px-8 pb-9 pt-12 transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                        className={`lv-capsule-ritual-shell lv-flower-birth-shell relative z-10 flex h-[300px] w-[300px] select-none flex-col items-center justify-end overflow-hidden rounded-full border px-8 pb-9 pt-12 transition disabled:cursor-not-allowed disabled:opacity-60 ${
                           canArmFlowerBirthHold ? "lv-capsule-ritual-shell-armed" : ""
                         } ${flowerBirthHoldCanProgress ? "lv-capsule-ritual-shell-holding" : ""}`}
                         style={{
-                          touchAction: "none",
                           userSelect: "none",
                           WebkitUserSelect: "none",
                           WebkitTouchCallout: "none",

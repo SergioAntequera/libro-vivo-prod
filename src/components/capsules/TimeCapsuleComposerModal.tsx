@@ -2404,9 +2404,11 @@ export function TimeCapsuleComposerModal(props: TimeCapsuleComposerModalProps) {
                         onPointerUp={handleHoldEnd}
                         onPointerLeave={handleHoldEnd}
                         onPointerCancel={handleHoldEnd}
+                        onTouchStart={handleHoldStart}
+                        onTouchEnd={handleHoldEnd}
+                        onTouchCancel={handleHoldEnd}
                         onDragStart={(event) => event.preventDefault()}
                         style={{
-                          touchAction: "none",
                           userSelect: "none",
                           WebkitUserSelect: "none",
                           WebkitTouchCallout: "none",
