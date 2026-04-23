@@ -348,9 +348,16 @@ export function usePageFlowerBirthRitual({
     }
     return next;
   }, [flowerBirthRitualParticipants, readyUserIds]);
+  const localFlowerBirthReadyPersisted = useMemo(() => {
+    const normalized = String(myProfileId ?? "").trim();
+    if (!normalized) return false;
+    return readyUserIds.has(normalized);
+  }, [myProfileId, readyUserIds]);
+  const localFlowerBirthReady =
+    flowerBirthSharedChannel.localReady || localFlowerBirthReadyPersisted;
   const readyFlowerBirthParticipantsCount =
     requiredSharedParticipants === 1
-      ? flowerBirthSharedChannel.localReady
+      ? localFlowerBirthReady
         ? 1
         : 0
       : flowerBirthReadyUserIds.size;
@@ -464,7 +471,7 @@ export function usePageFlowerBirthRitual({
     readyFlowerBirthParticipantsCount >= requiredSharedParticipants;
   const canArmFlowerBirthHold =
     canEnterFlowerBirthSealStage &&
-    flowerBirthSharedChannel.localReady &&
+    localFlowerBirthReady &&
     !flowerBirthEditingLocked;
   const flowerBirthHoldCanProgress =
     canArmFlowerBirthHold &&
@@ -482,7 +489,7 @@ export function usePageFlowerBirthRitual({
     if (!hasLocalFlowerBirthRating) {
       return "Pon primero tu valoracion personal.";
     }
-    if (!flowerBirthSharedChannel.localReady) {
+    if (!localFlowerBirthReady) {
       return "Marca primero que ya la ves a punto.";
     }
     if (!enoughFlowerBirthParticipantsPresent) {
@@ -527,8 +534,8 @@ export function usePageFlowerBirthRitual({
     flowerBirthHoldProgress,
     flowerBirthLeaderUserId,
     flowerBirthSharedChannel.localHolding,
-    flowerBirthSharedChannel.localReady,
     hasFlowerBirthRatingsForAllParticipants,
+    localFlowerBirthReady,
     hasLocalFlowerBirthRating,
     holdingFlowerBirthParticipantsCount,
     myProfileId,
@@ -631,7 +638,7 @@ export function usePageFlowerBirthRitual({
       return;
     }
 
-    const nextReady = !flowerBirthSharedChannel.localReady;
+    const nextReady = !localFlowerBirthReady;
     setFlowerBirthRitualNotice(null);
     if (!nextReady) {
       setFlowerBirthHoldProgress(0);
@@ -648,6 +655,7 @@ export function usePageFlowerBirthRitual({
     flowerBirthEditingLocked,
     flowerBirthSharedChannel,
     hasLocalFlowerBirthRating,
+    localFlowerBirthReady,
     onPersistLocalReady,
     onSetMessage,
   ]);
@@ -659,12 +667,14 @@ export function usePageFlowerBirthRitual({
     if (flowerBirthSharedChannel.localHolding) {
       flowerBirthSharedChannel.setLocalHolding(false);
     }
-    if (flowerBirthSharedChannel.localReady) {
-      flowerBirthSharedChannel.setLocalReady(false);
+    if (localFlowerBirthReady) {
+      if (flowerBirthSharedChannel.localReady) {
+        flowerBirthSharedChannel.setLocalReady(false);
+      }
       onPersistLocalReady?.(false);
     }
     setFlowerBirthRitualNotice("Has vuelto a seguir preparando la flor.");
-  }, [flowerBirthSharedChannel, onPersistLocalReady]);
+  }, [flowerBirthSharedChannel, localFlowerBirthReady, onPersistLocalReady]);
 
   const handleFlowerBirthHoldStart = useCallback(() => {
     if (!canArmFlowerBirthHold || saving) return;
@@ -866,7 +876,7 @@ export function usePageFlowerBirthRitual({
     handleLocalCanvasPointerChange,
     hasDeferredSharedFlowerSnapshot,
     hasFlowerBirthRatingsForAllParticipants,
-    localReady: flowerBirthSharedChannel.localReady,
+    localReady: localFlowerBirthReady,
     locationEditorsLabel,
     planTypeEditorsLabel,
     readyFlowerBirthParticipantsCount,
