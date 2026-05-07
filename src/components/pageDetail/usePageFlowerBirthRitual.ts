@@ -581,7 +581,9 @@ export function usePageFlowerBirthRitual({
         id: "presence",
         label: "Presencia",
         detail: enoughFlowerBirthParticipantsPresent
-          ? "Las dos personas ya estais dentro."
+          ? requiredSharedParticipants > 1
+            ? "Las dos personas ya estais dentro."
+            : "Ya puedes crear y sellar la flor."
           : `Esperando a ${otherFlowerBirthParticipant?.name ?? companionReference}.`,
         done: enoughFlowerBirthParticipantsPresent,
         active: !enoughFlowerBirthParticipantsPresent,
@@ -721,7 +723,11 @@ export function usePageFlowerBirthRitual({
 
     const frameId = window.requestAnimationFrame(() => {
       setFlowerBirthHasEnteredLive(true);
-      setFlowerBirthRitualNotice("Ya estais las dos personas dentro. La flor se abre en directo.");
+      setFlowerBirthRitualNotice(
+        requiredSharedParticipants > 1
+          ? "Ya estais las dos personas dentro. La flor se abre en directo."
+          : "La flor se abre en directo. Puedes crearla y sellarla cuando este lista.",
+      );
     });
 
     return () => {

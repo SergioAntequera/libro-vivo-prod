@@ -265,8 +265,8 @@ export function buildActivityFeed(input: BuildActivityFeedInput): ActivityFeedRe
         title: `Riega "${title}"`,
         message:
           item.otherParticipantHasWatered && !item.currentUserHasWatered
-            ? "La otra persona ya la reg\u00f3. Si la riegas ahora, empezara el nacimiento compartido de la flor."
-            : "Ya pod\u00e9is confirmar juntas esta experiencia para que empiece a brotar la flor.",
+            ? "La otra persona ya la reg\u00f3. Si la riegas ahora, entraras al nacimiento de la flor."
+            : "Ya puedes confirmar esta experiencia para que empiece a brotar la flor.",
         actionable: true,
         createdAt: item.seed.created_at,
         dueDate: item.seed.scheduled_date,
@@ -282,7 +282,7 @@ export function buildActivityFeed(input: BuildActivityFeedInput): ActivityFeedRe
         entityKind: "seed",
         entityId: item.seed.id,
         title: `Tu parte ya est\u00e1 hecha en "${title}"`,
-        message: "Falta la otra persona para que se active el nacimiento compartido de la flor.",
+        message: "Tu parte ya esta hecha. La flor puede seguir completandose despues.",
         actionable: false,
         createdAt: item.wateringSummary.lastConfirmedAt ?? item.seed.created_at,
         dueDate: item.seed.scheduled_date,
@@ -304,7 +304,7 @@ export function buildActivityFeed(input: BuildActivityFeedInput): ActivityFeedRe
       entityId: pageId,
       title: `La flor "${title}" ya puede nacer`,
       message:
-        "Los dos riegos ya estan completos. Ahora toca entrar al nacimiento compartido antes de empezar a editar la flor.",
+        "La flor ya puede nacer. Entra para crearla, editarla y sellarla cuando este lista.",
       actionable: true,
       createdAt: ritual.activatedAt,
       dueDate: ritual.activatedAt,

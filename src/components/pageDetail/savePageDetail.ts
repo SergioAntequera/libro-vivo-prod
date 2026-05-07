@@ -496,7 +496,7 @@ export async function savePageDetail({
         }
       } else {
         setMessage(
-          "Cambios guardados. Para cerrar el nacimiento de la flor, teneis que estar las dos personas dentro y dejar cada una su valoracion.",
+          "Cambios guardados. Para cerrar el nacimiento de la flor, deja tu valoracion y marca que ya esta a punto.",
         );
       }
     }

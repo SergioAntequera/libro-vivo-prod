@@ -656,7 +656,7 @@ export function usePlansSeedActions({
   );
 
   const waterSeed = useCallback(
-    async ({ seed, requiredParticipants }: WaterSeedInput) => {
+    async ({ seed, requiredParticipants: _requiredParticipants }: WaterSeedInput) => {
       setMsg(null);
       if (!activeGardenId) {
         setMsg("No hay jardín activo para regar esta semilla.");
@@ -736,17 +736,19 @@ export function usePlansSeedActions({
           .filter(Boolean),
       ).size;
 
-      if (confirmedParticipants < Math.max(1, requiredParticipants)) {
+      const requiredParticipants = 1;
+
+      if (confirmedParticipants < requiredParticipants) {
         await refreshAll();
         if (confirmedParticipants <= 1) {
-          setMsg(`Riego guardado. Falta ${otherPersonLabel} para que la flor brote.`);
+          setMsg("Riego guardado. La flor puede nacer cuando entres.");
         } else {
           setMsg("Riego guardado. La flor sigue esperando confirmaciones.");
         }
         return;
       }
 
-      const activateFlowerBirthRitual = Math.max(1, requiredParticipants) > 1;
+      const activateFlowerBirthRitual = true;
 
       try {
         const pageId = await finalizeBloom(seed, {
@@ -774,7 +776,7 @@ export function usePlansSeedActions({
         }
         setMsg(
           activateFlowerBirthRitual
-            ? `La flor ya puede nacer. Ahora toca entrar al nacimiento compartido con ${otherPersonLabel}.`
+            ? `La flor ya puede nacer. Puedes entrar, crearla y sellarla; ${otherPersonLabel} podra sumarse despues.`
             : "La semilla ya ha florecido.",
         );
       } catch (error) {

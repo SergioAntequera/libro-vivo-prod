@@ -31,11 +31,11 @@ export default function PlansPendingFlowerBirthPanel({
           Nacimiento pendiente
         </div>
         <h2 className="text-lg font-semibold text-[#2f3024]">
-          Ya hay una flor esperando el nacimiento compartido.
+          Ya hay una flor esperando su nacimiento.
         </h2>
         <p className="text-sm leading-6 text-[#6d6755]">
-          El riego ya se completo. El siguiente paso es entrar en la flor y coincidir alli para
-          empezar su nacimiento.
+          El riego ya se completo. Puedes entrar en la flor, crearla y sellarla; la otra persona
+          podra sumarse despues.
         </p>
       </div>
 

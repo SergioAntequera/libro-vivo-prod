@@ -666,7 +666,7 @@ export function usePlansBootstrapData({
       void (async () => {
         await refreshAll(activeGardenId);
         setMsg((current) =>
-          current ?? "La flor ya puede nacer. Entra al nacimiento compartido cuando quieras.",
+          current ?? "La flor ya puede nacer. Entra, creala y sellala cuando quieras.",
         );
       })();
     });

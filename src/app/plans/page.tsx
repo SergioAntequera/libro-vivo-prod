@@ -150,7 +150,6 @@ function PlansPageContent() {
     routeOptions,
     planTypeOptions,
     cfg,
-    activeGardenMemberCount,
     wateringConfirmations,
     pendingFlowerBirths,
     preparationProfiles,
@@ -449,13 +448,12 @@ function PlansPageContent() {
         routeOptions,
         wateringConfirmations,
         currentUserId: myProfileId,
-        activeMemberCount: activeGardenMemberCount,
+        activeMemberCount: 1,
         cfg,
         nowDate: today,
         query: planQuery,
       }),
     [
-      activeGardenMemberCount,
       cfg,
       myProfileId,
       placeOptions,
@@ -1062,7 +1060,7 @@ function PlansPageContent() {
               <h1 className="text-2xl font-semibold">Planes</h1>
               <p className="text-sm text-[var(--lv-text-muted)]">{PLANS_SURFACE.summary}</p>
               <p className="text-sm text-[var(--lv-text-muted)]">
-                La fecha solo prepara la semilla. La flor nace cuando ambas personas la riegan.
+                La fecha prepara la semilla. La flor puede nacer con una persona y seguir abierta a la otra.
               </p>
             </div>
 
@@ -1265,7 +1263,7 @@ function PlansPageContent() {
               onWaterSeed={(item) => {
                 void waterSeed({
                   seed: item.seed,
-                  requiredParticipants: item.wateringSummary.requiredParticipants,
+                  requiredParticipants: 1,
                 });
               }}
               onDeleteSeed={openDeleteSeedModal}

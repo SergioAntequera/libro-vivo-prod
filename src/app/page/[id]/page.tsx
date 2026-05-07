@@ -134,7 +134,6 @@ import {
 } from "@/lib/pageDetailTypes";
 import { derivePageCompletionState } from "@/lib/pageCompletionState";
 import {
-  resolveSharedGardenRequiredParticipants,
   sharedGardenRitualChannelName,
   type SharedGardenParticipantPresence,
 } from "@/lib/sharedGardenSessions";
@@ -485,7 +484,7 @@ export default function PageDetail() {
     enabled: Boolean(page?.id && activeGardenId) || ritualRequested,
     page,
   });
-  const { activeGardenMemberCount, activeGardenMemberCountLoaded, memberNamesById } = usePageGardenMembers({
+  const { memberNamesById } = usePageGardenMembers({
     activeGardenId,
     enabled: flowerBirthRitualPending || detailSection === "reflections",
   });
@@ -1051,16 +1050,8 @@ export default function PageDetail() {
     [flowerBirthSnapshot],
   );
   const requiredSharedParticipants = useMemo(() => {
-    if (flowerBirthRitualPending && activeGardenId && !activeGardenMemberCountLoaded) {
-      return 2;
-    }
-    return resolveSharedGardenRequiredParticipants(activeGardenMemberCount);
-  }, [
-    activeGardenId,
-    activeGardenMemberCount,
-    activeGardenMemberCountLoaded,
-    flowerBirthRitualPending,
-  ]);
+    return 1;
+  }, []);
   const flowerBirthChannelName = useMemo(() => {
     if (!page?.id || !flowerBirthRitualPending) return null;
     return sharedGardenRitualChannelName({
@@ -2205,11 +2196,11 @@ export default function PageDetail() {
                   Nacimiento compartido
                 </div>
                 <h2 className="mt-2 text-xl font-semibold text-[var(--lv-text)]">
-                  Esta flor se crea entre las dos personas, ahora y en directo.
+                  Esta flor ya puede crearse y sellarse.
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-[var(--lv-text-muted)]">
-                  La fecha ya ha llegado y el riego conjunto ya se ha cumplido. Ahora toca darle forma entre las dos personas:
-                  texto, lienzo y detalles viven sincronizados mientras este ritual siga abierto.
+                  La fecha ya ha llegado. Puedes darle forma ahora; si la otra persona entra, texto,
+                  lienzo y detalles se sincronizan mientras este ritual siga abierto.
                 </p>
               </div>
 
@@ -2304,8 +2295,8 @@ export default function PageDetail() {
                     </div>
                     <div className="mt-3 text-xs text-[var(--lv-text-muted)]">
                       {hasFlowerBirthRatingsForAllParticipants
-                        ? "Cuando las dos personas la dejeis a punto, aparecera el guardado compartido."
-                        : "El nacimiento no se cerrara hasta que esteis las dos personas dentro y cada una haya dejado su valoracion."}
+                        ? "Cuando la dejes a punto, aparecera el gesto final de sellado."
+                        : "El nacimiento se puede cerrar con tu valoracion. La otra persona podra completar su mirada despues."}
                     </div>
                   {flowerBirthEditingLocked ? (
                     <div className="mt-3 rounded-[18px] border border-[var(--lv-warning)] bg-[var(--lv-warning-soft)] px-3 py-2 text-xs font-medium text-[var(--lv-warning)]">
@@ -2343,7 +2334,7 @@ export default function PageDetail() {
                     </div>
                   ) : !hasFlowerBirthRatingsForAllParticipants ? (
                     <div className="mt-2 text-xs text-[var(--lv-text-muted)]">
-                      Ya puedes marcar tu lado. El gesto final se abrira cuando esten las dos personas dentro y ambas hayan valorado la flor.
+                      Ya puedes marcar tu lado. El gesto final se abrira sin esperar a la otra persona.
                     </div>
                   ) : null}
               </div>
@@ -2382,7 +2373,7 @@ export default function PageDetail() {
 
             {!canEnterFlowerBirthSealStage ? (
               <div className="mt-5 rounded-[24px] border border-dashed border-[color-mix(in_srgb,var(--lv-primary)_18%,white)] bg-white/55 px-5 py-4 text-sm text-[var(--lv-text-muted)]">
-                Cuando las dos personas la marqueis como lista, se abrira aqui el gesto final de guardado conjunto.
+                Cuando la marques como lista, se abrira aqui el gesto final de sellado.
               </div>
             ) : null}
           </section>
@@ -2421,9 +2412,9 @@ export default function PageDetail() {
             ratingHint={
               flowerBirthRitualPending
                 ? localFlowerBirthRating > 0
-                  ? `Tu valoracion personal es ${localFlowerBirthRating}/5. Al cerrar el nacimiento compartido se guardara la media de ambas.`
-                  : "Pon tu valoracion personal. Cuando las dos personas la hayan dejado, la flor guardara la media final."
-                : "La valoracion quedo sellada con la media del nacimiento compartido y ya no puede modificarse."
+                  ? `Tu valoracion personal es ${localFlowerBirthRating}/5. Al cerrar el nacimiento se guardara como valoracion inicial.`
+                  : "Pon tu valoracion personal. Con ella podras sellar la flor sin esperar a la otra persona."
+                : "La valoracion quedo sellada con el nacimiento de la flor y ya no puede modificarse."
             }
             onPlanSummaryChange={(value) =>
               setPage((prev) => (prev ? { ...prev, plan_summary: value } : prev))
@@ -2789,8 +2780,7 @@ export default function PageDetail() {
                   </h3>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--lv-text-muted)] md:text-[15px]">
                     La flor ya esta preparada. Ahora el nacimiento se cierra con un gesto unico:
-                    las dos personas la sosteneis a la vez y la dejais guardada como memoria
-                    compartida.
+                    mantenla unos segundos y quedara guardada como memoria compartida.
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2 text-xs uppercase tracking-[0.16em] text-[var(--lv-text-muted)]">
                     <span className="rounded-full border border-[var(--lv-border)] bg-white/84 px-3 py-1">
@@ -2925,9 +2915,7 @@ export default function PageDetail() {
                       {flowerBirthHoldStatusLabel}
                     </div>
                     <div className="mt-2 text-center text-[11px] uppercase tracking-[0.22em] text-[var(--lv-text-muted)]">
-                      {requiredSharedParticipants > 1
-                        ? "Las dos personas teneis que mantener la flor al mismo tiempo"
-                        : "Manten la flor unos segundos"}
+                      Manten la flor unos segundos
                     </div>
 
                     <div className="relative mx-auto mt-6 flex min-h-[380px] w-full max-w-[520px] items-end justify-center pb-4">
@@ -2994,7 +2982,7 @@ export default function PageDetail() {
                         </span>
                         <span className="relative z-10 flex select-none flex-col items-center text-center">
                           <span className="rounded-full border border-white/55 bg-white/70 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-[var(--lv-text-muted)] backdrop-blur">
-                            Nacimiento compartido
+                            Nacimiento de flor
                           </span>
                           <span className="mt-8 flex h-32 w-32 items-center justify-center rounded-full border border-white/50 bg-white/38 p-4 shadow-[inset_0_10px_26px_rgba(255,255,255,0.34)] backdrop-blur">
                             <img
@@ -3010,7 +2998,7 @@ export default function PageDetail() {
                             {page.title ?? "Flor compartida"}
                           </span>
                           <span className="mt-2 max-w-[220px] text-sm leading-6 text-[var(--lv-text-muted)]">
-                            Cuando ambas la mantengais, el nacimiento quedara cerrado y guardado.
+                            Cuando la mantengas, el nacimiento quedara cerrado y guardado.
                           </span>
                         </span>
                       </button>

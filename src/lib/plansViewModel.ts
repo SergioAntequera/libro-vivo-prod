@@ -91,7 +91,7 @@ function resolveSeedStage(input: {
   const wateringSummary = summarizeJointWatering({
     scheduledDate: input.seed.scheduled_date,
     nowDate: input.nowDate,
-    requiredParticipants: input.activeMemberCount,
+    requiredParticipants: 1,
     confirmedParticipants: input.confirmedParticipants,
   });
 
@@ -154,7 +154,7 @@ export function buildPlansSeedViews(input: BuildPlansSeedViewsInput): PlansSeedV
       const wateringSummary = summarizeJointWatering({
         scheduledDate: seed.scheduled_date,
         nowDate: input.nowDate,
-        requiredParticipants: input.activeMemberCount,
+        requiredParticipants: 1,
         confirmedParticipants,
         lastConfirmedAt:
           [...confirmationRows]
@@ -230,7 +230,7 @@ export function buildPlansAgendaSections(seedViews: PlansSeedView[]): PlansAgend
     {
       key: "action",
       title: "Toca hoy",
-      hint: "Semillas cuya fecha ha llegado y ya pueden empezar el nacimiento compartido de la flor.",
+      hint: "Semillas cuya fecha ha llegado y ya pueden empezar el nacimiento de la flor.",
       items: byBucket.action,
     },
     {

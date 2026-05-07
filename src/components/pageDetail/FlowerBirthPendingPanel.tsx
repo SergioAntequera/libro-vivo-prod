@@ -34,8 +34,8 @@ export function FlowerBirthPendingPanel({
             La flor ya puede nacer.
           </h2>
           <p className="mt-2 text-sm leading-6 text-[var(--lv-text-muted)]">
-            El riego compartido ya se ha completado. Esta es la antesala del nacimiento: cuando
-            entreis las dos personas, la flor se abrira en directo para empezar a crearla.
+            El riego ya se ha completado. Esta es la antesala del nacimiento: puedes entrar,
+            crear la flor y sellarla sin esperar a nadie.
           </p>
         </div>
 
@@ -68,8 +68,8 @@ export function FlowerBirthPendingPanel({
           </div>
           <div className="mt-3 text-sm text-[var(--lv-text-muted)]">
             {waitingCount > 0
-              ? `Tu presencia ya cuenta. Esperando a ${companionReference} para empezar el nacimiento compartido.`
-              : "Ya estais dentro las dos personas. La flor se esta preparando para abrirse."}
+              ? `Tu presencia ya cuenta. ${companionReference} podra sumarse despues.`
+              : "La flor se esta preparando para abrirse."}
           </div>
         </div>
 
