@@ -1806,6 +1806,12 @@ export default function PageDetail() {
     });
   }
 
+  async function saveFlowerAndGoHome() {
+    const result = await save();
+    if (result?.ritualCompleted === false) return;
+    pushRoute("/home");
+  }
+
   // quickSave for care actions - deprecated, care system removed
 
   const {
@@ -2189,7 +2195,7 @@ export default function PageDetail() {
             requiredParticipants={requiredSharedParticipants}
           />
         ) : flowerBirthRitualPending ? (
-          <section className="rounded-[28px] border border-[color-mix(in_srgb,var(--lv-primary)_26%,white)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--lv-primary-soft)_82%,white),color-mix(in_srgb,var(--lv-surface)_94%,white))] p-5 shadow-[var(--lv-shadow-md)]">
+          <section className="hidden rounded-[28px] border border-[color-mix(in_srgb,var(--lv-primary)_26%,white)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--lv-primary-soft)_82%,white),color-mix(in_srgb,var(--lv-surface)_94%,white))] p-5 shadow-[var(--lv-shadow-md)]">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0 flex-1 max-w-3xl">
                 <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--lv-primary-strong)]">
@@ -2743,6 +2749,19 @@ export default function PageDetail() {
         </div>
         )}
 
+        {flowerBirthRitualPending ? (
+          <div className="sticky bottom-4 z-30 flex justify-end rounded-[24px] border border-[var(--lv-border)] bg-white/92 p-3 shadow-[0_18px_42px_rgba(35,43,31,0.14)] backdrop-blur">
+            <button
+              type="button"
+              className="lv-btn lv-btn-primary"
+              onClick={() => void saveFlowerAndGoHome()}
+              disabled={saving || deletingPage}
+            >
+              {saving ? "Guardando..." : "Guardar flor y salir a home"}
+            </button>
+          </div>
+        ) : null}
+
         {flowerBirthRitualPending ? null : (
           <PageRevisionHistoryPanel
             revisions={flowerRevisions}
@@ -2753,8 +2772,8 @@ export default function PageDetail() {
         )}
       </div>
 
-      {canEnterFlowerBirthSealStage ? (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,248,231,0.42)_0%,rgba(24,34,21,0.62)_72%)] p-3 backdrop-blur-[5px] md:p-4">
+      {canEnterFlowerBirthSealStage && page ? (
+        <div className="fixed inset-0 z-[70] hidden items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,248,231,0.42)_0%,rgba(24,34,21,0.62)_72%)] p-3 backdrop-blur-[5px] md:p-4">
           <section className="relative w-full max-w-6xl overflow-hidden rounded-[38px] border border-[color-mix(in_srgb,var(--lv-primary)_20%,white)] bg-[linear-gradient(180deg,rgba(255,252,245,0.96)_0%,rgba(247,241,231,0.95)_42%,rgba(237,246,238,0.97)_100%)] shadow-[0_34px_90px_rgba(39,30,20,0.34)]">
             {page.cover_photo_url ? (
               <img
