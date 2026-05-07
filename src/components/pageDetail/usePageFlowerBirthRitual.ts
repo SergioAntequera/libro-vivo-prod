@@ -625,7 +625,14 @@ export function usePageFlowerBirthRitual({
     const saveResult = await onBeforeFinalizeSeal();
     if (saveResult?.ritualCompleted) {
       await flowerBirthSharedChannel.broadcastSealed(pageTitle ?? undefined);
+      return;
     }
+
+    flowerBirthSealTriggeredRef.current = false;
+    flowerBirthHoldStartRef.current = null;
+    setFlowerBirthHoldProgress(0);
+    flowerBirthSharedChannel.setLocalHolding(false);
+    setFlowerBirthRitualNotice("No se pudo cerrar todavia. Revisa la valoracion y vuelve a intentarlo.");
   }, [flowerBirthSharedChannel, onBeforeFinalizeSeal, pageTitle]);
 
   const toggleFlowerBirthReady = useCallback(() => {
@@ -806,7 +813,16 @@ export function usePageFlowerBirthRitual({
   }, [flowerBirthRitualParticipants, flowerBirthRitualPending, myProfileId]);
 
   useEffect(() => {
-    if (!flowerBirthHoldCanProgress || saving) {
+    if (saving) {
+      const frameId = window.requestAnimationFrame(() => {
+        setFlowerBirthHoldProgress(1);
+      });
+      return () => {
+        window.cancelAnimationFrame(frameId);
+      };
+    }
+
+    if (!flowerBirthHoldCanProgress) {
       flowerBirthHoldStartRef.current = null;
       flowerBirthSealTriggeredRef.current = false;
       const frameId = window.requestAnimationFrame(() => {
