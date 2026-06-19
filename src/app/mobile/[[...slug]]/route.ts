@@ -20,16 +20,22 @@ const CONTENT_TYPES = new Map<string, string>([
   [".woff2", "font/woff2"],
 ]);
 
-function normalizeSegments(slug: string[] | undefined) {
-  return (slug ?? [])
+function normalizeSegments(segments: string[]) {
+  return segments
     .filter(Boolean)
     .map((segment) => decodeURIComponent(segment))
     .flatMap((segment) => segment.split("/"))
     .filter(Boolean);
 }
 
-function resolveRequestedFile(slug: string[] | undefined) {
-  const segments = normalizeSegments(slug);
+function getRequestSegments(req: Request) {
+  const pathname = new URL(req.url).pathname;
+  const mobilePath = pathname === "/mobile" ? "" : pathname.replace(/^\/mobile\/?/, "");
+  return mobilePath ? mobilePath.split("/") : [];
+}
+
+function resolveRequestedFile(req: Request) {
+  const segments = normalizeSegments(getRequestSegments(req));
   const relativePath = segments.length ? path.join(...segments) : "index.html";
   const candidate = path.resolve(MOBILE_PUBLIC_ROOT, relativePath);
   const safeRoot = `${MOBILE_PUBLIC_ROOT}${path.sep}`;
@@ -67,8 +73,8 @@ function getContentType(filePath: string) {
   return CONTENT_TYPES.get(path.extname(filePath).toLowerCase()) ?? "application/octet-stream";
 }
 
-async function serveMobileAsset(slug: string[] | undefined, includeBody: boolean) {
-  const requestedFile = await readIfFile(resolveRequestedFile(slug));
+async function serveMobileAsset(req: Request, includeBody: boolean) {
+  const requestedFile = await readIfFile(resolveRequestedFile(req));
   const fallbackFile = requestedFile ?? (await readIfFile(path.join(MOBILE_PUBLIC_ROOT, "index.html")));
 
   if (!fallbackFile) {
@@ -87,18 +93,10 @@ async function serveMobileAsset(slug: string[] | undefined, includeBody: boolean
   });
 }
 
-export async function GET(
-  _req: Request,
-  context: { params: Promise<{ slug?: string[] }> },
-) {
-  const { slug } = await context.params;
-  return serveMobileAsset(slug, true);
+export async function GET(req: Request) {
+  return serveMobileAsset(req, true);
 }
 
-export async function HEAD(
-  _req: Request,
-  context: { params: Promise<{ slug?: string[] }> },
-) {
-  const { slug } = await context.params;
-  return serveMobileAsset(slug, false);
+export async function HEAD(req: Request) {
+  return serveMobileAsset(req, false);
 }
