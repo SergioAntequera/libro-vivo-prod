@@ -96,6 +96,10 @@ const originalWebpack = baseConfig.webpack;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...baseConfig,
+  outputFileTracingIncludes: {
+    "/mobile/[[...slug]]": ["./public/mobile/**/*"],
+    "/mobile/[[...slug]]/route": ["./public/mobile/**/*"],
+  },
   webpack(config, options) {
     options.config.pwa = pwaOptions;
     if (typeof originalWebpack === "function") {
