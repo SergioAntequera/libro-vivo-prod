@@ -27,7 +27,9 @@
     "prod:bootstrap:apply": "node scripts/apply-production-bootstrap.mjs",
     "prod:app:materialize": "node scripts/materialize-app-skeleton.mjs",
     "qa:couple:reset": "node scripts/dev-reset-couple-qa.mjs",
-    "qa:couple:mobile": "node scripts/qa-couple-mobile-walkthrough.mjs"
+    "qa:couple:mobile": "node scripts/qa-couple-mobile-walkthrough.mjs",
+    "mobile:pwa:sync": "node scripts/sync-mobile-pwa.mjs",
+    "mobile:pwa:check": "node scripts/check-mobile-pwa-bundle.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

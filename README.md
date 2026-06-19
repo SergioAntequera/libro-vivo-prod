@@ -31,6 +31,27 @@ Objetivo:
 6. Validar runtime, auth, storage y luego conectar a `Vercel`.
 7. Cerrar el lanzamiento desde `/admin/release` con el ultimo click ceremonial.
 
+## PWA mobile en `/mobile`
+
+Este repo es tambien el punto de despliegue de la PWA exportada de `libro-vivo-mobile`.
+
+Flujo:
+
+1. Exportar `libro-vivo-mobile` con `EXPO_BASE_URL=/mobile`.
+2. Ejecutar aqui `npm run mobile:pwa:sync`.
+3. Verificar aqui `npm run mobile:pwa:check`.
+4. Desplegar `libro-vivo-prod`.
+
+La app queda servida en:
+
+- `https://www.libro-vivo.es/mobile`
+
+Importante:
+
+- `public/mobile` es parte del artefacto de despliegue de este repo
+- no debe quedarse desincronizado respecto al ultimo export de `libro-vivo-mobile`
+- como este repo puede tener cambios locales ajenos, para publicar solo esta parte conviene usar `scripts/ship-mobile-pwa.ps1`
+
 ## Scripts utiles
 
 - `node scripts/check-db-connection.mjs`

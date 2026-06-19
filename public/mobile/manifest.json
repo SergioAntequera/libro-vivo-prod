@@ -1,0 +1,39 @@
+{
+  "id": "/mobile",
+  "name": "Libro Vivo Mobile",
+  "short_name": "Libro Vivo",
+  "description": "Companion app movil de Libro Vivo para jardin, recuerdos, planes, chats y capsulas.",
+  "lang": "es-ES",
+  "start_url": "/mobile",
+  "scope": "/mobile/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fbf1de",
+  "theme_color": "#fbf1de",
+  "icons": [
+    {
+      "src": "/mobile/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/mobile/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/mobile/icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/mobile/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
