@@ -21,3 +21,5 @@ coverage/
 public/sw.js
 public/precache*.js
 public/workbox-*.js
+!public/mobile/assets/vendor/
+!public/mobile/assets/vendor/**

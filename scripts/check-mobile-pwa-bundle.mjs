@@ -4,6 +4,7 @@ import path from "node:path";
 const publicMobileDir = path.join(process.cwd(), "public", "mobile");
 const indexHtmlPath = path.join(publicMobileDir, "index.html");
 const manifestPath = path.join(publicMobileDir, "manifest.json");
+const bundledJsDir = path.join(publicMobileDir, "_expo", "static", "js", "web");
 
 async function readRequiredFile(filePath) {
   try {
@@ -13,9 +14,38 @@ async function readRequiredFile(filePath) {
   }
 }
 
+async function readOptionalFile(filePath) {
+  try {
+    return await fs.readFile(filePath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
 function assert(condition, message) {
   if (!condition) {
     throw new Error(message);
+  }
+}
+
+async function collectFiles(dirPath) {
+  try {
+    const entries = await fs.readdir(dirPath, { withFileTypes: true });
+    const files = [];
+    for (const entry of entries) {
+      const fullPath = path.join(dirPath, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...(await collectFiles(fullPath)));
+      } else {
+        files.push(fullPath);
+      }
+    }
+    return files;
+  } catch (error) {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
   }
 }
 
@@ -44,6 +74,17 @@ async function main() {
   assert(manifest.start_url === "/mobile", 'Mobile manifest start_url must be "/mobile".');
   assert(manifest.scope === "/mobile/", 'Mobile manifest scope must be "/mobile/".');
   assert(Array.isArray(manifest.icons) && manifest.icons.length > 0, "Mobile manifest must include icons.");
+
+  const bundledJsFiles = (await collectFiles(bundledJsDir)).filter((filePath) => filePath.endsWith(".js"));
+  let scopedPathFound = false;
+  for (const jsFile of bundledJsFiles) {
+    const content = await readOptionalFile(jsFile);
+    if (content?.includes("/assets/node_modules/@")) {
+      scopedPathFound = true;
+      break;
+    }
+  }
+  assert(!scopedPathFound, "Mobile bundle still references scoped node_modules asset paths with '@'.");
 
   console.log("[mobile:pwa:check] Mobile PWA bundle is valid for /mobile deployment.");
 }
