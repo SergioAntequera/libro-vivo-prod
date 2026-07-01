@@ -29,26 +29,54 @@ export async function uploadSeedPreparationAttachment(input: {
   form.set("seedId", input.seedId);
   form.set("file", input.file);
 
-  const response = await fetch("/api/plans/preparation/upload", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${session.access_token}`,
-    },
-    body: form,
+  return await new Promise<UploadedSeedPreparationAttachment>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/plans/preparation/upload", true);
+    xhr.responseType = "text";
+    xhr.setRequestHeader("Authorization", `Bearer ${session.access_token}`);
+
+    xhr.onerror = () => {
+      reject(
+        new Error(
+          "Fallo de red al subir el documento. Recarga la app y, si sigue igual, cierra la PWA y vuelve a abrirla.",
+        ),
+      );
+    };
+
+    xhr.onabort = () => {
+      reject(new Error("La subida del documento se cancelo antes de terminar."));
+    };
+
+    xhr.onload = () => {
+      const payload = ((): { error?: string } | UploadedSeedPreparationAttachment | null => {
+        try {
+          return JSON.parse(xhr.responseText || "{}") as
+            | { error?: string }
+            | UploadedSeedPreparationAttachment;
+        } catch {
+          return null;
+        }
+      })();
+
+      if (xhr.status < 200 || xhr.status >= 300) {
+        reject(
+          new Error(
+            (payload && typeof payload === "object" && payload !== null && "error" in payload
+              ? String(payload.error ?? "").trim()
+              : "") || "No se pudo subir el documento de preparacion.",
+          ),
+        );
+        return;
+      }
+
+      if (!payload || typeof payload !== "object" || !("url" in payload)) {
+        reject(new Error("La subida termino, pero el servidor no devolvio un adjunto valido."));
+        return;
+      }
+
+      resolve(payload as UploadedSeedPreparationAttachment);
+    };
+
+    xhr.send(form);
   });
-
-  const payload = (await response.json().catch(() => null)) as
-    | { error?: string }
-    | UploadedSeedPreparationAttachment
-    | null;
-
-  if (!response.ok) {
-    throw new Error(
-      (payload && typeof payload === "object" && payload !== null && "error" in payload
-        ? String(payload.error ?? "").trim()
-        : "") || "No se pudo subir el documento de preparacion.",
-    );
-  }
-
-  return payload as UploadedSeedPreparationAttachment;
 }
