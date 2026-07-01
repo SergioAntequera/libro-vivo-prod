@@ -53,6 +53,36 @@ function isMissingAdminEnvError(error: unknown) {
   );
 }
 
+function isSupabaseRestrictedError(error: unknown) {
+  const message = normalizeErrorMessage(error);
+  return (
+    message.includes("service for this project is restricted") ||
+    message.includes("exceed_cached_egress_quota")
+  );
+}
+
+function isSupabaseUnavailableError(error: unknown) {
+  const message = normalizeErrorMessage(error);
+  return (
+    message.includes("failed to fetch") ||
+    message.includes("fetch failed") ||
+    message.includes("network request failed") ||
+    message.includes("getaddrinfo") ||
+    message.includes("enotfound") ||
+    message.includes("dns") ||
+    message.includes("hostname could not be resolved")
+  );
+}
+
+function isRecoverablePublicReleaseGateError(error: unknown) {
+  return (
+    isMissingAdminEnvError(error) ||
+    isMissingReleaseColumnError(error) ||
+    isSupabaseRestrictedError(error) ||
+    isSupabaseUnavailableError(error)
+  );
+}
+
 function toCeremonyState(row: ReleaseGateRow | null | undefined): PublicReleaseCeremonyState {
   const unlockedAt = row?.release_unlocked_at ?? null;
   const firstName = row?.release_left_name ?? null;
@@ -120,7 +150,7 @@ export async function getPublicReleaseGateState(): Promise<PublicReleaseGateStat
       unlockedAt: row?.release_unlocked_at ?? null,
     };
   } catch (error) {
-    if (isMissingAdminEnvError(error) || isMissingReleaseColumnError(error)) {
+    if (isRecoverablePublicReleaseGateError(error)) {
       return { unlocked: true, unlockedAt: null };
     }
     throw error;
@@ -132,7 +162,7 @@ export async function getPublicReleaseCeremonyState(): Promise<PublicReleaseCere
     const row = await finalizeReleaseCeremonyIfReady(await readReleaseCeremonyRow());
     return toCeremonyState(row);
   } catch (error) {
-    if (isMissingAdminEnvError(error) || isMissingReleaseColumnError(error)) {
+    if (isRecoverablePublicReleaseGateError(error)) {
       return {
         unlocked: true,
         unlockedAt: null,
