@@ -70,6 +70,18 @@ async function main() {
     indexHtml.includes('/mobile/manifest.json'),
     "Mobile bundle index.html must link /mobile/manifest.json.",
   );
+  const entryMatch = indexHtml.match(
+    /\/mobile\/_expo\/static\/js\/web\/(entry-[a-f0-9]+\.js)/i,
+  );
+  assert(entryMatch, "Mobile bundle index.html must reference a versioned JavaScript entry.");
+
+  const entryPath = path.join(bundledJsDir, entryMatch[1]);
+  const entrySource = await readRequiredFile(entryPath);
+  assert(entrySource.length > 100_000, "Mobile JavaScript entry is unexpectedly small.");
+  assert(
+    !entrySource.trimStart().startsWith("<"),
+    "Mobile JavaScript entry contains HTML instead of JavaScript.",
+  );
   assert(manifest.id === "/mobile", 'Mobile manifest id must be "/mobile".');
   assert(manifest.start_url === "/mobile", 'Mobile manifest start_url must be "/mobile".');
   assert(manifest.scope === "/mobile/", 'Mobile manifest scope must be "/mobile/".');

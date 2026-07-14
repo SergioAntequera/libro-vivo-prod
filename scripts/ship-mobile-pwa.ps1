@@ -10,9 +10,12 @@ if ([string]::IsNullOrWhiteSpace($Message)) {
 
 $paths = @(
   "README.md",
+  "next.config.mjs",
   "package.json",
+  "package-lock.json",
   "public/mobile",
   "scripts/check-mobile-pwa-bundle.mjs",
+  "scripts/check-mobile-pwa-service-worker.mjs",
   "scripts/sync-mobile-pwa.mjs",
   "src/app/mobile"
 )
@@ -27,6 +30,11 @@ Write-Host "Running full production checks..." -ForegroundColor Cyan
 cmd /c npm run check
 if ($LASTEXITCODE -ne 0) {
   throw "Production checks failed. Push cancelled."
+}
+
+cmd /c npm run mobile:pwa:check:sw
+if ($LASTEXITCODE -ne 0) {
+  throw "Generated mobile service worker validation failed. Push cancelled."
 }
 
 $hasRelevantChanges = $false
@@ -44,7 +52,7 @@ if (-not $hasRelevantChanges) {
 }
 
 Write-Host "Staging only mobile PWA deployment files..." -ForegroundColor Cyan
-git add -- README.md package.json public/mobile scripts/check-mobile-pwa-bundle.mjs scripts/sync-mobile-pwa.mjs src/app/mobile
+git add -- README.md next.config.mjs package.json package-lock.json public/mobile scripts/check-mobile-pwa-bundle.mjs scripts/check-mobile-pwa-service-worker.mjs scripts/sync-mobile-pwa.mjs src/app/mobile
 
 Write-Host "Creating commit..." -ForegroundColor Cyan
 git commit -m $Message
