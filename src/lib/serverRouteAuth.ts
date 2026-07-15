@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
+import { readAuthAccessTokenFromCookieHeader } from "@/lib/authSessionCookie";
 import {
   getPrivilegedRoleFallback,
   hasRole,
   isAppRole,
   type AppRole,
 } from "@/lib/roles";
-import { readAuthAccessTokenFromCookieHeader } from "@/lib/authSessionCookie";
+import {
+  createServerRequestContext,
+  reportServerEvent,
+  withRequestId,
+  type ServerRequestContext,
+} from "@/lib/serverTelemetry";
 
 type AuthOk = {
   ok: true;
@@ -14,6 +21,7 @@ type AuthOk = {
   userId: string;
   userEmail: string | null;
   role: AppRole | null;
+  requestContext: ServerRequestContext;
 };
 
 type AuthFail = {
@@ -53,32 +61,49 @@ function createTokenClient(accessToken: string) {
       detectSessionInUrl: false,
     },
     global: {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${accessToken}` },
     },
   });
 }
 
 export async function requireAuthenticatedRoute(req: Request): Promise<AuthResult> {
+  const requestContext = createServerRequestContext(req, "auth", "route_authentication");
   const accessToken = readRouteAccessToken(req);
   if (!accessToken) {
+    reportServerEvent({
+      event: "server.auth.rejected",
+      level: "warning",
+      context: requestContext,
+      data: { reason: "missing_session" },
+    });
     return {
       ok: false,
-      response: NextResponse.json(
-        { error: "No autenticado: falta sesion valida." },
-        { status: 401 },
+      response: withRequestId(
+        NextResponse.json(
+          { error: "No autenticado: falta una sesión válida." },
+          { status: 401 },
+        ),
+        requestContext,
       ),
     };
   }
 
   const client = createTokenClient(accessToken);
   if (!client) {
+    reportServerEvent({
+      event: "server.auth.configuration_failed",
+      level: "error",
+      context: requestContext,
+      data: { reason: "missing_supabase_env" },
+    });
     return {
       ok: false,
-      response: NextResponse.json(
-        { error: "Config de Supabase no disponible en servidor." },
-        { status: 500 },
+      response: withRequestId(
+        NextResponse.json(
+          { error: "Configuración de Supabase no disponible en el servidor." },
+          { status: 500 },
+        ),
+        requestContext,
       ),
     };
   }
@@ -87,11 +112,20 @@ export async function requireAuthenticatedRoute(req: Request): Promise<AuthResul
   const userId = data.user?.id ?? null;
   const userEmail = data.user?.email ?? null;
   if (error || !userId) {
+    reportServerEvent({
+      event: "server.auth.rejected",
+      level: "warning",
+      context: requestContext,
+      data: { reason: "invalid_or_expired_session" },
+    });
     return {
       ok: false,
-      response: NextResponse.json(
-        { error: "Token invalido o sesión expirada." },
-        { status: 401 },
+      response: withRequestId(
+        NextResponse.json(
+          { error: "Token inválido o sesión expirada." },
+          { status: 401 },
+        ),
+        requestContext,
       ),
     };
   }
@@ -102,6 +136,7 @@ export async function requireAuthenticatedRoute(req: Request): Promise<AuthResul
     userId,
     userEmail,
     role: null,
+    requestContext,
   };
 }
 
@@ -116,14 +151,10 @@ async function resolveAuthenticatedRole(
     .eq("id", userId)
     .maybeSingle();
 
-  if (error) {
-    throw new Error(`No se pudo validar perfil: ${error.message}`);
-  }
+  if (error) throw new Error(`No se pudo validar el perfil: ${error.code ?? "query_failed"}`);
 
   const roleRaw = String((profile as { role?: string } | null)?.role ?? "").trim();
-  if (!isAppRole(roleRaw)) {
-    return getPrivilegedRoleFallback(userEmail);
-  }
+  if (!isAppRole(roleRaw)) return getPrivilegedRoleFallback(userEmail);
   return roleRaw;
 }
 
@@ -137,37 +168,45 @@ export async function requireRoleRoute(
   let role: AppRole | null = null;
   try {
     role = await resolveAuthenticatedRole(auth.client, auth.userId, auth.userEmail);
-  } catch (error) {
+  } catch {
+    reportServerEvent({
+      event: "server.auth.role_resolution_failed",
+      level: "error",
+      context: auth.requestContext,
+      data: { reason: "profile_role_query_failed" },
+    });
     return {
       ok: false,
-      response: NextResponse.json(
-        {
-          error:
-            error instanceof Error
-              ? error.message
-              : "No se pudo validar rol del perfil.",
-        },
-        { status: 403 },
+      response: withRequestId(
+        NextResponse.json(
+          { error: "No se pudo validar el rol del perfil." },
+          { status: 403 },
+        ),
+        auth.requestContext,
       ),
     };
   }
 
   if (!hasRole(role, allowedRoles)) {
+    reportServerEvent({
+      event: "server.auth.role_rejected",
+      level: "warning",
+      context: auth.requestContext,
+      data: { requiredRoles: allowedRoles },
+    });
     return {
       ok: false,
-      response: NextResponse.json(
-        {
-          error: `No autorizado: requiere rol ${allowedRoles.join(" o ")}.`,
-        },
-        { status: 403 },
+      response: withRequestId(
+        NextResponse.json(
+          { error: `No autorizado: requiere rol ${allowedRoles.join(" o ")}.` },
+          { status: 403 },
+        ),
+        auth.requestContext,
       ),
     };
   }
 
-  return {
-    ...auth,
-    role,
-  };
+  return { ...auth, role };
 }
 
 export async function requireSuperadminRoute(req: Request): Promise<AuthResult> {

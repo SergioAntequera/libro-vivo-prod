@@ -34,7 +34,8 @@
     "mobile:pwa:check": "node scripts/check-mobile-pwa-bundle.mjs",
     "mobile:pwa:check:sw": "node scripts/check-mobile-pwa-service-worker.mjs",
     "test:account-data-export": "node --experimental-strip-types --test src/lib/accountDataExport.test.mjs",
-    "test:account-deletion": "node --experimental-strip-types --test src/lib/accountDeletionContracts.test.mjs src/lib/accountDeletionMigration.test.mjs"
+    "test:account-deletion": "node --experimental-strip-types --test src/lib/accountDeletionContracts.test.mjs src/lib/accountDeletionMigration.test.mjs",
+    "test:server-telemetry": "node --experimental-strip-types --test src/lib/serverTelemetry.test.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
