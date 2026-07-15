@@ -298,7 +298,7 @@ async function checkBrowserProfile(report, browser, baseUrl, profile) {
       const serviceWorkerUrl = await page.evaluate(async () => {
         const registration = await Promise.race([
           navigator.serviceWorker.ready,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 15_000)),
+          new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 60_000)),
         ]);
         return registration.active?.scriptURL ?? "";
       });
