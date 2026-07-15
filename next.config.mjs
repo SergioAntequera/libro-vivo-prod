@@ -5,10 +5,12 @@ import { fileURLToPath } from "url";
 const isDev = process.env.NODE_ENV !== "production";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-function excludeHeavyMobileArtwork(entries) {
+function filterPrecacheEntries(entries) {
   return {
     manifest: entries.filter(
-      ({ url }) => !/^\/?mobile\/assets\/(?:generated|illustrations)\//i.test(url),
+      ({ url }) =>
+        !/^\/?mobile\/assets\/(?:generated|illustrations)\//i.test(url) &&
+        !/^\/?_next\/server\//i.test(url),
     ),
     warnings: [],
   };
@@ -103,10 +105,12 @@ const pwaOptions = {
   register: true,
   skipWaiting: true,
   disable: isDev,
-  navigateFallback: "/offline",
-  navigateFallbackBlacklist: [/^\/api\//],
+  importScripts: ["/pwa-catch-handler.js"],
+  templatedURLs: {
+    "/mobile": ["public/mobile/index.html"],
+  },
   maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-  manifestTransforms: [excludeHeavyMobileArtwork],
+  manifestTransforms: [filterPrecacheEntries],
   // Do not cache generic GET requests. The default catch-all from next-pwa
   // was serving stale /api and Supabase responses, which broke realtime flows.
   runtimeCaching: safeRuntimeCaching,

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
+    "postbuild": "node scripts/fix-pwa-precache-path.mjs",
     "start": "next start",
     "lint": "eslint . --cache",
     "typegen": "next typegen",
@@ -28,6 +29,7 @@
     "prod:app:materialize": "node scripts/materialize-app-skeleton.mjs",
     "qa:couple:reset": "node scripts/dev-reset-couple-qa.mjs",
     "qa:couple:mobile": "node scripts/qa-couple-mobile-walkthrough.mjs",
+    "qa:mobile:pwa:public": "node scripts/qa-mobile-pwa-public.mjs",
     "mobile:pwa:sync": "node scripts/sync-mobile-pwa.mjs",
     "mobile:pwa:check": "node scripts/check-mobile-pwa-bundle.mjs",
     "mobile:pwa:check:sw": "node scripts/check-mobile-pwa-service-worker.mjs"

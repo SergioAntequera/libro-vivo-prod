@@ -5,6 +5,7 @@ const publicMobileDir = path.join(process.cwd(), "public", "mobile");
 const indexHtmlPath = path.join(publicMobileDir, "index.html");
 const manifestPath = path.join(publicMobileDir, "manifest.json");
 const buildInfoPath = path.join(publicMobileDir, "build-info.json");
+const serviceWorkerRegistrationPath = path.join(publicMobileDir, "register-service-worker.js");
 const bundledJsDir = path.join(publicMobileDir, "_expo", "static", "js", "web");
 
 async function readRequiredFile(filePath) {
@@ -51,10 +52,11 @@ async function collectFiles(dirPath) {
 }
 
 async function main() {
-  const [indexHtml, manifestRaw, buildInfoRaw] = await Promise.all([
+  const [indexHtml, manifestRaw, buildInfoRaw, serviceWorkerRegistration] = await Promise.all([
     readRequiredFile(indexHtmlPath),
     readRequiredFile(manifestPath),
     readRequiredFile(buildInfoPath),
+    readRequiredFile(serviceWorkerRegistrationPath),
   ]);
 
   let manifest;
@@ -77,6 +79,14 @@ async function main() {
   assert(
     indexHtml.includes('/mobile/manifest.json'),
     "Mobile bundle index.html must link /mobile/manifest.json.",
+  );
+  assert(
+    indexHtml.includes('/mobile/register-service-worker.js'),
+    "Mobile bundle index.html must load its service worker registration.",
+  );
+  assert(
+    serviceWorkerRegistration.includes('navigator.serviceWorker.register("/sw.js"'),
+    "Mobile service worker registration must target the production root worker.",
   );
   const entryMatch = indexHtml.match(
     /\/mobile\/_expo\/static\/js\/web\/(entry-[a-f0-9]+\.js)/i,
