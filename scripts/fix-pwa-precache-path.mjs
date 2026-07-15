@@ -1,8 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-
-const publicDir = path.join(process.cwd(), "public");
-const serviceWorkerPath = path.join(publicDir, "sw.js");
+import { pathToFileURL } from "node:url";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -31,7 +29,9 @@ function filterPrivateNextEntries(source, fileName) {
   return { updated, removed };
 }
 
-async function main() {
+export async function repairPwaArtifacts(rootDir = process.cwd()) {
+  const publicDir = path.join(rootDir, "public");
+  const serviceWorkerPath = path.join(publicDir, "sw.js");
   const source = await fs.readFile(serviceWorkerPath, "utf8");
   const brokenImports = [
     ...source.matchAll(/["']\/_next\/(precache\.[^"']+\.js)["']/gi),
@@ -76,7 +76,10 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error("[fix-pwa-precache-path] Failed:", error);
-  process.exitCode = 1;
-});
+const invokedPath = process.argv[1] ? pathToFileURL(path.resolve(process.argv[1])).href : null;
+if (invokedPath === import.meta.url) {
+  repairPwaArtifacts().catch((error) => {
+    console.error("[fix-pwa-precache-path] Failed:", error);
+    process.exitCode = 1;
+  });
+}

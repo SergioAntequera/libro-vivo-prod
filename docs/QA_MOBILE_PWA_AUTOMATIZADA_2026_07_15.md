@@ -37,7 +37,9 @@ Los informes y capturas se guardan en `tmp/qa-mobile-pwa-public/`, que esta igno
 
 ## Guardias de build
 
-`postbuild` ejecuta `scripts/fix-pwa-precache-path.mjs`. Corrige el path incorrecto que `next-pwa` genera para el manifiesto de precache y elimina entradas privadas `/_next/server/` que no se pueden servir al navegador.
+`RepairPwaArtifactsPlugin` ejecuta `scripts/fix-pwa-precache-path.mjs` dentro del hook final de Webpack. Esto cubre plataformas como Vercel que invocan la build de Next sin respetar el lifecycle `postbuild`. El propio `postbuild` vuelve a ejecutar la misma reparacion como segunda barrera idempotente.
+
+La reparacion corrige el path incorrecto que `next-pwa` genera para el manifiesto de precache y elimina entradas privadas `/_next/server/` que no se pueden servir al navegador.
 
 `mobile:pwa:check` y `mobile:pwa:check:sw` fallan si el bundle movil, el registrador, el worker o el precache quedan desalineados.
 

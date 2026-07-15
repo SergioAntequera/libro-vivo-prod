@@ -2,8 +2,18 @@ import withPWA from "next-pwa";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import { repairPwaArtifacts } from "./scripts/fix-pwa-precache-path.mjs";
+
 const isDev = process.env.NODE_ENV !== "production";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+class RepairPwaArtifactsPlugin {
+  apply(compiler) {
+    compiler.hooks.done.tapPromise("RepairPwaArtifactsPlugin", async () => {
+      await repairPwaArtifacts(__dirname);
+    });
+  }
+}
 
 function filterPrecacheEntries(entries) {
   return {
@@ -132,10 +142,14 @@ const nextConfig = {
   },
   webpack(config, options) {
     options.config.pwa = pwaOptions;
+    let resolvedConfig = config;
     if (typeof originalWebpack === "function") {
-      return originalWebpack(config, options);
+      resolvedConfig = originalWebpack(config, options);
     }
-    return config;
+    if (!options.dev && !options.isServer) {
+      resolvedConfig.plugins.push(new RepairPwaArtifactsPlugin());
+    }
+    return resolvedConfig;
   },
 };
 
