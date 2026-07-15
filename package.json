@@ -2,6 +2,12 @@
   "name": "libro-vivo",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "next": {
+      "postcss": "8.5.10"
+    },
+    "serialize-javascript": "7.0.7"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
@@ -30,6 +36,8 @@
     "qa:couple:reset": "node scripts/dev-reset-couple-qa.mjs",
     "qa:couple:mobile": "node scripts/qa-couple-mobile-walkthrough.mjs",
     "qa:mobile:pwa:public": "node scripts/qa-mobile-pwa-public.mjs",
+    "qa:release:local": "npm run security:audit:prod && npm run check && npm run mobile:pwa:check && npm run mobile:pwa:check:sw && npm run test:account-data-export && npm run test:account-deletion && npm run test:server-telemetry",
+    "security:audit:prod": "npm audit --omit=dev --audit-level=moderate",
     "mobile:pwa:sync": "node scripts/sync-mobile-pwa.mjs",
     "mobile:pwa:check": "node scripts/check-mobile-pwa-bundle.mjs",
     "mobile:pwa:check:sw": "node scripts/check-mobile-pwa-service-worker.mjs",
@@ -54,6 +62,7 @@
     "tus-js-client": "^4.3.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^20",
@@ -62,7 +71,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
-    "next-pwa": "^2.0.2",
+    "next-pwa": "^5.6.0",
     "pg": "^8.20.0",
     "playwright": "^1.58.2",
     "tailwindcss": "^4",

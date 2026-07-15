@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { brotliCompressSync, gzipSync } from "node:zlib";
+import AxeBuilder from "@axe-core/playwright";
 import { chromium, devices, request } from "playwright";
 
 const DEFAULT_BASE_URL = "https://www.libro-vivo.es/mobile";
@@ -8,6 +10,13 @@ const EXPECTED_PRODUCTION_BACKEND = "wmmaxlykngeszwvvifqj.supabase.co";
 const OUT_DIR = path.join("tmp", "qa-mobile-pwa-public");
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 const DEEP_ROUTES = ["/capsules", "/settings", "/map", "/plans", "/memories"];
+const BUDGETS = {
+  entryRawBytes: 4_500_000,
+  entryGzipBytes: 1_100_000,
+  entryBrotliBytes: 850_000,
+  loginDomNodes: 1_500,
+  loginResources: 120,
+};
 
 function readArg(name) {
   const prefix = `--${name}=`;
@@ -40,6 +49,8 @@ function createReport(baseUrl) {
     mode: "read-only",
     steps: [],
     diagnostics: [],
+    accessibility: [],
+    performance: [],
     screenshots: [],
   };
 }
@@ -82,9 +93,32 @@ async function checkDeploymentContract(report, api, baseUrl, expectedBackend) {
     const entryUrl = new URL(`/mobile/_expo/static/js/web/${entry}`, baseUrl.origin);
     const entryResponse = await fetchRequired(api, entryUrl, /(javascript|application\/octet-stream)/i);
     const source = await entryResponse.text();
-    assert.ok(source.length > 100_000, "El entry JavaScript es demasiado pequeno.");
+    const rawBytes = Buffer.byteLength(source, "utf8");
+    const gzipBytes = gzipSync(source).byteLength;
+    const brotliBytes = brotliCompressSync(source).byteLength;
+    assert.ok(rawBytes > 100_000, "El entry JavaScript es demasiado pequeno.");
     assert.equal(source.trimStart().startsWith("<"), false, "El entry contiene HTML.");
-    return { entry, bytes: source.length };
+    assert.ok(
+      rawBytes <= BUDGETS.entryRawBytes,
+      `El entry supera el presupuesto raw: ${rawBytes} > ${BUDGETS.entryRawBytes}.`,
+    );
+    assert.ok(
+      gzipBytes <= BUDGETS.entryGzipBytes,
+      `El entry supera el presupuesto gzip: ${gzipBytes} > ${BUDGETS.entryGzipBytes}.`,
+    );
+    assert.ok(
+      brotliBytes <= BUDGETS.entryBrotliBytes,
+      `El entry supera el presupuesto brotli: ${brotliBytes} > ${BUDGETS.entryBrotliBytes}.`,
+    );
+    report.performance.push({
+      profile: "artifact",
+      entry,
+      rawBytes,
+      gzipBytes,
+      brotliBytes,
+      budgets: BUDGETS,
+    });
+    return { entry, rawBytes, gzipBytes, brotliBytes };
   });
 
   const buildInfo = await step(report, "identidad de release y backend", async () => {
@@ -226,7 +260,53 @@ async function assertVisualHealth(page) {
   return health;
 }
 
-async function exerciseAuthControls(page) {
+async function auditAccessibility(page, report, profile, screen) {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+  const violations = results.violations.map((violation) => ({
+    id: violation.id,
+    impact: violation.impact,
+    help: violation.help,
+    helpUrl: violation.helpUrl,
+    nodes: violation.nodes.map((node) => ({
+      target: node.target,
+      failureSummary: node.failureSummary,
+    })),
+  }));
+  report.accessibility.push({ profile, screen, violations });
+  assert.deepEqual(
+    violations,
+    [],
+    `${screen} tiene ${violations.length} incumplimientos WCAG: ${violations
+      .map((violation) => violation.id)
+      .join(", ")}.`,
+  );
+}
+
+async function captureRuntimePerformance(page, report, profile) {
+  const metrics = await page.evaluate(() => {
+    const navigation = performance.getEntriesByType("navigation")[0];
+    return {
+      domNodes: document.getElementsByTagName("*").length,
+      resources: performance.getEntriesByType("resource").length,
+      domContentLoadedMs: navigation ? Math.round(navigation.domContentLoadedEventEnd) : null,
+      loadEventMs: navigation ? Math.round(navigation.loadEventEnd) : null,
+    };
+  });
+  report.performance.push({ profile, screen: "login", ...metrics, budgets: BUDGETS });
+  assert.ok(
+    metrics.domNodes <= BUDGETS.loginDomNodes,
+    `Login supera el presupuesto DOM: ${metrics.domNodes} > ${BUDGETS.loginDomNodes}.`,
+  );
+  assert.ok(
+    metrics.resources <= BUDGETS.loginResources,
+    `Login supera el presupuesto de recursos: ${metrics.resources} > ${BUDGETS.loginResources}.`,
+  );
+  return metrics;
+}
+
+async function exerciseAuthControls(page, report, profile) {
   const email = page.locator('input[placeholder="Email"]');
   const password = page.locator('input[placeholder^="Contras"]');
   const submit = page.getByRole("button", { name: "Entrar", exact: true });
@@ -245,6 +325,7 @@ async function exerciseAuthControls(page) {
 
   await page.getByText("Crear cuenta", { exact: true }).click();
   await page.getByText("Crea tu", { exact: true }).waitFor({ state: "visible" });
+  await auditAccessibility(page, report, profile, "registro");
   assert.equal(await page.getByRole("button", { name: "Crear cuenta", exact: true }).isEnabled(), true);
   await page.getByText("Volver al login", { exact: true }).click();
 
@@ -252,6 +333,7 @@ async function exerciseAuthControls(page) {
   await password.clear();
   await page.getByText(/Olvidaste tu contrase(?:n|ñ)a/i).click();
   await page.getByText("Recupera", { exact: true }).waitFor({ state: "visible" });
+  await auditAccessibility(page, report, profile, "recuperacion");
   assert.equal(await page.locator('input[placeholder^="Contras"]').count(), 0);
   const recover = page.getByRole("button", { name: "Enviar enlace", exact: true });
   assert.equal(await recover.isDisabled(), true);
@@ -283,9 +365,11 @@ async function checkBrowserProfile(report, browser, baseUrl, profile) {
     await page.goto(routeUrl(baseUrl), { waitUntil: "domcontentloaded", timeout: 60_000 });
     await waitForLogin(page);
     const health = await assertVisualHealth(page);
+    await auditAccessibility(page, report, profile, "login");
+    const performance = await captureRuntimePerformance(page, report, profile);
 
     if (profile === "iphone") {
-      await exerciseAuthControls(page);
+      await exerciseAuthControls(page, report, profile);
       await checkDeepRouteRedirects(page, baseUrl);
     }
 
@@ -320,7 +404,7 @@ async function checkBrowserProfile(report, browser, baseUrl, profile) {
     assert.deepEqual(diagnostics.consoleErrors, [], "La pagina escribio errores en consola.");
     assert.deepEqual(diagnostics.failedRequests, [], "Hubo peticiones de red fallidas.");
     assert.deepEqual(diagnostics.httpErrors, [], "Hubo respuestas HTTP fallidas.");
-    return health;
+    return { health, performance };
   } finally {
     await context.close();
   }
@@ -345,6 +429,16 @@ async function saveReport(report) {
     "## Capturas",
     "",
     ...report.screenshots.map((file) => `- ${file}`),
+    "",
+    "## Accesibilidad",
+    "",
+    ...report.accessibility.map(
+      (item) => `- ${item.profile}/${item.screen}: ${item.violations.length} violaciones WCAG`,
+    ),
+    "",
+    "## Rendimiento",
+    "",
+    ...report.performance.map((item) => `- ${JSON.stringify(item)}`),
     "",
   ];
   await writeFile(path.join(OUT_DIR, "report.md"), lines.join("\n"), "utf8");
