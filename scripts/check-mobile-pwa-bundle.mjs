@@ -4,6 +4,7 @@ import path from "node:path";
 const publicMobileDir = path.join(process.cwd(), "public", "mobile");
 const indexHtmlPath = path.join(publicMobileDir, "index.html");
 const manifestPath = path.join(publicMobileDir, "manifest.json");
+const buildInfoPath = path.join(publicMobileDir, "build-info.json");
 const bundledJsDir = path.join(publicMobileDir, "_expo", "static", "js", "web");
 
 async function readRequiredFile(filePath) {
@@ -50,16 +51,23 @@ async function collectFiles(dirPath) {
 }
 
 async function main() {
-  const [indexHtml, manifestRaw] = await Promise.all([
+  const [indexHtml, manifestRaw, buildInfoRaw] = await Promise.all([
     readRequiredFile(indexHtmlPath),
     readRequiredFile(manifestPath),
+    readRequiredFile(buildInfoPath),
   ]);
 
   let manifest;
+  let buildInfo;
   try {
     manifest = JSON.parse(manifestRaw);
   } catch (error) {
     throw new Error("public/mobile/manifest.json is not valid JSON.", { cause: error });
+  }
+  try {
+    buildInfo = JSON.parse(buildInfoRaw);
+  } catch (error) {
+    throw new Error("public/mobile/build-info.json is not valid JSON.", { cause: error });
   }
 
   assert(
@@ -86,6 +94,18 @@ async function main() {
   assert(manifest.start_url === "/mobile", 'Mobile manifest start_url must be "/mobile".');
   assert(manifest.scope === "/mobile/", 'Mobile manifest scope must be "/mobile/".');
   assert(Array.isArray(manifest.icons) && manifest.icons.length > 0, "Mobile manifest must include icons.");
+  assert(buildInfo.schemaVersion === 1, "Mobile build info schema is unsupported.");
+  assert(buildInfo.environment === "production", "Mobile PWA must be a production build.");
+  assert(
+    typeof buildInfo.releaseRevision === "string" &&
+      buildInfo.releaseRevision.length >= 7 &&
+      buildInfo.releaseRevision !== "local",
+    "Mobile PWA must include a source revision.",
+  );
+  assert(
+    typeof buildInfo.backendHost === "string" && buildInfo.backendHost.endsWith(".supabase.co"),
+    "Mobile PWA must identify its Supabase backend host.",
+  );
 
   const bundledJsFiles = (await collectFiles(bundledJsDir)).filter((filePath) => filePath.endsWith(".js"));
   let scopedPathFound = false;
@@ -98,7 +118,11 @@ async function main() {
   }
   assert(!scopedPathFound, "Mobile bundle still references scoped node_modules asset paths with '@'.");
 
-  console.log("[mobile:pwa:check] Mobile PWA bundle is valid for /mobile deployment.");
+  console.log(
+    `[mobile:pwa:check] Mobile PWA bundle is valid for /mobile deployment ` +
+      `(${buildInfo.environment}, ${buildInfo.releaseRevision}, Sentry ` +
+      `${buildInfo.sentryConfigured ? "configured" : "not configured"}).`,
+  );
 }
 
 main().catch((error) => {
