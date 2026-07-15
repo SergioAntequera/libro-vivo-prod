@@ -250,7 +250,7 @@ async function exerciseAuthControls(page) {
 
   await email.clear();
   await password.clear();
-  await page.getByText(/Olvidaste tu contrasena/i).click();
+  await page.getByText(/Olvidaste tu contrase(?:n|ñ)a/i).click();
   await page.getByText("Recupera", { exact: true }).waitFor({ state: "visible" });
   assert.equal(await page.locator('input[placeholder^="Contras"]').count(), 0);
   const recover = page.getByRole("button", { name: "Enviar enlace", exact: true });
