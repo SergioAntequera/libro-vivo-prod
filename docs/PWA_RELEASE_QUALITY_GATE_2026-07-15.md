@@ -19,6 +19,8 @@ La QA pública bloquea cualquier método distinto de `GET`, `HEAD` u `OPTIONS`. 
 - El HTML carga un entry JavaScript versionado y nunca HTML servido como `.js`.
 - `build-info.json` identifica release, entorno y backend de producción.
 - Manifest, iconos, scope, start URL y service worker son válidos.
+- El worker se genera desde cero con un manifiesto Workbox inline y precachea el shell, entry, fuentes e iconos móviles con revisión por contenido.
+- Ilustraciones, assets generados y recursos de correo quedan fuera del precache para evitar descargas iniciales innecesarias.
 - Las rutas profundas de cápsulas, ajustes, mapa, planes y recuerdos sirven el shell y redirigen a login sin sesión.
 - Login, registro y recuperación pasan WCAG 2.1 A/AA con Axe en perfil iPhone; login también se valida en escritorio.
 - El ojo de contraseña, estados disabled, fuentes, imágenes, overflow y navegación de auth funcionan.
@@ -39,7 +41,7 @@ Línea base del 2026-07-15: 3.915.853 bytes raw, 968.604 gzip, 720.414 Brotli, 7
 
 ## Automatización
 
-`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request. Cuando GitHub recibe un `deployment_status` de producción exitoso, ejecuta Playwright contra la PWA pública y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días.
+`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request. El build usa una URL y clave pública ficticias de Supabase para validar la compilación sin secretos ni acceso a datos. Cuando GitHub recibe un `deployment_status` exitoso para `main`, ejecuta Playwright contra la PWA pública y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días.
 
 ## Riesgo que permanece fuera de esta puerta
 

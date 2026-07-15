@@ -47,7 +47,24 @@ export async function repairPwaArtifacts(rootDir = process.cwd()) {
   const precacheImports = [
     ...updated.matchAll(/["']\/(precache\.[^"']+\.js)["']/gi),
   ].map((match) => match[1]);
-  assert(precacheImports.length > 0, "Service worker does not import a precache manifest.");
+  const hasInlinePrecache = /precacheAndRoute\(\s*\[/i.test(updated);
+  assert(
+    precacheImports.length > 0 || hasInlinePrecache,
+    "Service worker does not contain a precache manifest.",
+  );
+
+  if (hasInlinePrecache) {
+    assert(
+      !/["']\/?_next\/server\//i.test(updated),
+      "Service worker contains private Next server files that browsers cannot precache.",
+    );
+    assert(
+      !/mobile\/(?:assets\/(?:generated|illustrations)|share\/email)\//i.test(updated),
+      "Service worker precaches heavy mobile or email artwork that should load on demand.",
+    );
+    console.log("[fix-pwa-precache-path] Verified inline Workbox precache manifest.");
+    return;
+  }
 
   let removedEntries = 0;
   for (const fileName of precacheImports) {

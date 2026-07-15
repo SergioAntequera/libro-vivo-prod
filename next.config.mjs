@@ -1,4 +1,6 @@
 import withPWA from "next-pwa";
+import { createHash } from "crypto";
+import { readFileSync, readdirSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -6,11 +8,57 @@ import { repairPwaArtifacts } from "./scripts/fix-pwa-precache-path.mjs";
 
 const isDev = process.env.NODE_ENV !== "production";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const mobilePublicDir = path.join(__dirname, "public", "mobile");
+const mobileShellRevision = createHash("sha256")
+  .update(readFileSync(path.join(mobilePublicDir, "index.html")))
+  .digest("hex")
+  .slice(0, 16);
+
+function collectMobilePrecacheEntries(directory = mobilePublicDir, relativeDir = "") {
+  return readdirSync(directory, { withFileTypes: true })
+    .sort((left, right) => left.name.localeCompare(right.name))
+    .flatMap((entry) => {
+      const relativePath = path.join(relativeDir, entry.name);
+      const publicPath = relativePath.split(path.sep).join("/");
+      if (
+        /^assets\/(?:generated|illustrations)\//i.test(publicPath) ||
+        /^share\/email\//i.test(publicPath)
+      ) {
+        return [];
+      }
+      const absolutePath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        return collectMobilePrecacheEntries(absolutePath, relativePath);
+      }
+      const source = readFileSync(absolutePath);
+      if (source.byteLength > 5 * 1024 * 1024) {
+        throw new Error(`Mobile precache asset exceeds 5 MB: ${publicPath}`);
+      }
+      return [
+        {
+          url: `/mobile/${publicPath}`,
+          revision: createHash("sha256").update(source).digest("hex").slice(0, 16),
+        },
+      ];
+    });
+}
+
+const mobilePrecacheEntries = collectMobilePrecacheEntries();
 
 class RepairPwaArtifactsPlugin {
   apply(compiler) {
     compiler.hooks.done.tapPromise("RepairPwaArtifactsPlugin", async () => {
-      await repairPwaArtifacts(__dirname);
+      try {
+        await repairPwaArtifacts(__dirname);
+      } catch (error) {
+        if (error && typeof error === "object" && error.code === "ENOENT") {
+          console.warn(
+            "[fix-pwa-precache-path] Service worker not emitted yet; deferring repair to postbuild.",
+          );
+          return;
+        }
+        throw error;
+      }
     });
   }
 }
@@ -20,6 +68,7 @@ function filterPrecacheEntries(entries) {
     manifest: entries.filter(
       ({ url }) =>
         !/^\/?mobile\/assets\/(?:generated|illustrations)\//i.test(url) &&
+        !/^\/?mobile\/share\/email\//i.test(url) &&
         !/^\/?_next\/server\//i.test(url),
     ),
     warnings: [],
@@ -116,9 +165,10 @@ const pwaOptions = {
   skipWaiting: true,
   disable: isDev,
   importScripts: ["/pwa-catch-handler.js"],
-  templatedURLs: {
-    "/mobile": ["public/mobile/index.html"],
-  },
+  additionalManifestEntries: [
+    { url: "/mobile", revision: mobileShellRevision },
+    ...mobilePrecacheEntries,
+  ],
   maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
   manifestTransforms: [filterPrecacheEntries],
   // Do not cache generic GET requests. The default catch-all from next-pwa
@@ -126,31 +176,22 @@ const pwaOptions = {
   runtimeCaching: safeRuntimeCaching,
 };
 
-const baseConfig = withPWA({
-  reactStrictMode: true,
-  outputFileTracingRoot: __dirname,
-});
-
-const originalWebpack = baseConfig.webpack;
+const withPwaConfig = withPWA(pwaOptions);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...baseConfig,
+  reactStrictMode: true,
+  outputFileTracingRoot: __dirname,
   outputFileTracingIncludes: {
     "/mobile/[[...slug]]": ["./public/mobile/**/*"],
     "/mobile/[[...slug]]/route": ["./public/mobile/**/*"],
   },
   webpack(config, options) {
-    options.config.pwa = pwaOptions;
-    let resolvedConfig = config;
-    if (typeof originalWebpack === "function") {
-      resolvedConfig = originalWebpack(config, options);
-    }
     if (!options.dev && !options.isServer) {
-      resolvedConfig.plugins.push(new RepairPwaArtifactsPlugin());
+      config.plugins.push(new RepairPwaArtifactsPlugin());
     }
-    return resolvedConfig;
+    return config;
   },
 };
 
-export default nextConfig;
+export default withPwaConfig(nextConfig);

@@ -152,17 +152,25 @@ async function checkDeploymentContract(report, api, baseUrl, expectedBackend) {
     assert.ok(source.includes("mobile-pwa-navigation"));
     assert.ok(source.includes("NetworkFirst"));
     assert.ok(source.includes("/pwa-catch-handler.js"));
-    assert.ok(source.includes('"url": "/mobile"') || source.includes('"url":"/mobile"'));
+    assert.match(source, /["']?url["']?\s*:\s*["']\/mobile["']/i);
     await fetchRequired(api, new URL("/pwa-catch-handler.js", baseUrl.origin), /(javascript|application\/octet-stream)/i);
     assert.doesNotMatch(source, /["']\/_next\/precache\./i);
     const precachePaths = [...source.matchAll(/["']\/(precache\.[^"']+\.js)["']/gi)].map(
       (match) => match[1],
     );
-    assert.ok(precachePaths.length > 0, "El service worker no importa su precache.");
+    const hasInlinePrecache = /precacheAndRoute\(\s*\[/i.test(source);
+    assert.ok(
+      precachePaths.length > 0 || hasInlinePrecache,
+      "El service worker no contiene su precache.",
+    );
     for (const fileName of precachePaths) {
       await fetchRequired(api, new URL(`/${fileName}`, baseUrl.origin), /(javascript|application\/octet-stream)/i);
     }
-    return { bytes: source.length, precacheFiles: precachePaths };
+    return {
+      bytes: source.length,
+      precacheLayout: hasInlinePrecache ? "inline" : "separate",
+      precacheFiles: precachePaths,
+    };
   });
 
   await step(report, "rutas profundas sirven el shell", async () => {

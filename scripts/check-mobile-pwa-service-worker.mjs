@@ -32,7 +32,8 @@ async function main() {
   assert(serviceWorker.includes(entryUrl), "Service worker does not precache the current mobile entry.");
   assert(
     serviceWorker.includes("mobile-pwa-navigation") &&
-      serviceWorker.includes("workbox.strategies.NetworkFirst"),
+      (serviceWorker.includes("workbox.strategies.NetworkFirst") ||
+        /new\s+\w+\.NetworkFirst\(/.test(serviceWorker)),
     "Service worker is missing the NetworkFirst mobile navigation cache.",
   );
   assert(
@@ -40,7 +41,7 @@ async function main() {
     "Service worker does not import the mobile offline fallback handler.",
   );
   assert(
-    serviceWorker.includes('"url": "/mobile"') || serviceWorker.includes('"url":"/mobile"'),
+    /["']?url["']?\s*:\s*["']\/mobile["']/i.test(serviceWorker),
     "Service worker does not precache the /mobile shell URL.",
   );
   assert(
@@ -48,13 +49,17 @@ async function main() {
     "Service worker still intercepts every Next navigation with the global offline page.",
   );
   assert(
-    !/mobile\/assets\/(?:generated|illustrations)\//i.test(serviceWorker),
-    "Service worker precaches heavy mobile artwork that should load on demand.",
+    !/mobile\/(?:assets\/(?:generated|illustrations)|share\/email)\//i.test(serviceWorker),
+    "Service worker precaches heavy mobile or email artwork that should load on demand.",
   );
 
   const publicFiles = await fs.readdir(publicDir);
   const precacheFiles = publicFiles.filter((name) => /^precache\..+\.js$/i.test(name));
-  assert(precacheFiles.length > 0, "No generated Workbox precache manifest was found.");
+  const hasInlinePrecache = /precacheAndRoute\(\s*\[/i.test(serviceWorker);
+  assert(
+    precacheFiles.length > 0 || hasInlinePrecache,
+    "No generated Workbox precache manifest was found.",
+  );
   for (const fileName of precacheFiles) {
     assert(
       serviceWorker.includes(`/${fileName}`),
@@ -66,8 +71,8 @@ async function main() {
       `${fileName} includes private Next server files that are not publicly reachable.`,
     );
     assert(
-      !/mobile\/assets\/(?:generated|illustrations)\//i.test(source),
-      `${fileName} precaches heavy mobile artwork that should load on demand.`,
+      !/mobile\/(?:assets\/(?:generated|illustrations)|share\/email)\//i.test(source),
+      `${fileName} precaches heavy mobile or email artwork that should load on demand.`,
     );
   }
 
