@@ -88,6 +88,14 @@ async function main() {
     serviceWorkerRegistration.includes('navigator.serviceWorker.register("/sw.js"'),
     "Mobile service worker registration must target the production root worker.",
   );
+  assert(
+    serviceWorkerRegistration.includes('addEventListener("controllerchange"'),
+    "Mobile service worker registration must reload an open PWA after an update takes control.",
+  );
+  assert(
+    serviceWorkerRegistration.includes("registration.update()"),
+    "Mobile service worker registration must check for updates when the PWA resumes.",
+  );
   const entryMatch = indexHtml.match(
     /\/mobile\/_expo\/static\/js\/web\/(entry-[a-f0-9]+\.js)/i,
   );
