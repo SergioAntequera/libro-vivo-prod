@@ -41,7 +41,7 @@ Línea base del 2026-07-15: 3.915.853 bytes raw, 968.604 gzip, 720.414 Brotli, 7
 
 ## Automatización
 
-`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request. El build usa una URL y clave pública ficticias de Supabase para validar la compilación sin secretos ni acceso a datos. Cuando GitHub recibe un `deployment_status` exitoso para `main`, ejecuta Playwright contra la PWA pública y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días.
+`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request con Node 22 LTS. El build usa una URL y clave pública ficticias de Supabase para validar la compilación sin secretos ni acceso a datos. Cuando GitHub recibe un `deployment_status` exitoso para `main`, ejecuta Playwright contra la PWA pública y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días.
 
 ## Riesgo que permanece fuera de esta puerta
 
