@@ -12,6 +12,7 @@ permissions:
   contents: read
 
 env:
+  NODE_OPTIONS: --max-old-space-size=4096
   NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-public-anon-key
   NEXT_PUBLIC_SITE_URL: https://www.libro-vivo.es
@@ -31,8 +32,18 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Run release gate
-        run: npm run qa:release:local
+      - name: Audit production dependencies
+        run: npm run security:audit:prod
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build from a clean checkout
+        run: npm run build
+      - name: Validate mobile PWA artifacts
+        run: npm run mobile:pwa:check && npm run mobile:pwa:check:sw
+      - name: Test account data contracts
+        run: npm run test:account-data-export && npm run test:account-deletion
+      - name: Test server telemetry
+        run: npm run test:server-telemetry
 
   public-mobile-pwa:
     if: >-
