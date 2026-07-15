@@ -121,6 +121,10 @@ async function main() {
     "Mobile PWA must include a source revision.",
   );
   assert(
+    entrySource.includes(buildInfo.releaseRevision),
+    "Mobile JavaScript entry and build-info.json must identify the same source revision.",
+  );
+  assert(
     typeof buildInfo.backendHost === "string" && buildInfo.backendHost.endsWith(".supabase.co"),
     "Mobile PWA must identify its Supabase backend host.",
   );

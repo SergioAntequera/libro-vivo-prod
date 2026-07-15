@@ -3,7 +3,7 @@
   "app": "libro-vivo-mobile",
   "version": "1.0.0",
   "environment": "production",
-  "releaseRevision": "627e7054b685",
+  "releaseRevision": "2cd37806902d",
   "backendHost": "wmmaxlykngeszwvvifqj.supabase.co",
   "sentryConfigured": false
 }

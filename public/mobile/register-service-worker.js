@@ -3,8 +3,13 @@
 
   var reloadingForNewWorker = false;
   var registrationPromise = null;
+  var hadControllerAtLoad = Boolean(navigator.serviceWorker.controller);
 
   navigator.serviceWorker.addEventListener("controllerchange", function reloadForNewWorker() {
+    if (!hadControllerAtLoad) {
+      hadControllerAtLoad = true;
+      return;
+    }
     if (reloadingForNewWorker) return;
     reloadingForNewWorker = true;
     window.location.reload();
