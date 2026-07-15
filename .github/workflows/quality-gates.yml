@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-  deployment_status:
   workflow_dispatch:
 
 permissions:
@@ -50,11 +49,12 @@ jobs:
         run: npm run test:server-telemetry
 
   public-mobile-pwa:
+    needs: local-quality
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'deployment_status' &&
-      github.event.deployment_status.state == 'success' &&
-      github.event.deployment.ref == 'main')
+      (github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.local-quality.result == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

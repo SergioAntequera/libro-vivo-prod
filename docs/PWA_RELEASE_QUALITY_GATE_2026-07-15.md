@@ -41,7 +41,7 @@ Línea base del 2026-07-15: 3.915.853 bytes raw, 968.604 gzip, 720.414 Brotli, 7
 
 ## Automatización
 
-`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request con Node 20 LTS. Los tests TypeScript usan `tsx`, sin depender de flags experimentales del runtime. El build usa una URL y clave pública ficticias de Supabase para validar la compilación sin secretos ni acceso a datos. Cuando GitHub recibe un `deployment_status` exitoso para `main`, ejecuta Playwright contra la PWA pública y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días. Los runs anteriores de la misma rama se cancelan al llegar un commit nuevo.
+`.github/workflows/quality-gates.yml` ejecuta la puerta local en cada push y pull request con Node 20 LTS. Los tests TypeScript usan `tsx`, sin depender de flags experimentales del runtime. El build usa una URL y clave pública ficticias de Supabase para validar la compilación sin secretos ni acceso a datos. En cada push a `main`, la QA pública comienza solo después de que la puerta local quede verde; ejecuta Playwright contra la PWA publicada y conserva el informe JSON, el resumen Markdown y las capturas durante 14 días. Los runs anteriores de la misma rama se cancelan al llegar un commit nuevo.
 
 ## Riesgo que permanece fuera de esta puerta
 
